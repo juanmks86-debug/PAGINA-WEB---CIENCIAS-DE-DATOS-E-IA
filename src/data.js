@@ -25,7 +25,7 @@ export const events = {
 export const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
 
 export const faqs = [
-  ['¿Cuánto dura la carrera?', 'La carrera dura 4 años, organizados en 8 cuatrimestres.'],
+  ['¿Cuánto dura la carrera?', 'La carrera dura 3 años. Todas las materias son anuales y se cursa de forma 100% presencial.'],
   ['¿Qué conocimientos previos necesito?', 'Matemática básica y ganas de aprender. Los lenguajes de programación se enseñan desde cero.'],
   ['¿Hay actividades de investigación?', 'Sí. Podés sumarte a proyectos de investigación desde el segundo año.'],
   ['¿Cómo me inscribo?', 'Inscribite desde https://nexo.jujuy.edu.ar/'],

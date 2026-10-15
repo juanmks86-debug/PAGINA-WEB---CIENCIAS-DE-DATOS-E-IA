@@ -254,7 +254,7 @@ export default function App() {
         <div className="wrap">
           <button className="burger" aria-label="Menú" onClick={() => setNav(!nav)}>☰</button>
           <img className="brand" src="/logo.jpg" alt="" width="34" height="34" />
-          <h1>Carrera de Ciencia de Datos</h1>
+          <h1>Ciencia de Datos e IA</h1>
           <nav className={nav ? 'open' : ''} onClick={() => setNav(false)}>
             {links.map(([t, href]) => <a key={href} href={href}>{t}</a>)}
           </nav>
