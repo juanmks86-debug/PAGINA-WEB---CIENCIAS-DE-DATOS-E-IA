@@ -35,9 +35,10 @@ export const faqs = [
 // Redes sociales: reemplazá '#' por el enlace real de cada red
 export const social = { facebook: '#', youtube: '#', instagram: '#' }
 
-// Ubicación: enlace de Google Maps y texto de la dirección para el mapa incrustado
-export const MAPS_LINK = 'https://share.google/5OUe4aq005gJ4QKk4'
-export const MAP_QUERY = 'Facultad de Ingeniería, Universidad Nacional de Jujuy, San Salvador de Jujuy'
+// Ubicación: MAPS_LINK abre Google Maps. Si escribís la dirección en MAP_QUERY
+// (ej: 'Calle 123, Perico, Jujuy'), se muestra además el mapa incrustado en el pie.
+export const MAPS_LINK = 'https://maps.app.goo.gl/TuMw32iQ9HTFHhQK'
+export const MAP_QUERY = ''
 
 export const coordinador = { nombre: 'Federico Torres', iniciales: 'FT' }
 
@@ -68,5 +69,51 @@ export const materias = [
     anio: 'Tercer año',
     horas: '31 horas cátedra semanales · 992 horas',
     items: [['Gestión de Proyectos', 3], ['Minería de Datos', 4], ['Reconocimiento Visual', 4], ['Ciberseguridad', 4], ['Ética y Deontología Profesional', 3], ['Analítica Web', 4], ['Procesamiento del Lenguaje Natural', 4], ['Prácticas Profesionalizantes III', 5]],
+  },
+]
+
+// Equipo creador: hasta 4 integrantes por categoría.
+// foto: ruta de una imagen dentro de public/ (ej: '/equipo/ana.jpg'). Si queda vacía se muestran las iniciales.
+const demo = 'Escribí acá una descripción breve de su aporte al proyecto.'
+export const equipos = [
+  {
+    id: 'infra', corto: 'Infraestructura y Despliegue', nombre: 'Infraestructura y Despliegue',
+    lema: 'Servidores, redes y despliegue continuo',
+    miembros: [
+      { nombre: 'Nombre Apellido', rol: 'Servidores y despliegue', desc: demo, foto: '' },
+      { nombre: 'Nombre Apellido', rol: 'Redes y seguridad', desc: demo, foto: '' },
+      { nombre: 'Nombre Apellido', rol: 'Base de datos', desc: demo, foto: '' },
+      { nombre: 'Nombre Apellido', rol: 'Soporte técnico', desc: demo, foto: '' },
+    ],
+  },
+  {
+    id: 'dev', corto: 'Desarrollo y Diseño Web', nombre: 'Desarrollo y Diseño Web',
+    lema: 'Código limpio e interfaces con identidad',
+    miembros: [
+      { nombre: 'Nombre Apellido', rol: 'Desarrollo front-end', desc: demo, foto: '' },
+      { nombre: 'Nombre Apellido', rol: 'Desarrollo back-end', desc: demo, foto: '' },
+      { nombre: 'Nombre Apellido', rol: 'Diseño UI/UX', desc: demo, foto: '' },
+      { nombre: 'Nombre Apellido', rol: 'Chatbot Andresito', desc: demo, foto: '' },
+    ],
+  },
+  {
+    id: 'press', corto: 'Contenido y Prensa', nombre: 'Contenido y Prensa',
+    lema: 'Las historias de la carrera, bien contadas',
+    miembros: [
+      { nombre: 'Nombre Apellido', rol: 'Redacción', desc: demo, foto: '' },
+      { nombre: 'Nombre Apellido', rol: 'Fotografía y video', desc: demo, foto: '' },
+      { nombre: 'Nombre Apellido', rol: 'Redes sociales', desc: demo, foto: '' },
+      { nombre: 'Nombre Apellido', rol: 'Prensa y difusión', desc: demo, foto: '' },
+    ],
+  },
+  {
+    id: 'data', corto: 'Analítica y Marketing', nombre: 'Analítica y Marketing',
+    lema: 'Datos para entender y llegar a más estudiantes',
+    miembros: [
+      { nombre: 'Nombre Apellido', rol: 'Analítica de datos', desc: demo, foto: '' },
+      { nombre: 'Nombre Apellido', rol: 'Estrategia de marketing', desc: demo, foto: '' },
+      { nombre: 'Nombre Apellido', rol: 'Métricas y reportes', desc: demo, foto: '' },
+      { nombre: 'Nombre Apellido', rol: 'Campañas', desc: demo, foto: '' },
+    ],
   },
 ]

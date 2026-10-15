@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { tabs, internships, events, meses, faqs, social, MAPS_LINK, MAP_QUERY, coordinador, stats, materias, contacto, WHATSAPP_GRUPO } from './data.js'
+import { tabs, internships, events, meses, faqs, social, MAPS_LINK, MAP_QUERY, coordinador, stats, materias, contacto, WHATSAPP_GRUPO, equipos } from './data.js'
 
 const icons = {
   chart: (
@@ -197,6 +197,94 @@ function Contacto() {
   )
 }
 
+const teamIcons = {
+  infra: <><rect x="3" y="4" width="18" height="6" rx="1.5" /><rect x="3" y="14" width="18" height="6" rx="1.5" /><path d="M7 7h.01M7 17h.01" /></>,
+  dev: <path d="m8 8-4 4 4 4M16 8l4 4-4 4M14 5l-4 14" />,
+  press: <path d="M4 5h13v14H6a2 2 0 0 1-2-2zM17 9h3v8a2 2 0 0 1-2 2M7 9h7M7 13h7" />,
+  data: <path d="M4 20V10M10 20V4M16 20v-8M22 20H2" />,
+}
+const teamColors = { infra: '#1cff8a', dev: '#a78bfa', press: '#fb923c', data: '#10b981' }
+const iniciales = (n) => n.split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0].toUpperCase()).join('')
+
+function TeamIcon({ id, size = 20 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      {teamIcons[id]}
+    </svg>
+  )
+}
+
+function TeamModal({ equipo, onClose }) {
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === 'Escape') onClose() }
+    window.addEventListener('keydown', onKey)
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => { window.removeEventListener('keydown', onKey); document.body.style.overflow = prev }
+  }, [onClose])
+  const miembros = equipo.miembros.slice(0, 4)
+  const n = miembros.length
+  const head = {
+    infra: <span className="tm-prompt">$ ./equipo --area=infraestructura</span>,
+    dev: <span className="tm-pill">Equipo creativo</span>,
+    press: <span className="tm-kicker">Edición especial · El equipo</span>,
+    data: <span className="tm-kicker">Panel de equipo</span>,
+  }[equipo.id]
+
+  return (
+    <div className="tm-bg" onClick={onClose}>
+      <div className={'tm tm-' + equipo.id} role="dialog" aria-modal="true" aria-label={equipo.nombre} onClick={(e) => e.stopPropagation()}>
+        <button className="tm-x" aria-label="Cerrar" onClick={onClose} autoFocus>×</button>
+        <div className="tm-head">
+          {head}
+          <h4>{equipo.nombre}</h4>
+          <p className="tm-lema">{equipo.lema}</p>
+          {equipo.id === 'data'
+            ? <div className="tm-kpis"><div className="tm-kpi"><b>{n}</b>integrantes</div><div className="tm-kpi"><b>4</b>áreas del proyecto</div></div>
+            : <p className="tm-count">{n} {n === 1 ? 'integrante' : 'integrantes'}</p>}
+        </div>
+        <div className="tm-grid">
+          {miembros.map((m, i) => (
+            <article className="tm-card" key={i}>
+              <div className="tm-photo">
+                {m.foto ? <img src={m.foto} alt={m.nombre} loading="lazy" /> : <span aria-hidden="true">{iniciales(m.nombre)}</span>}
+              </div>
+              <div className="tm-body">
+                <h5 title={m.nombre}>{m.nombre}</h5>
+                <p className="tm-rol">{m.rol}</p>
+                <p className="tm-desc">{m.desc}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function Creadores() {
+  const [sel, setSel] = useState(null)
+  const cur = equipos.find((e) => e.id === sel)
+  return (
+    <>
+      <div className="teams">
+        {equipos.map((e) => (
+          <button key={e.id} className="team-btn" style={{ '--c': teamColors[e.id] }} onClick={() => setSel(e.id)} aria-haspopup="dialog">
+            <TeamIcon id={e.id} />
+            <span>{e.corto}</span>
+          </button>
+        ))}
+      </div>
+      {cur && <TeamModal equipo={cur} onClose={() => setSel(null)} />}
+    </>
+  )
+}
+
+const themeIcons = {
+  moon: <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />,
+  sun: <><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" /></>,
+}
+
 function Calendar() {
   const [m, setM] = useState({ y: 2026, mo: 9 })
   const first = (new Date(m.y, m.mo, 1).getDay() + 6) % 7
@@ -244,6 +332,14 @@ function Faq() {
 
 export default function App() {
   const [nav, setNav] = useState(false)
+  const [theme, setTheme] = useState(() => {
+    try { const t = localStorage.getItem('tema'); if (t === 'dark' || t === 'light') return t } catch (e) { /* sin almacenamiento */ }
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  })
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme)
+    try { localStorage.setItem('tema', theme) } catch (e) { /* sin almacenamiento */ }
+  }, [theme])
   useReveal()
   const links = [['Concepto', '#concepto'], ['Pasantías', '#pasantias'], ['Materias', '#materias'], ['Plan de estudio', '#plan'], ['Calendario', '#calendario'], ['Preguntas', '#faq'], ['Contacto', '#contacto']]
   const nodes = [[40, 60], [140, 120], [230, 50], [330, 110], [290, 220], [180, 200], [90, 250]]
@@ -258,6 +354,9 @@ export default function App() {
           <nav className={nav ? 'open' : ''} onClick={() => setNav(false)}>
             {links.map(([t, href]) => <a key={href} href={href}>{t}</a>)}
           </nav>
+          <button className="theme" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-label={theme === 'dark' ? 'Activar modo claro' : 'Activar modo oscuro'} title={theme === 'dark' ? 'Modo claro' : 'Modo oscuro'}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{theme === 'dark' ? themeIcons.sun : themeIcons.moon}</svg>
+          </button>
         </div>
       </header>
 
@@ -343,16 +442,27 @@ export default function App() {
           </div>
           <div>
             <h5>Dirección</h5>
-            <div className="map">
-              <iframe
-                title="Ubicación en Google Maps"
-                src={`https://www.google.com/maps?q=${encodeURIComponent(MAP_QUERY)}&output=embed`}
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                allowFullScreen
-              />
-            </div>
-            <a className="maplink" href={MAPS_LINK} target="_blank" rel="noopener noreferrer">Abrir en Google Maps</a>
+            {MAP_QUERY ? (
+              <>
+                <div className="map">
+                  <iframe
+                    title="Ubicación en Google Maps"
+                    src={`https://www.google.com/maps?q=${encodeURIComponent(MAP_QUERY)}&output=embed`}
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    allowFullScreen
+                  />
+                </div>
+                <a className="maplink" href={MAPS_LINK} target="_blank" rel="noopener noreferrer">Abrir en Google Maps</a>
+              </>
+            ) : (
+              <a className="map mapcard" href={MAPS_LINK} target="_blank" rel="noopener noreferrer" aria-label="Ver la ubicación en Google Maps">
+                <svg width="30" height="38" viewBox="0 0 30 38" aria-hidden="true">
+                  <path d="M15 1C8 1 2 7 2 14c0 10 13 23 13 23s13-13 13-23C28 7 22 1 15 1z" fill="#1f2d3a" /><circle cx="15" cy="14" r="5" fill="#4cc3bf" />
+                </svg>
+                <span>Ver en Google Maps</span>
+              </a>
+            )}
           </div>
           <div>
             <h5>Redes sociales</h5>
@@ -364,7 +474,7 @@ export default function App() {
           </div>
           <div>
             <h5>Creadores</h5>
-            <ul>{['Nombre Apellido', 'Nombre Apellido', 'Nombre Apellido'].map((n, i) => <li key={i}>{n}</li>)}</ul>
+            <Creadores />
           </div>
         </div>
       </footer>
