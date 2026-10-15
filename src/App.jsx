@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { tabs, internships, events, meses, faqs, social, MAPS_LINK, MAP_QUERY, coordinador, stats, materias, contacto, WHATSAPP_GRUPO, equipos } from './data.js'
+import { tabs, internships, events, meses, faqs, social, MAPS_LINK, MAP_QUERY, coordinador, stats, materias, contacto, WHATSAPP_GRUPO, equipos, eventosProximos } from './data.js'
 
 const icons = {
   chart: (
@@ -247,7 +247,7 @@ function TeamModal({ equipo, onClose }) {
           {miembros.map((m, i) => (
             <article className="tm-card" key={i}>
               <div className="tm-photo">
-                {m.foto ? <img src={m.foto} alt={m.nombre} loading="lazy" /> : <span aria-hidden="true">{iniciales(m.nombre)}</span>}
+                {m.foto ? <img src={m.foto} alt={m.nombre} loading="lazy" style={m.pos ? { objectPosition: m.pos } : undefined} /> : <span aria-hidden="true">{iniciales(m.nombre)}</span>}
               </div>
               <div className="tm-body">
                 <h5 title={m.nombre}>{m.nombre}</h5>
@@ -283,6 +283,75 @@ function Creadores() {
 const themeIcons = {
   moon: <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />,
   sun: <><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" /></>,
+}
+
+function Lightbox({ src, alt, onClose }) {
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === 'Escape') onClose() }
+    window.addEventListener('keydown', onKey)
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => { window.removeEventListener('keydown', onKey); document.body.style.overflow = prev }
+  }, [onClose])
+  return (
+    <div className="modal-bg lb" onClick={onClose}>
+      <div className="lb-in" role="dialog" aria-modal="true" aria-label={alt} onClick={(e) => e.stopPropagation()}>
+        <button className="lb-x" aria-label="Cerrar" onClick={onClose} autoFocus>×</button>
+        <img src={src} alt={alt} />
+      </div>
+    </div>
+  )
+}
+
+const evIcons = {
+  fecha: <><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M3 10h18M8 3v4M16 3v4" /></>,
+  hora: <><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></>,
+  lugar: <><path d="M12 21s7-6.2 7-11a7 7 0 0 0-14 0c0 4.8 7 11 7 11z" /><circle cx="12" cy="10" r="2.5" /></>,
+}
+function EvIcon({ n }) {
+  return <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{evIcons[n]}</svg>
+}
+
+function Eventos() {
+  const [zoom, setZoom] = useState(null)
+  const hoy = new Date(); hoy.setHours(0, 0, 0, 0)
+  const lista = eventosProximos
+    .map((e) => { const [y, m, d] = e.fecha.split('-').map(Number); return { ...e, f: new Date(y, m - 1, d) } })
+    .filter((e) => e.f >= hoy)
+    .sort((a, b) => a.f - b.f)
+  if (!lista.length) return null
+  return (
+    <section id="eventos" className="reveal">
+      <h3>Próximos eventos</h3>
+      <div className="events">
+        {lista.map((e) => {
+          const dias = Math.round((e.f - hoy) / 86400000)
+          const badge = dias === 0 ? '¡Hoy!' : dias === 1 ? '¡Mañana!' : `En ${dias} días`
+          const fecha = e.f.toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
+          return (
+            <article className="ev" key={e.titulo + e.fecha}>
+              <button className="ev-img" onClick={() => setZoom(e)} aria-label={'Ampliar el flyer de ' + e.titulo}>
+                <img src={e.flyer} alt={e.alt || e.titulo} loading="lazy" />
+                <span className="ev-zoom">Tocá para ampliar</span>
+              </button>
+              <div className="ev-body">
+                <span className="ev-badge">{badge}</span>
+                <h4>{e.titulo}</h4>
+                {e.desc && <p className="ev-desc">{e.desc}</p>}
+                <ul className="ev-meta">
+                  <li><EvIcon n="fecha" /><span>{fecha.charAt(0).toUpperCase() + fecha.slice(1)}</span></li>
+                  {e.hora && <li><EvIcon n="hora" /><span>{e.hora}</span></li>}
+                  {e.lugar && <li><EvIcon n="lugar" /><span>{e.lugar}</span></li>}
+                </ul>
+                {e.enlace && <a className="btn" href={e.enlace} target="_blank" rel="noopener noreferrer">Más información</a>}
+              </div>
+            </article>
+          )
+        })}
+      </div>
+      {zoom && <Lightbox src={zoom.flyer} alt={zoom.alt || zoom.titulo} onClose={() => setZoom(null)} />}
+    </section>
+  )
 }
 
 function Calendar() {
@@ -378,6 +447,7 @@ export default function App() {
       <div className="wrap">
         <Tabs />
         <Stats />
+        <Eventos />
 
         <section id="pasantias" className="reveal">
           <h3>Pasantías</h3>
@@ -436,7 +506,7 @@ export default function App() {
           <div>
             <h5>Coordinador</h5>
             <div className="coord">
-              <div className="av">{coordinador.iniciales}</div>
+              <div className="av">{coordinador.foto ? <img src={coordinador.foto} alt={coordinador.nombre} width="56" height="56" /> : coordinador.iniciales}</div>
               <div><p><b>{coordinador.nombre}</b></p><p>Coordinador de la carrera</p></div>
             </div>
           </div>

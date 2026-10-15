@@ -20,6 +20,7 @@ export const events = {
   '2026-10-26': 'Inicio de clases',
   '2026-11-13': 'Primer parcial',
   '2026-11-27': 'Entrega de proyectos',
+  '2026-10-16': 'Expo Educativa Perico',
 }
 
 export const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
@@ -40,7 +41,7 @@ export const social = { facebook: '#', youtube: '#', instagram: '#' }
 export const MAPS_LINK = 'https://maps.app.goo.gl/TuMw32iQ9HTFHhQK'
 export const MAP_QUERY = ''
 
-export const coordinador = { nombre: 'Federico Torres', iniciales: 'FT' }
+export const coordinador = { nombre: 'Federico Torres', iniciales: 'FT', foto: '/equipo/coordinador.jpg' }
 
 // Contacto: completá teléfono y correo (si quedan vacíos, esas tarjetas no se muestran)
 export const contacto = { telefono: '', correo: '' }
@@ -74,6 +75,7 @@ export const materias = [
 
 // Equipo creador: hasta 4 integrantes por categoría.
 // foto: ruta de una imagen dentro de public/ (ej: '/equipo/ana.jpg'). Si queda vacía se muestran las iniciales.
+// pos (opcional): encuadre de la foto, ej. '50% 8%' (horizontal vertical) para subir o bajar la cara en la tarjeta.
 const demo = 'Escribí acá una descripción breve de su aporte al proyecto.'
 export const equipos = [
   {
@@ -91,9 +93,8 @@ export const equipos = [
     lema: 'Código limpio e interfaces con identidad',
     miembros: [
       { nombre: 'Nombre Apellido', rol: 'Desarrollo front-end', desc: demo, foto: '' },
-      { nombre: 'Nombre Apellido', rol: 'Desarrollo back-end', desc: demo, foto: '' },
+      { nombre: 'Nombre Apellido', rol: 'Back-end y Andresito', desc: 'Desarrolla el back-end de la página y el asistente virtual Andresito.', foto: '/equipo/backend.jpg', pos: '50% 8%' },
       { nombre: 'Nombre Apellido', rol: 'Diseño UI/UX', desc: demo, foto: '' },
-      { nombre: 'Nombre Apellido', rol: 'Chatbot Andresito', desc: demo, foto: '' },
     ],
   },
   {
@@ -115,5 +116,20 @@ export const equipos = [
       { nombre: 'Nombre Apellido', rol: 'Métricas y reportes', desc: demo, foto: '' },
       { nombre: 'Nombre Apellido', rol: 'Campañas', desc: demo, foto: '' },
     ],
+  },
+]
+
+// Próximos eventos. fecha en formato AAAA-MM-DD; el evento se oculta solo cuando pasa esa fecha.
+// flyer: imagen dentro de public/eventos/. enlace (opcional): botón "Más información".
+export const eventosProximos = [
+  {
+    titulo: 'Expo Educativa Ciudad Perico 2026',
+    fecha: '2026-10-16',
+    hora: '09:00 a 18:00 hs',
+    lugar: 'IES N.º 6 - Perico (frente a la Cooperativa de Tabacaleros)',
+    desc: 'Educar es abrir caminos: más oportunidades, más herramientas, más futuro.',
+    flyer: '/eventos/expo-educativa-2026.jpg',
+    alt: 'Flyer de la Expo Educativa Ciudad Perico 2026: 16 de octubre de 2026, de 09:00 a 18:00 hs, en el IES N.º 6 de Perico, frente a la Cooperativa de Tabacaleros.',
+    enlace: '',
   },
 ]

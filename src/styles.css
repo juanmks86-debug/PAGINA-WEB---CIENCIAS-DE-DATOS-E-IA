@@ -225,3 +225,28 @@ header h1{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
 .tm-rol{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 @media(max-width:480px){header .wrap{gap:10px}header h1{font-size:.92rem}}
 @media(max-width:620px){.tm-card h5{white-space:normal;overflow:visible;text-overflow:clip}}
+
+.av{overflow:hidden}
+.av img{width:100%;height:100%;object-fit:cover;display:block}
+.tm-photo img{object-position:50% 20%}
+.events{display:grid;gap:18px}
+.ev{display:grid;grid-template-columns:minmax(180px,250px) 1fr;gap:22px;background:var(--surface);border-radius:14px;box-shadow:var(--shadow);overflow:hidden}
+.ev-img{position:relative;display:block;padding:0;border:0;background:var(--bg);cursor:zoom-in;min-height:0}
+.ev-img img{width:100%;height:100%;object-fit:cover;display:block}
+.ev-img:focus-visible{outline:3px solid var(--teal);outline-offset:-3px}
+.ev-zoom{position:absolute;left:8px;bottom:8px;background:rgba(0,0,0,.65);color:#fff;font-size:.72rem;padding:3px 9px;border-radius:999px}
+.ev-body{padding:20px 20px 20px 0;display:flex;flex-direction:column;gap:10px;justify-content:center;align-items:flex-start}
+.ev-badge{background:var(--teal);color:#0b2524;font-weight:700;font-size:.78rem;padding:3px 12px;border-radius:999px}
+.ev h4{margin:0;font-size:1.35rem;line-height:1.2}
+.ev-desc{margin:0;color:var(--muted)}
+.ev-meta{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:.95rem}
+.ev-meta li{display:flex;gap:10px;align-items:flex-start}
+.ev-meta svg{color:var(--teal);flex:none;margin-top:2px}
+@media(max-width:700px){.ev{grid-template-columns:1fr;gap:0}.ev-img{max-height:360px}.ev-img img{object-position:top}.ev-body{padding:16px}}
+.lb-in{position:relative;max-width:min(560px,100%);max-height:92vh;animation:pop .22s ease-out}
+.lb-in img{display:block;max-width:100%;max-height:92vh;border-radius:10px;box-shadow:0 10px 40px rgba(0,0,0,.5)}
+.lb-x{position:absolute;top:8px;right:8px;width:36px;height:36px;border-radius:50%;border:0;background:rgba(0,0,0,.65);color:#fff;font-size:1.5rem;line-height:1;cursor:pointer}
+.lb-x:focus-visible{outline:3px solid #fff}
+@media(prefers-reduced-motion:reduce){.lb-in{animation:none}}
+
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)}
