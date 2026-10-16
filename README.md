@@ -12,4 +12,7 @@ Editá `equipos` al final de `src/data.js`: hasta 4 integrantes por categoría, 
 Las fotos van en `public/equipo/` (ej: `foto: '/equipo/ana.jpg'`). Si `foto` queda vacío se muestran las iniciales.
 
 ## Mapa
-`MAPS_LINK` abre Google Maps. Si además escribís la dirección en `MAP_QUERY`, se muestra el mapa incrustado.
+`MAPS_LINK` abre Google Maps y `MAP_EMBED` es el mapa incrustado del pie.
+
+## Noticias IA
+Editá `noticias` en `src/data.js`. Cada tarjeta lleva fuente y, si es posible, enlace directo a la fuente (`enlace`).

@@ -34,12 +34,12 @@ export const faqs = [
 ]
 
 // Redes sociales: reemplazá '#' por el enlace real de cada red
-export const social = { facebook: '#', youtube: '#', instagram: '#' }
+export const social = { facebook: '#', youtube: '#', instagram: 'https://www.instagram.com/tec.sup.cienciadedatoseia' }
 
-// Ubicación: MAPS_LINK abre Google Maps. Si escribís la dirección en MAP_QUERY
-// (ej: 'Calle 123, Perico, Jujuy'), se muestra además el mapa incrustado en el pie.
+// Ubicación: MAPS_LINK abre Google Maps y MAP_EMBED es el mapa incrustado del pie.
+// Para cambiarlo: en Google Maps > Compartir > Insertar un mapa, copiá solo la dirección que está dentro de src="...".
 export const MAPS_LINK = 'https://maps.app.goo.gl/TuMw32iQ9HTFHhQK'
-export const MAP_QUERY = ''
+export const MAP_EMBED = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3634.0543314193674!2d-65.12723242567779!3d-24.379413292153174!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x941bad1aff2b443d%3A0xcd6d3e5c35073d23!2sInstituto%20de%20Educaci%C3%B3n%20Superior%20N%C2%B06!5e0!3m2!1ses!2sar!4v1792150190175!5m2!1ses!2sar'
 
 export const coordinador = { nombre: 'Federico Torres', iniciales: 'FT', foto: '/equipo/coordinador.jpg' }
 
@@ -54,24 +54,6 @@ export const stats = [
   [100, '%', 'presencial'],
 ]
 
-// Plan de estudios: cada materia es [nombre, horas semanales]
-export const materias = [
-  {
-    anio: 'Primer año',
-    horas: '29 horas cátedra semanales · 928 horas',
-    items: [['Álgebra', 3], ['Análisis Matemático', 4], ['Programación I', 4], ['Ciencia y TIC', 3], ['Base de Datos', 4], ['Redes', 4], ['Prácticas Profesionalizantes I', 4], ['EDI I', 3]],
-  },
-  {
-    anio: 'Segundo año',
-    horas: '31 horas cátedra semanales · 992 horas',
-    items: [['Inglés Técnico', 3], ['Ciencia de Datos', 4], ['Estadística y Probabilidad', 3], ['Programación II', 4], ['Lógica', 3], ['Introducción a la Inteligencia Artificial', 4], ['Machine Learning', 3], ['Prácticas Profesionalizantes II', 4], ['EDI II', 3]],
-  },
-  {
-    anio: 'Tercer año',
-    horas: '31 horas cátedra semanales · 992 horas',
-    items: [['Gestión de Proyectos', 3], ['Minería de Datos', 4], ['Reconocimiento Visual', 4], ['Ciberseguridad', 4], ['Ética y Deontología Profesional', 3], ['Analítica Web', 4], ['Procesamiento del Lenguaje Natural', 4], ['Prácticas Profesionalizantes III', 5]],
-  },
-]
 
 // Equipo creador: hasta 4 integrantes por categoría.
 // foto: ruta de una imagen dentro de public/ (ej: '/equipo/ana.jpg'). Si queda vacía se muestran las iniciales.
@@ -93,7 +75,7 @@ export const equipos = [
     lema: 'Código limpio e interfaces con identidad',
     miembros: [
       { nombre: 'Nombre Apellido', rol: 'Desarrollo front-end', desc: demo, foto: '' },
-      { nombre: 'Nombre Apellido', rol: 'Back-end y Andresito', desc: 'Desarrolla el back-end de la página y el asistente virtual Andresito.', foto: '/equipo/backend.jpg', pos: '50% 8%' },
+      { nombre: 'Juan Israel Flores', rol: 'Back-end y Andresito', desc: 'Desarrolla el back-end de la página y el asistente virtual Andresito.', foto: '/equipo/backend.jpg', pos: '50% 8%' },
       { nombre: 'Nombre Apellido', rol: 'Diseño UI/UX', desc: demo, foto: '' },
     ],
   },
@@ -131,5 +113,65 @@ export const eventosProximos = [
     flyer: '/eventos/expo-educativa-2026.jpg',
     alt: 'Flyer de la Expo Educativa Ciudad Perico 2026: 16 de octubre de 2026, de 09:00 a 18:00 hs, en el IES N.º 6 de Perico, frente a la Cooperativa de Tabacaleros.',
     enlace: '',
+  },
+]
+
+// Noticias IA (carrusel). Son resúmenes de informes publicados; cada tarjeta indica su fuente.
+// enlace: dirección directa a la fuente. Si falta, el botón abre una búsqueda en Google con el texto de "busqueda".
+// Para agregar una noticia nueva, copiá un bloque y cambiá los datos. cifra/cifraTxt es el dato destacado de la miniatura.
+export const noticias = [
+  {
+    categoria: 'GLOBAL · FORO ECONÓMICO MUNDIAL',
+    titulo: 'Hacia 2030 se crearán 170 millones de empleos y se perderán 92 millones',
+    fecha: 'Enero 2025',
+    cifra: '+78 M', cifraTxt: 'empleos netos al 2030', colores: ['#0b57a4', '#2a9d9a'],
+    texto: 'El informe "The Future of Jobs 2025" estima que el 39 % de las habilidades clave cambiará hasta 2030. Las que más crecen son las de IA y big data, ciberseguridad y alfabetización tecnológica. Se basa en una encuesta a más de 1.000 empleadores de 55 economías.',
+    fuente: 'World Economic Forum',
+    enlace: 'https://www.weforum.org/publications/the-future-of-jobs-report-2025/',
+  },
+  {
+    categoria: 'GLOBAL · FONDO MONETARIO INTERNACIONAL',
+    titulo: 'El FMI calcula que cerca del 40 % del empleo mundial está expuesto a la IA',
+    fecha: 'Enero 2024',
+    cifra: '40 %', cifraTxt: 'del empleo mundial expuesto', colores: ['#5b21b6', '#2563eb'],
+    texto: 'En las economías avanzadas la exposición ronda el 60 % y en los países de bajos ingresos el 26 %. La IA puede mejorar la productividad en una parte de esos puestos y reducir la demanda en otros.',
+    fuente: 'Fondo Monetario Internacional',
+    enlace: 'https://www.imf.org/en/Blogs/Articles/2024/01/14/ai-will-transform-the-global-economy-lets-make-sure-it-benefits-humanity',
+  },
+  {
+    categoria: 'GLOBAL · ORGANIZACIÓN INTERNACIONAL DEL TRABAJO',
+    titulo: 'La OIT: uno de cada cuatro empleos tiene exposición a la IA generativa',
+    fecha: 'Mayo 2025',
+    cifra: '1 de 4', cifraTxt: 'empleos con exposición', colores: ['#0f766e', '#0b57a4'],
+    texto: 'Un estudio de la OIT y el instituto polaco NASK concluye que los puestos administrativos son los más expuestos y que, en la mayoría de los casos, la IA transformará tareas antes que reemplazar ocupaciones completas.',
+    fuente: 'OIT y NASK',
+    busqueda: 'OIT NASK Generative AI and Jobs: A Refined Global Index of Occupational Exposure 2025',
+  },
+  {
+    categoria: 'EUROPA · UNIÓN EUROPEA',
+    titulo: 'La Ley de IA europea clasifica como de alto riesgo la IA usada para contratar personal',
+    fecha: 'Agosto 2024',
+    cifra: 'UE', cifraTxt: 'ley integral de IA en vigor', colores: ['#1d4ed8', '#0891b2'],
+    texto: 'El reglamento, vigente desde el 1 de agosto de 2024, trata como de alto riesgo los sistemas que seleccionan o evalúan trabajadores y prohíbe inferir emociones en el lugar de trabajo, salvo por razones médicas o de seguridad. Sus obligaciones se aplican de forma gradual.',
+    fuente: 'Comisión Europea',
+    enlace: 'https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai',
+  },
+  {
+    categoria: 'EE. UU. · MCKINSEY GLOBAL INSTITUTE',
+    titulo: 'EE. UU.: hasta el 30 % de las horas trabajadas podría automatizarse hacia 2030',
+    fecha: 'Julio 2023',
+    cifra: '30 %', cifraTxt: 'de las horas, al 2030', colores: ['#b45309', '#be123c'],
+    texto: 'El informe calcula que unos 12 millones de trabajadores estadounidenses tendrían que cambiar de ocupación, sobre todo en apoyo administrativo, atención al cliente y servicios de comida, mientras crecería la demanda en salud y profesiones técnicas.',
+    fuente: 'McKinsey Global Institute',
+    busqueda: 'McKinsey Global Institute Generative AI and the future of work in America 2023',
+  },
+  {
+    categoria: 'GLOBAL · MICROSOFT Y LINKEDIN',
+    titulo: 'Work Trend Index: el 75 % de los trabajadores del conocimiento ya usa IA',
+    fecha: 'Mayo 2024',
+    cifra: '75 %', cifraTxt: 'usa IA en el trabajo', colores: ['#0e7490', '#4338ca'],
+    texto: 'La encuesta a 31.000 personas de 31 países halló además que el 66 % de los líderes no contrataría a alguien sin habilidades de IA, una señal clara de lo que piden hoy las empresas.',
+    fuente: 'Microsoft y LinkedIn',
+    busqueda: 'Microsoft LinkedIn Work Trend Index 2024 AI at Work Is Here',
   },
 ]

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { tabs, internships, events, meses, faqs, social, MAPS_LINK, MAP_QUERY, coordinador, stats, materias, contacto, WHATSAPP_GRUPO, equipos, eventosProximos } from './data.js'
+import { tabs, internships, events, meses, faqs, social, MAPS_LINK, MAP_EMBED, coordinador, stats, contacto, WHATSAPP_GRUPO, equipos, eventosProximos, noticias } from './data.js'
 
 const icons = {
   chart: (
@@ -154,26 +154,6 @@ function Stats() {
   )
 }
 
-function Materias() {
-  const [i, setI] = useState(0)
-  const cur = materias[i]
-  return (
-    <div className="mat">
-      <div className="mat-tabs" role="tablist" aria-label="Año de cursada">
-        {materias.map((m, k) => (
-          <button key={m.anio} role="tab" id={'mt' + k} aria-selected={i === k} aria-controls="mat-panel" className={i === k ? 'on' : ''} onClick={() => setI(k)}>{m.anio}</button>
-        ))}
-      </div>
-      <div className="mat-panel" role="tabpanel" id="mat-panel" aria-labelledby={'mt' + i} key={i}>
-        <p className="mat-h">{cur.horas}</p>
-        <ul>
-          {cur.items.map(([nombre, hs]) => <li key={nombre}><span>{nombre}</span><small>{hs} hs</small></li>)}
-        </ul>
-      </div>
-    </div>
-  )
-}
-
 const contactIcons = {
   tel: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" /></svg>,
   mail: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2" /><path d="m22 7-10 6L2 7" /></svg>,
@@ -215,13 +195,14 @@ function TeamIcon({ id, size = 20 }) {
 }
 
 function TeamModal({ equipo, onClose }) {
+  const [person, setPerson] = useState(null)
   useEffect(() => {
-    const onKey = (e) => { if (e.key === 'Escape') onClose() }
+    const onKey = (e) => { if (e.key === 'Escape') { if (person) setPerson(null); else onClose() } }
     window.addEventListener('keydown', onKey)
     const prev = document.body.style.overflow
     document.body.style.overflow = 'hidden'
     return () => { window.removeEventListener('keydown', onKey); document.body.style.overflow = prev }
-  }, [onClose])
+  }, [onClose, person])
   const miembros = equipo.miembros.slice(0, 4)
   const n = miembros.length
   const head = {
@@ -232,6 +213,7 @@ function TeamModal({ equipo, onClose }) {
   }[equipo.id]
 
   return (
+    <>
     <div className="tm-bg" onClick={onClose}>
       <div className={'tm tm-' + equipo.id} role="dialog" aria-modal="true" aria-label={equipo.nombre} onClick={(e) => e.stopPropagation()}>
         <button className="tm-x" aria-label="Cerrar" onClick={onClose} autoFocus>×</button>
@@ -245,7 +227,8 @@ function TeamModal({ equipo, onClose }) {
         </div>
         <div className="tm-grid">
           {miembros.map((m, i) => (
-            <article className="tm-card" key={i}>
+            <article className={'tm-card' + (m.foto ? ' tm-click' : '')} key={i}
+              {...(m.foto ? { role: 'button', tabIndex: 0, 'aria-label': 'Ver la foto de ' + m.nombre, onClick: () => setPerson(m), onKeyDown: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setPerson(m) } } } : {})}>
               <div className="tm-photo">
                 {m.foto ? <img src={m.foto} alt={m.nombre} loading="lazy" style={m.pos ? { objectPosition: m.pos } : undefined} /> : <span aria-hidden="true">{iniciales(m.nombre)}</span>}
               </div>
@@ -259,6 +242,16 @@ function TeamModal({ equipo, onClose }) {
         </div>
       </div>
     </div>
+    {person && (
+      <div className="pm-bg" onClick={() => setPerson(null)}>
+        <figure className="pm" role="dialog" aria-modal="true" aria-label={person.nombre} style={{ '--c': teamColors[equipo.id] }} onClick={(e) => e.stopPropagation()}>
+          <button className="pm-x" aria-label="Cerrar" onClick={() => setPerson(null)} autoFocus>×</button>
+          <img src={person.foto} alt={person.nombre} />
+          <figcaption>{person.nombre}</figcaption>
+        </figure>
+      </div>
+    )}
+    </>
   )
 }
 
@@ -354,6 +347,77 @@ function Eventos() {
   )
 }
 
+function useCols() {
+  const calc = () => (window.innerWidth >= 900 ? 3 : window.innerWidth >= 600 ? 2 : 1)
+  const [n, setN] = useState(calc)
+  useEffect(() => {
+    const f = () => setN(calc())
+    window.addEventListener('resize', f)
+    return () => window.removeEventListener('resize', f)
+  }, [])
+  return n
+}
+
+function Noticias() {
+  const n = useCols()
+  const total = noticias.length
+  const pages = Math.max(1, Math.ceil(total / n))
+  const [page, setPage] = useState(0)
+  const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const [play, setPlay] = useState(!reduce)
+  const [pausa, setPausa] = useState(false)
+  const p = Math.min(page, pages - 1)
+  const idx = Math.max(0, Math.min(p * n, total - n))
+  useEffect(() => {
+    if (!play || pausa || pages < 2) return
+    const t = setInterval(() => setPage((x) => (Math.min(x, pages - 1) + 1) % pages), 6500)
+    return () => clearInterval(t)
+  }, [play, pausa, pages])
+  const go = (d) => setPage((x) => (Math.min(x, pages - 1) + d + pages) % pages)
+
+  return (
+    <section id="noticias" className="reveal" aria-roledescription="carrusel" aria-label="Noticias IA"
+      onMouseEnter={() => setPausa(true)} onMouseLeave={() => setPausa(false)} onFocus={() => setPausa(true)} onBlur={() => setPausa(false)}>
+      <div className="nw-head">
+        <h3>Noticias IA</h3>
+        <div className="nw-dots" role="group" aria-label="Páginas del carrusel">
+          {Array.from({ length: pages }, (_, i) => (
+            <button key={i} className={i === p ? 'on' : ''} aria-label={`Página ${i + 1} de ${pages}`} aria-current={i === p ? 'true' : undefined} onClick={() => setPage(i)} />
+          ))}
+        </div>
+        <div className="nw-ctl">
+          <button aria-label="Noticias anteriores" onClick={() => go(-1)}>←</button>
+          <button aria-label="Noticias siguientes" onClick={() => go(1)}>→</button>
+          <button aria-label={play ? 'Pausar el carrusel' : 'Reanudar el carrusel'} aria-pressed={!play} onClick={() => setPlay(!play)}>{play ? '❚❚' : '▶'}</button>
+        </div>
+      </div>
+      <div className="nw-view">
+        <div className="nw-track" style={{ '--n': n, '--i': idx }} aria-live={play && !pausa ? 'off' : 'polite'}>
+          {noticias.map((nw, i) => {
+            const vis = i >= idx && i < idx + n
+            const href = nw.enlace || 'https://www.google.com/search?q=' + encodeURIComponent(nw.busqueda || nw.titulo)
+            return (
+              <article className="nw-card" key={nw.titulo} aria-hidden={!vis}>
+                <p className="nw-cat">{nw.categoria}</p>
+                <h4 className="nw-t"><a href={href} target="_blank" rel="noopener noreferrer" tabIndex={vis ? 0 : -1}>{nw.titulo}</a></h4>
+                <p className="nw-date">{nw.fecha}</p>
+                <div className="nw-body">
+                  <div className="nw-thumb" style={{ background: `linear-gradient(135deg, ${nw.colores[0]}, ${nw.colores[1]})` }} aria-hidden="true">
+                    <b>{nw.cifra}</b><span>{nw.cifraTxt}</span>
+                  </div>
+                  <p className="nw-ex">{nw.texto}</p>
+                </div>
+                <p className="nw-src">Fuente: {nw.fuente}</p>
+              </article>
+            )
+          })}
+        </div>
+      </div>
+      <p className="nw-note">Resúmenes de informes publicados. Consultá la fuente original para ver el detalle completo.</p>
+    </section>
+  )
+}
+
 function Calendar() {
   const [m, setM] = useState({ y: 2026, mo: 9 })
   const first = (new Date(m.y, m.mo, 1).getDay() + 6) % 7
@@ -410,7 +474,7 @@ export default function App() {
     try { localStorage.setItem('tema', theme) } catch (e) { /* sin almacenamiento */ }
   }, [theme])
   useReveal()
-  const links = [['Concepto', '#concepto'], ['Pasantías', '#pasantias'], ['Materias', '#materias'], ['Plan de estudio', '#plan'], ['Calendario', '#calendario'], ['Preguntas', '#faq'], ['Contacto', '#contacto']]
+  const links = [['Concepto', '#concepto'], ['Pasantías', '#pasantias'], ['Noticias', '#noticias'], ['Plan de estudio', '#plan'], ['Calendario', '#calendario'], ['Preguntas', '#faq'], ['Contacto', '#contacto']]
   const nodes = [[40, 60], [140, 120], [230, 50], [330, 110], [290, 220], [180, 200], [90, 250]]
 
   return (
@@ -461,10 +525,7 @@ export default function App() {
           </div>
         </section>
 
-        <section id="materias" className="reveal">
-          <h3>Materias por año</h3>
-          <Materias />
-        </section>
+        <Noticias />
 
         <div className="two">
           <section id="plan" className="reveal">
@@ -512,14 +573,14 @@ export default function App() {
           </div>
           <div>
             <h5>Dirección</h5>
-            {MAP_QUERY ? (
+            {MAP_EMBED ? (
               <>
                 <div className="map">
                   <iframe
-                    title="Ubicación en Google Maps"
-                    src={`https://www.google.com/maps?q=${encodeURIComponent(MAP_QUERY)}&output=embed`}
+                    title="Ubicación del IES N.º 6 en Google Maps"
+                    src={MAP_EMBED}
                     loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
+                    referrerPolicy="strict-origin-when-cross-origin"
                     allowFullScreen
                   />
                 </div>
@@ -538,7 +599,9 @@ export default function App() {
             <h5>Redes sociales</h5>
             <div className="soc">
               {Object.keys(socialIcons).map((k) => (
-                <a key={k} href={social[k]} aria-label={socialNames[k]} target="_blank" rel="noopener noreferrer">{socialIcons[k]}</a>
+                social[k] && social[k] !== '#'
+                  ? <a key={k} href={social[k]} aria-label={socialNames[k]} target="_blank" rel="noopener noreferrer">{socialIcons[k]}</a>
+                  : <span key={k} className="soc-off" role="img" aria-label={socialNames[k] + ' (próximamente)'} title={socialNames[k] + ' (próximamente)'}>{socialIcons[k]}</span>
               ))}
             </div>
           </div>
