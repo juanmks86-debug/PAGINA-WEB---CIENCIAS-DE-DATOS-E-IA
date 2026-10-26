@@ -61,6 +61,7 @@ function StudentsHero() {
   const nodes = [[20, 220], [110, 150], [180, 210], [280, 90], [380, 150], [470, 35], [150, 35], [240, 275]]
   return (
     <div className="students-hero">
+      <div className="students-hero-photo" aria-hidden="true"><img src="/hero-alumnos.jpg" alt="" /></div>
       <svg className="students-network" viewBox="0 0 500 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
         <path d="M20 220 110 150 180 210 280 90 380 150 470 35M110 150 150 35 280 90M180 210l60 65 140-125" />
         <g>{nodes.map(([x, y], index) => <circle key={`${x}-${y}`} cx={x} cy={y} r={index === 3 ? 6 : 3} />)}</g>
@@ -102,14 +103,14 @@ export default function StudentsView({ standalone = false }) {
               <div className="year-icon">{icons[item.icon]}</div>
               <div className="year-top"><h3>{item.title}</h3><Status value={item.status} tone={item.statusKey} /></div>
               <p>{item.description}</p>
-              <div className="year-bottom"><small>{item.materials} materiales disponibles</small><a href="#materiales-titulo">Ver materiales <b aria-hidden="true">→</b></a></div>
+              <div className="year-bottom"><small>{item.materials} materiales disponibles</small><a href={item.drive || '#materiales-titulo'} target={item.drive ? '_blank' : undefined} rel={item.drive ? 'noopener noreferrer' : undefined}>Abrir Drive <b aria-hidden="true">↗</b></a></div>
             </article>
           ))}
         </div>
         <p className="temporary-note"><span aria-hidden="true">ⓘ</span> Los materiales se actualizan progresivamente. Consultá la fecha de actualización antes de descargar.</p>
         <NotesBank />
         <div className="student-heading student-project-heading"><div><span className="student-kicker">TRABAJOS DE LA CARRERA</span><h2 id="proyectos">Proyectos destacados <small>(3.º año)</small></h2></div><a className="student-link" href="#proyectos">Ver todos <span aria-hidden="true">→</span></a></div>
-        <div className="projects-grid">
+        <div className="projects-grid projects-carousel" aria-label="Carrusel de proyectos destacados">
           {projects.map((project) => <article className="project-card" key={project.title}><div className={`project-art ${project.tone}`}><span className="project-code">{project.code}</span><span className="project-orb" aria-hidden="true">{project.symbol}</span></div><div className="project-content"><span className="project-tag">{project.category}</span><h3>{project.title}</h3><p>{project.description}</p><a href="#proyectos">Ver proyecto <b aria-hidden="true">→</b></a></div></article>)}
         </div>
         <div className="students-columns">

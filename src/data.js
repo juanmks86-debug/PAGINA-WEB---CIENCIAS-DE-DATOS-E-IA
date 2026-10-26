@@ -60,16 +60,16 @@ export const noticias = [
 
 export const studentYears = [
   { title: 'Ingresantes', description: 'Material de ingreso, guías introductorias, ejercicios de nivelación y tutoriales.', materials: 0, icon: 'rocket', status: 'Próximamente', statusKey: 'soon', slug: 'ingresantes', badge: 'Sección temporal' },
-  { title: '1.º Año', description: 'Apuntes organizados por materia, resúmenes y trabajos prácticos.', materials: 1, icon: 'book', status: 'Disponible', statusKey: 'available', slug: 'primero' },
-  { title: '2.º Año', description: 'Materiales de cursada, ejercicios resueltos, prácticas de programación y bases de datos.', materials: 1, icon: 'database', status: 'Actualizado', statusKey: 'updated', slug: 'segundo' },
-  { title: '3.º Año', description: 'Apuntes avanzados, proyectos integradores y material para evaluaciones finales.', materials: 1, icon: 'brain', status: 'En revisión', statusKey: 'review', slug: 'tercero' },
+  { title: '1.º Año', description: 'Apuntes organizados por materia, resúmenes y trabajos prácticos.', materials: 1, icon: 'book', status: 'Disponible', statusKey: 'available', slug: 'primero', drive: 'https://drive.google.com/drive/folders/1qjZJVN52NdBsZ6x5pERRxHWYOgpe1VTG?usp=drive_link' },
+  { title: '2.º Año', description: 'Materiales de cursada, ejercicios resueltos, prácticas de programación y bases de datos.', materials: 1, icon: 'database', status: 'Actualizado', statusKey: 'updated', slug: 'segundo', drive: 'https://drive.google.com/drive/folders/1rpcYxC9gOGY-uix-7wtFfpXDWTY88L-3?usp=sharing' },
+  { title: '3.º Año', description: 'Apuntes avanzados, proyectos integradores y material para evaluaciones finales.', materials: 1, icon: 'brain', status: 'En revisión', statusKey: 'review', slug: 'tercero', drive: 'https://drive.google.com/drive/folders/1jLCMk3oeBbqqVlEWeH4EBfIjTO1sIYHa?usp=sharing' },
 ]
 
 export const projects = [
-  { title: 'Dashboard de análisis de datos', category: 'Datos', description: 'Visualización de información y generación de indicadores.', tone: 'dashboard-art', symbol: '▥', code: '01 / DATA' },
-  { title: 'Asistente virtual educativo', category: 'Inteligencia artificial', description: 'Un chatbot para responder consultas y orientar a estudiantes.', tone: 'ai-art', symbol: '✦', code: '02 / IA' },
-  { title: 'Sistema de gestión', category: 'Desarrollo', description: 'Una aplicación que organiza información y automatiza tareas.', tone: 'dev-art', symbol: '</>', code: '03 / DEV' },
-  { title: 'App de monitoreo ambiental', category: 'Web', description: 'Registro y análisis de datos para el cuidado del medio ambiente.', tone: 'web-art', symbol: '⌁', code: '04 / WEB' },
+  { title: 'Dashboard de análisis de datos', category: 'Datos', description: 'Visualización de información y generación de indicadores.', tone: 'dashboard-art', symbol: '▥', code: '01 / DATA', image: '/proyecto-dashboard.jpg' },
+  { title: 'Asistente virtual educativo', category: 'Inteligencia artificial', description: 'Un chatbot para responder consultas y orientar a estudiantes.', tone: 'ai-art', symbol: '✦', code: '02 / IA', image: '/proyecto-asistente-ia.jpg' },
+  { title: 'Sistema de gestión', category: 'Desarrollo', description: 'Una aplicación que organiza información y automatiza tareas.', tone: 'dev-art', symbol: '</>', code: '03 / DEV', image: '/proyecto-gestion.jpg' },
+  { title: 'App de monitoreo ambiental', category: 'Web', description: 'Registro y análisis de datos para el cuidado del medio ambiente.', tone: 'web-art', symbol: '⌁', code: '04 / WEB', image: '/proyecto-ambiental.jpg' },
 ]
 
 export const resources = [
@@ -87,7 +87,7 @@ export const recentNotes = [
 
 export const materialsByYear = [
   { year: 'Ingresantes', status: 'Próximamente', statusKey: 'soon', items: [] },
-  { year: '1.º Año', status: 'Disponible', statusKey: 'available', items: [{ title: 'Guía de introducción a Python', description: 'Material de demostración · guía inicial', type: 'TXT', href: '/materiales/1-ano-python.txt' }] },
-  { year: '2.º Año', status: 'Actualizado', statusKey: 'updated', items: [{ title: 'Práctica de bases de datos', description: 'Material de demostración · ejercicios SQL', type: 'TXT', href: '/materiales/2-ano-bases-datos.txt' }] },
-  { year: '3.º Año', status: 'En revisión', statusKey: 'review', items: [{ title: 'Guía de proyecto integrador', description: 'Material de demostración · planificación y entregas', type: 'TXT', href: '/materiales/3-ano-proyecto.txt' }] },
+  { year: '1.º Año', status: 'Disponible', statusKey: 'available', items: [{ title: 'Carpeta de apuntes de 1.º año', description: 'Google Drive · apuntes y trabajos prácticos', type: 'DRIVE', href: 'https://drive.google.com/drive/folders/1qjZJVN52NdBsZ6x5pERRxHWYOgpe1VTG?usp=drive_link' }] },
+  { year: '2.º Año', status: 'Actualizado', statusKey: 'updated', items: [{ title: 'Carpeta de apuntes de 2.º año', description: 'Google Drive · cursada, programación y bases de datos', type: 'DRIVE', href: 'https://drive.google.com/drive/folders/1rpcYxC9gOGY-uix-7wtFfpXDWTY88L-3?usp=sharing' }] },
+  { year: '3.º Año', status: 'En revisión', statusKey: 'review', items: [{ title: 'Carpeta de apuntes de 3.º año', description: 'Google Drive · proyectos y material avanzado', type: 'DRIVE', href: 'https://drive.google.com/drive/folders/1jLCMk3oeBbqqVlEWeH4EBfIjTO1sIYHa?usp=sharing' }] },
 ]
