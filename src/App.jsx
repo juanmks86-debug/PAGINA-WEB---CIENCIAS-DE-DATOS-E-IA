@@ -642,7 +642,7 @@ export default function App() {
             <span>Ciencia de Datos e IA</span>
           </a>
           <nav id="menu-principal" aria-label="Principal" className={nav ? 'open' : ''} onClick={() => setNav(false)}>
-            {links.map(([t, href]) => <a key={href} href={href} aria-current={act === href.slice(1) ? 'location' : undefined}>{t}</a>)}
+            {links.map(([t, href]) => <a key={href} href={href} aria-current={act === href.slice(1) ? 'location' : undefined} {...(href === '/alumnos' ? { target: '_blank', rel: 'noopener noreferrer', 'aria-label': 'Abrir panel de alumnos en una pestaña nueva' } : {})}>{t}</a>)}
           </nav>
           <button className="theme" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-label={theme === 'dark' ? 'Activar modo claro' : 'Activar modo oscuro'} title={theme === 'dark' ? 'Modo claro' : 'Modo oscuro'}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{theme === 'dark' ? themeIcons.sun : themeIcons.moon}</svg>
@@ -718,8 +718,6 @@ export default function App() {
           <Contacto />
         </section>
       </div>
-
-      <StudentsViewExternal />
 
       <footer>
         <div className="wrap">
