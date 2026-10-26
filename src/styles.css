@@ -383,3 +383,9 @@ nav a[aria-current="location"]::after{content:"";position:absolute;left:10px;rig
   .hero-badge{align-self:center;width:min(240px,70vw)}
 }
 >>>>>>> 69466693fc15edc3e07a287941ca3c4db01e52e0
+
+
+/* Mejoras de accesibilidad y responsive del panel de alumnos */
+.students-view a:focus-visible,.students-view button:focus-visible,.students-view input:focus-visible{outline:3px solid #ffffff;outline-offset:3px}.students-view .student-search:focus-within{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(0,229,255,.22)}.students-route{min-height:100vh}.students-route-back{position:absolute;z-index:3;top:18px;left:max(18px,calc((100% - 1120px)/2));color:#bdeff5;text-decoration:none;font-size:.82rem;font-weight:700}.students-route .students-hero-inner{padding-top:80px}.students-view .project-tag{color:#f2ffff}.students-view .temporary-note,.students-view .note-row small,.students-view .resource-card small{color:#9ccbd4}.students-view .student-kicker,.students-view .student-eyebrow{color:#47efff}.students-view .student-link,.students-view .ghost-btn,.students-view .year-bottom a,.students-view .project-content a{color:#47efff}
+@media(max-width:700px){.students-route-back{top:12px;left:18px}.students-route .students-hero-inner{padding-top:72px}.student-search{width:100%;min-height:44px}.student-actions a{min-height:44px;display:inline-flex;align-items:center}.year-card,.resource-card{min-height:44px}.project-card{min-width:0}.project-content h3{overflow-wrap:anywhere}.students-view h2{font-size:1.3rem}.students-view h3{overflow-wrap:anywhere}}
+@media(max-width:460px){.students-hero-inner{gap:14px}.graduation-mark{width:48px;height:38px;font-size:2.5rem}.students-hero h2{font-size:2.35rem}.students-hero h3{font-size:1rem}.students-hero p{font-size:.88rem}.student-actions{gap:8px}.student-actions a{width:100%;justify-content:center}.resource-card{padding:12px}.note-row{min-height:48px}}

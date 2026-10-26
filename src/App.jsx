@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { tabs, internships, events, meses, faqs, social, MAPS_LINK, MAP_EMBED, coordinador, stats, contacto, WHATSAPP_GRUPO, equipos, eventosProximos, noticias, studentYears, projects, resources, recentNotes } from './data.js'
+import { tabs, internships, events, meses, faqs, social, MAPS_LINK, MAP_EMBED, coordinador, stats, contacto, WHATSAPP_GRUPO, equipos, eventosProximos, noticias } from './data.js'
+import StudentsViewExternal from './components/StudentsView.jsx'
 
 const icons = {
   chart: (
@@ -463,7 +464,7 @@ function Faq() {
   )
 }
 
-const links = [['Concepto', '#concepto'], ['Perfil', '#perfil'], ['Prácticas', '#pasantias'], ['Plan de estudio', '#plan'], ['Calendario', '#calendario'], ['Preguntas', '#faq'], ['Contacto', '#contacto']]
+const links = [['Concepto', '#concepto'], ['Perfil', '#perfil'], ['Prácticas', '#pasantias'], ['Plan de estudio', '#plan'], ['Calendario', '#calendario'], ['Preguntas', '#faq'], ['Alumnos', '/alumnos'], ['Contacto', '#contacto']]
 const ids = links.map(([, h]) => h.slice(1))
 
 // Materias del plan de estudio (Res. 3098-E), para el buscador
@@ -621,6 +622,8 @@ export default function App() {
 
   const act = useActive()
 
+  if (window.location.pathname.replace(/\/+$/, '') === '/alumnos') return <StudentsViewExternal standalone />
+
   return (
     <>
       <header className="hd-top">
@@ -716,7 +719,7 @@ export default function App() {
         </section>
       </div>
 
-      <StudentsView />
+      <StudentsViewExternal />
 
       <footer>
         <div className="wrap">
