@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { tabs, internships, events, meses, faqs, social, MAPS_LINK, MAP_EMBED, coordinador, stats, contacto, WHATSAPP_GRUPO, equipos, eventosProximos, noticias } from './data.js'
+import { tabs, internships, events, meses, faqs, social, MAPS_LINK, MAP_EMBED, coordinador, stats, contacto, WHATSAPP_GRUPO, equipos, eventosProximos, noticias, studentYears, projects, resources, recentNotes } from './data.js'
 
 const icons = {
   chart: (
@@ -463,6 +463,24 @@ function Faq() {
   )
 }
 
+const studentIcons = {
+  rocket: <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M29 5c7 1 12 6 14 14l-9 9-10-4-4-10 9-9Z" /><path d="m20 28-7 7M13 35l-5 5M20 22l-8-1-5 5 10 4M27 29l1 9-5 5-4-10" /><circle cx="32" cy="16" r="3" /></svg>,
+  book: <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M7 9c7-3 13-2 17 2v28c-4-4-10-5-17-2V9ZM41 9c-7-3-13-2-17 2v28c4-4 10-5 17-2V9Z" /></svg>,
+  database: <svg viewBox="0 0 48 48" aria-hidden="true"><ellipse cx="24" cy="10" rx="15" ry="6" /><path d="M9 10v14c0 3 7 6 15 6s15-3 15-6V10M9 24v14c0 3 7 6 15 6s15-3 15-6V24" /></svg>,
+  brain: <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M20 10a7 7 0 0 0-7 7 7 7 0 0 0-2 13 7 7 0 0 0 8 9h5V10a7 7 0 0 0-4 0ZM28 10a7 7 0 0 1 7 7 7 7 0 0 1 2 13 7 7 0 0 1-8 9h-5V10a7 7 0 0 1 4 0Z" /><path d="M16 20h8M14 28h10M32 20h-8M34 28H24" /></svg>,
+}
+
+function StudentsView() {
+  const [query, setQuery] = useState('')
+  const filteredNotes = recentNotes.filter((note) => `${note.title} ${note.year} ${note.subject}`.toLowerCase().includes(query.toLowerCase()))
+  return (
+    <section id="alumnos" className="students-view">
+      <div className="students-hero"><svg className="students-network" viewBox="0 0 500 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><path d="M20 220 110 150 180 210 280 90 380 150 470 35M110 150 150 35 280 90M180 210l60 65 140-125" /><g>{[[20, 220], [110, 150], [180, 210], [280, 90], [380, 150], [470, 35], [150, 35], [240, 275]].map(([x, y], i) => <circle key={i} cx={x} cy={y} r={i === 3 ? 6 : 3} /></g></svg><div className="students-hero-inner"><div className="graduation-mark">⌁</div><div><span className="student-eyebrow">ESPACIO ESTUDIANTIL · IES-6</span><h2>Alumnos</h2><h3>Tu espacio para aprender, compartir y crecer.</h3><p>Encontrá apuntes, proyectos, herramientas y recursos para acompañarte durante la carrera.</p><div className="student-actions"><a className="btn neon-btn" href="#banco-apuntes">Explorar apuntes</a><a className="ghost-btn" href="#proyectos">Ver proyectos <span>→</span></a></div></div></div><div className="hero-slogan">Tu esfuerzo<br /><em>también construye</em><br />el futuro</div></div>
+      <div className="students-shell"><div className="student-heading"><div><span className="student-kicker">RECURSOS ACADÉMICOS</span><h2 id="banco-apuntes">Banco de apuntes</h2></div><label className="student-search"><span>⌕</span><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Buscar por materia o tema..." aria-label="Buscar apuntes" /></label></div><div className="year-grid">{studentYears.map((year) => <article className="year-card" key={year.title}><div className="year-icon">{studentIcons[year.icon]}</div><div className="year-top"><h3>{year.title}</h3>{year.badge && <span>{year.badge}</span>}</div><p>{year.description}</p><div className="year-bottom"><small>{year.materials} materiales disponibles</small><a href="#ultimos-apuntes">Ver apuntes <b>→</b></a></div></article>)}</div><p className="temporary-note"><span>ⓘ</span> La sección Ingresantes estará disponible durante el período de ingreso y luego se ocultará automáticamente.</p><div className="student-heading student-project-heading"><div><span className="student-kicker">TRABAJOS DE LA CARRERA</span><h2 id="proyectos">Proyectos destacados <small>(3.º año)</small></h2></div><a className="student-link" href="#proyectos">Ver todos <span>→</span></a></div><div className="projects-grid">{projects.map((project) => <article className="project-card" key={project.title}><div className={'project-art ' + project.tone}><span className="project-code">{project.code}</span><span className="project-orb">{project.symbol}</span></div><div className="project-content"><span className="project-tag">{project.category}</span><h3>{project.title}</h3><p>{project.description}</p><a href="#proyectos">Ver proyecto <b>→</b></a></div></article>)}</div><div className="students-columns"><div><div className="student-heading student-heading-block"><span className="student-kicker">ACCESOS RÁPIDOS</span><h2>Herramientas y recursos</h2></div><div className="resource-grid">{resources.map((resource) => <a className="resource-card" href={resource.href} key={resource.title}><span className="resource-icon">{resource.icon}</span><span><b>{resource.title}</b><small>{resource.description}</small></span><strong>→</strong></a>)}</div></div><aside className="recent-panel" id="ultimos-apuntes"><div className="panel-title"><div><span className="student-kicker">ACTUALIZACIONES</span><h2>Últimos apuntes</h2></div><a href="#ultimos-apuntes">Ver todos →</a></div><div className="notes-list">{filteredNotes.map((note) => <a href="#banco-apuntes" className="note-row" key={note.title}><span className="note-file">▤</span><span><b>{note.title}</b><small>{note.year} · {note.subject}</small></span></a>)}{!filteredNotes.length && <p className="empty-state">No encontramos apuntes con ese término.</p>}</div></aside></div><div className="students-quote"><span className="quote-mark">“</span><p>La tecnología no reemplaza tu esfuerzo,<br /><strong>lo potencia.</strong></p><span className="quote-line" /></div></div>
+    </section>
+  )
+}
+
 export default function App() {
   const [nav, setNav] = useState(false)
   const [theme, setTheme] = useState(() => {
@@ -474,7 +492,7 @@ export default function App() {
     try { localStorage.setItem('tema', theme) } catch (e) { /* sin almacenamiento */ }
   }, [theme])
   useReveal()
-  const links = [['Concepto', '#concepto'], ['Pasantías', '#pasantias'], ['Noticias', '#noticias'], ['Plan de estudio', '#plan'], ['Calendario', '#calendario'], ['Preguntas', '#faq'], ['Contacto', '#contacto']]
+  const links = [['Concepto', '#concepto'], ['Pasantías', '#pasantias'], ['Noticias', '#noticias'], ['Plan de estudio', '#plan'], ['Calendario', '#calendario'], ['Preguntas', '#faq'], ['Alumnos', '#alumnos'], ['Contacto', '#contacto']]
   const nodes = [[40, 60], [140, 120], [230, 50], [330, 110], [290, 220], [180, 200], [90, 250]]
 
   return (
@@ -561,6 +579,8 @@ export default function App() {
           <Contacto />
         </section>
       </div>
+
+      <StudentsView />
 
       <footer>
         <div className="wrap">
