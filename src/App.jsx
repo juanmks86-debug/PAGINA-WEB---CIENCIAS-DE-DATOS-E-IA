@@ -47,7 +47,7 @@ function Tabs() {
 
   return (
     <>
-      <div className="tabs">
+      <div className="tabs" id="perfil">
         {tabs.map(([t, icon], i) => (
           <button className="tab" key={t} onClick={() => setSel(i)} aria-haspopup="dialog">
             <TabIcon name={icon} />
@@ -463,6 +463,7 @@ function Faq() {
   )
 }
 
+<<<<<<< HEAD
 const studentIcons = {
   rocket: <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M29 5c7 1 12 6 14 14l-9 9-10-4-4-10 9-9Z" /><path d="m20 28-7 7M13 35l-5 5M20 22l-8-1-5 5 10 4M27 29l1 9-5 5-4-10" /><circle cx="32" cy="16" r="3" /></svg>,
   book: <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M7 9c7-3 13-2 17 2v28c-4-4-10-5-17-2V9ZM41 9c-7-3-13-2-17 2v28c4-4 10-5 17-2V9Z" /></svg>,
@@ -478,6 +479,148 @@ function StudentsView() {
       <div className="students-hero"><svg className="students-network" viewBox="0 0 500 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><path d="M20 220 110 150 180 210 280 90 380 150 470 35M110 150 150 35 280 90M180 210l60 65 140-125" /><g>{[[20, 220], [110, 150], [180, 210], [280, 90], [380, 150], [470, 35], [150, 35], [240, 275]].map(([x, y], i) => <circle key={i} cx={x} cy={y} r={i === 3 ? 6 : 3} /></g></svg><div className="students-hero-inner"><div className="graduation-mark">⌁</div><div><span className="student-eyebrow">ESPACIO ESTUDIANTIL · IES-6</span><h2>Alumnos</h2><h3>Tu espacio para aprender, compartir y crecer.</h3><p>Encontrá apuntes, proyectos, herramientas y recursos para acompañarte durante la carrera.</p><div className="student-actions"><a className="btn neon-btn" href="#banco-apuntes">Explorar apuntes</a><a className="ghost-btn" href="#proyectos">Ver proyectos <span>→</span></a></div></div></div><div className="hero-slogan">Tu esfuerzo<br /><em>también construye</em><br />el futuro</div></div>
       <div className="students-shell"><div className="student-heading"><div><span className="student-kicker">RECURSOS ACADÉMICOS</span><h2 id="banco-apuntes">Banco de apuntes</h2></div><label className="student-search"><span>⌕</span><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Buscar por materia o tema..." aria-label="Buscar apuntes" /></label></div><div className="year-grid">{studentYears.map((year) => <article className="year-card" key={year.title}><div className="year-icon">{studentIcons[year.icon]}</div><div className="year-top"><h3>{year.title}</h3>{year.badge && <span>{year.badge}</span>}</div><p>{year.description}</p><div className="year-bottom"><small>{year.materials} materiales disponibles</small><a href="#ultimos-apuntes">Ver apuntes <b>→</b></a></div></article>)}</div><p className="temporary-note"><span>ⓘ</span> La sección Ingresantes estará disponible durante el período de ingreso y luego se ocultará automáticamente.</p><div className="student-heading student-project-heading"><div><span className="student-kicker">TRABAJOS DE LA CARRERA</span><h2 id="proyectos">Proyectos destacados <small>(3.º año)</small></h2></div><a className="student-link" href="#proyectos">Ver todos <span>→</span></a></div><div className="projects-grid">{projects.map((project) => <article className="project-card" key={project.title}><div className={'project-art ' + project.tone}><span className="project-code">{project.code}</span><span className="project-orb">{project.symbol}</span></div><div className="project-content"><span className="project-tag">{project.category}</span><h3>{project.title}</h3><p>{project.description}</p><a href="#proyectos">Ver proyecto <b>→</b></a></div></article>)}</div><div className="students-columns"><div><div className="student-heading student-heading-block"><span className="student-kicker">ACCESOS RÁPIDOS</span><h2>Herramientas y recursos</h2></div><div className="resource-grid">{resources.map((resource) => <a className="resource-card" href={resource.href} key={resource.title}><span className="resource-icon">{resource.icon}</span><span><b>{resource.title}</b><small>{resource.description}</small></span><strong>→</strong></a>)}</div></div><aside className="recent-panel" id="ultimos-apuntes"><div className="panel-title"><div><span className="student-kicker">ACTUALIZACIONES</span><h2>Últimos apuntes</h2></div><a href="#ultimos-apuntes">Ver todos →</a></div><div className="notes-list">{filteredNotes.map((note) => <a href="#banco-apuntes" className="note-row" key={note.title}><span className="note-file">▤</span><span><b>{note.title}</b><small>{note.year} · {note.subject}</small></span></a>)}{!filteredNotes.length && <p className="empty-state">No encontramos apuntes con ese término.</p>}</div></aside></div><div className="students-quote"><span className="quote-mark">“</span><p>La tecnología no reemplaza tu esfuerzo,<br /><strong>lo potencia.</strong></p><span className="quote-line" /></div></div>
     </section>
+=======
+const links = [['Concepto', '#concepto'], ['Perfil', '#perfil'], ['Prácticas', '#pasantias'], ['Plan de estudio', '#plan'], ['Calendario', '#calendario'], ['Preguntas', '#faq'], ['Contacto', '#contacto']]
+const ids = links.map(([, h]) => h.slice(1))
+
+// Materias del plan de estudio (Res. 3098-E), para el buscador
+const materias = [
+  [1, ['Álgebra', 'Análisis Matemático', 'Programación I', 'Ciencia y TIC', 'Base de Datos', 'Redes', 'Prácticas Profesionalizantes I', 'EDI I', 'Inglés Técnico']],
+  [2, ['Ciencia de Datos', 'Estadística y Probabilidad', 'Programación II', 'Lógica', 'Introducción a la Inteligencia Artificial', 'Machine Learning', 'Prácticas Profesionalizantes II', 'EDI II']],
+  [3, ['Gestión de Proyectos', 'Minería de Datos', 'Reconocimiento Visual', 'Ciberseguridad', 'Ética y Deontología Profesional', 'Analítica Web', 'Procesamiento del Lenguaje Natural', 'Prácticas Profesionalizantes III']],
+]
+
+const norm = (s) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+
+const indice = [
+  ...links.map(([t, href]) => ({ t, w: 'Sección', href })),
+  { t: 'Noticias IA', w: 'Sección', href: '#noticias' },
+  ...tabs.map(([t, , items]) => ({ t, w: 'Perfil', href: '#perfil', x: items.join(' ') })),
+  ...internships.map(([t, d]) => ({ t, w: 'Prácticas', href: '#pasantias', x: d })),
+  ...noticias.map((n) => ({ t: n.titulo, w: 'Noticias IA', href: '#noticias', x: n.fuente })),
+  ...faqs.map(([q, a]) => ({ t: q, w: 'Preguntas frecuentes', href: '#faq', x: a })),
+  ...materias.flatMap(([anio, lista]) => lista.map((m) => ({ t: m, w: `Plan de estudio · ${anio}.º año`, href: '#plan' }))),
+].map((i) => ({ ...i, n: norm(i.t), h: norm(i.t + ' ' + (i.x || '')) }))
+
+function useActive() {
+  const [act, setAct] = useState(ids[0])
+  useEffect(() => {
+    let raf = 0
+    const calc = () => {
+      raf = 0
+      let best = null
+      let bt = -Infinity
+      for (const id of ids) {
+        const el = document.getElementById(id)
+        if (!el) continue
+        const t = el.getBoundingClientRect().top
+        if (t <= 120 && t > bt) { best = id; bt = t }
+      }
+      setAct(best || ids[0])
+    }
+    const onScroll = () => { if (!raf) raf = requestAnimationFrame(calc) }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    calc()
+    return () => { window.removeEventListener('scroll', onScroll); if (raf) cancelAnimationFrame(raf) }
+  }, [])
+  return act
+}
+
+function Wordmark() {
+  return (
+    <div className="wm" role="img" aria-label="IES-6, Instituto de Educación Superior">
+      <svg width="46" height="42" viewBox="0 0 46 42" aria-hidden="true">
+        <g stroke="#58b4ef" strokeWidth="3" strokeLinecap="round" fill="none"><path d="M10 22L24 9M10 22L26 34M24 9L38 20" /></g>
+        <circle cx="10" cy="22" r="6" fill="#58b4ef" /><circle cx="24" cy="9" r="5" fill="#3a8fd6" /><circle cx="26" cy="34" r="5" fill="#8fd3f7" /><circle cx="39" cy="20" r="4" fill="#3a8fd6" />
+      </svg>
+      <span className="wm-t" aria-hidden="true">
+        <span className="wm-n">IES-6</span>
+        <span className="wm-s">Instituto de Educación Superior</span>
+      </span>
+    </div>
+  )
+}
+
+function SearchBox() {
+  const [q, setQ] = useState('')
+  const [open, setOpen] = useState(false)
+  const nq = norm(q.trim())
+  const terms = nq.split(/\s+/).filter(Boolean)
+  const res = nq.length < 2 ? [] : indice
+    .filter((i) => terms.every((t) => i.h.includes(t)))
+    .sort((a, b) => Number(b.n.includes(nq)) - Number(a.n.includes(nq)))
+    .slice(0, 6)
+  const show = open && nq.length >= 2
+  const cerrar = () => { setOpen(false); setQ('') }
+  const enviar = (e) => {
+    e.preventDefault()
+    if (res[0]) { window.location.hash = res[0].href; cerrar() }
+  }
+  return (
+    <form className="srch" role="search" onSubmit={enviar} onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setOpen(false) }}>
+      <div className="srch-f">
+        <label className="sr" htmlFor="buscar">Buscar en el sitio</label>
+        <input id="buscar" type="search" placeholder="Buscar…" autoComplete="off" value={q}
+          onChange={(e) => { setQ(e.target.value); setOpen(true) }}
+          onFocus={() => setOpen(true)}
+          onKeyDown={(e) => { if (e.key === 'Escape') cerrar() }}
+          aria-controls="res-busqueda" />
+        <button type="submit" aria-label="Buscar">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" /><path d="m16 16 5 5" /></svg>
+        </button>
+      </div>
+      {show && (
+        <>
+          <p className="sr" role="status">{res.length ? `${res.length} resultados` : 'Sin resultados'}</p>
+          <ul id="res-busqueda" className="srch-res" onMouseDown={(e) => e.preventDefault()}>
+            {res.length
+              ? res.map((r, i) => (
+                <li key={r.t + i}><a href={r.href} onClick={cerrar}><b>{r.t}</b><small>{r.w}</small></a></li>
+              ))
+              : <li className="none">Sin resultados para “{q.trim()}”. Probá con otra palabra.</li>}
+          </ul>
+        </>
+      )}
+    </form>
+  )
+}
+
+function NetSvg({ cls }) {
+  const pts = [[70, 60], [120, 20], [190, 70], [250, 30], [60, 130], [130, 150]]
+  return (
+    <svg className={'net-c ' + cls} viewBox="0 0 300 200" aria-hidden="true" stroke="currentColor" strokeWidth="1" fill="currentColor">
+      <path fill="none" d="M0 30L70 60L120 20L190 70L250 30L300 50M70 60L60 130L130 150L190 70M120 20L170 0M60 130L0 170M130 150L180 190M250 30L270 0" />
+      {pts.map(([x, y], i) => <circle key={i} cx={x} cy={y} r={i % 2 ? 4.5 : 3} />)}
+    </svg>
+  )
+}
+
+const pt = (a, r) => { const t = (a * Math.PI) / 180; return [200 + r * Math.cos(t), 200 + r * Math.sin(t)] }
+const nodoAngulos = [-62, -18, 34, 122, 196, 248]
+
+function HeroBadge() {
+  return (
+    <div className="hero-badge">
+      <svg className="hb-rings" viewBox="0 0 400 400" aria-hidden="true">
+        <circle className="r1" cx="200" cy="200" r="136" />
+        <circle className="r2" cx="200" cy="200" r="147" />
+        <g className="hb-spin"><circle className="r3" cx="200" cy="200" r="161" /></g>
+        <circle className="r4" cx="200" cy="200" r="176" />
+        {nodoAngulos.map((a) => {
+          const [x1, y1] = pt(a, 176)
+          const [x2, y2] = pt(a, 188)
+          const [cx, cy] = pt(a, 193)
+          return (
+            <g key={a}>
+              <line className="sp" x1={x1.toFixed(1)} y1={y1.toFixed(1)} x2={x2.toFixed(1)} y2={y2.toFixed(1)} />
+              <circle className="nd" cx={cx.toFixed(1)} cy={cy.toFixed(1)} r="4.5" />
+            </g>
+          )
+        })}
+      </svg>
+      <img className="hb-img" src="/logo.jpg" alt="Logo de la Tecnicatura Superior en Ciencia de Datos e Inteligencia Artificial, IES 6 sede Perico" width="248" height="248" />
+    </div>
+>>>>>>> 69466693fc15edc3e07a287941ca3c4db01e52e0
   )
 }
 
@@ -492,37 +635,51 @@ export default function App() {
     try { localStorage.setItem('tema', theme) } catch (e) { /* sin almacenamiento */ }
   }, [theme])
   useReveal()
+<<<<<<< HEAD
   const links = [['Concepto', '#concepto'], ['Pasantías', '#pasantias'], ['Noticias', '#noticias'], ['Plan de estudio', '#plan'], ['Calendario', '#calendario'], ['Preguntas', '#faq'], ['Alumnos', '#alumnos'], ['Contacto', '#contacto']]
   const nodes = [[40, 60], [140, 120], [230, 50], [330, 110], [290, 220], [180, 200], [90, 250]]
+=======
+  const act = useActive()
+>>>>>>> 69466693fc15edc3e07a287941ca3c4db01e52e0
 
   return (
     <>
-      <header>
-        <div className="wrap">
-          <button className="burger" aria-label="Menú" onClick={() => setNav(!nav)}>☰</button>
-          <img className="brand" src="/logo.jpg" alt="" width="34" height="34" />
+      <header className="hd-top">
+        <div className="wrap hd-top-in">
+          <Wordmark />
+          <span className="hd-sep" aria-hidden="true" />
+          <img className="hd-badge" src="/logo.jpg" alt="" width="64" height="64" />
           <h1>Ciencia de Datos e IA</h1>
-          <nav className={nav ? 'open' : ''} onClick={() => setNav(false)}>
-            {links.map(([t, href]) => <a key={href} href={href}>{t}</a>)}
+        </div>
+      </header>
+      <div className="hd-bar">
+        <div className="wrap hd-bar-in">
+          <button className="burger" aria-label="Menú" aria-expanded={nav} aria-controls="menu-principal" onClick={() => setNav(!nav)}>☰</button>
+          <a className="hd-brand" href="#concepto">
+            <img className="brand" src="/logo.jpg" alt="" width="28" height="28" />
+            <span>Ciencia de Datos e IA</span>
+          </a>
+          <nav id="menu-principal" aria-label="Principal" className={nav ? 'open' : ''} onClick={() => setNav(false)}>
+            {links.map(([t, href]) => <a key={href} href={href} aria-current={act === href.slice(1) ? 'location' : undefined}>{t}</a>)}
           </nav>
           <button className="theme" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-label={theme === 'dark' ? 'Activar modo claro' : 'Activar modo oscuro'} title={theme === 'dark' ? 'Modo claro' : 'Modo oscuro'}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{theme === 'dark' ? themeIcons.sun : themeIcons.moon}</svg>
           </button>
+          <SearchBox />
         </div>
-      </header>
+      </div>
 
       <div className="hero" id="concepto">
-        <svg className="net" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true" stroke="#fff" strokeWidth="1" fill="#fff">
-          <path fill="none" d="M40 60L140 120L230 50L330 110L290 220L180 200L140 120M180 200L90 250L40 60M230 50L290 220" />
-          {nodes.map(([x, y], i) => <circle key={i} cx={x} cy={y} r={i === 3 ? 9 : 5} fill={i === 3 ? '#4cc3bf' : '#fff'} />)}
-        </svg>
+        <NetSvg cls="net-tl" />
+        <NetSvg cls="net-tr" />
+        <NetSvg cls="net-bl" />
         <div className="wrap">
           <div className="hero-txt">
-            <h2>Aprendé a convertir datos en decisiones</h2>
+            <h2>¡Vení a estudiar con nosotros!<span>y aprendé a convertir datos en decisiones</span></h2>
             <p>La Ciencia de Datos combina estadística, programación e inteligencia artificial para entender problemas complejos y proponer soluciones basadas en evidencia.</p>
-            <a className="btn" href="#plan">Ver plan de estudio</a>
+            <a className="btn btn-soft" href="#plan">Ver plan de estudio</a>
           </div>
-          <img className="hero-logo" src="/logo.jpg" alt="Logo de la Tecnicatura Superior en Ciencia de Datos e Inteligencia Artificial, IES 6 sede Perico" width="230" height="230" />
+          <HeroBadge />
         </div>
       </div>
 
