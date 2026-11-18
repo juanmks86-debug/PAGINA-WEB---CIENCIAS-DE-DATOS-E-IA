@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { tabs, internships, events, meses, faqs, social, MAPS_LINK, MAP_EMBED, coordinador, stats, contacto, WHATSAPP_GRUPO, equipos, eventosProximos, noticias } from './data.js'
 import StudentsViewExternal from './components/StudentsView.jsx'
+import EventosView, { EventosTeaser } from './components/EventosView.jsx'
 
 const icons = {
   chart: (
@@ -464,7 +465,7 @@ function Faq() {
   )
 }
 
-const links = [['Concepto', '#concepto'], ['Perfil', '#perfil'], ['Prácticas', '#pasantias'], ['Plan de estudio', '#plan'], ['Calendario', '#calendario'], ['Preguntas', '#faq'], ['Alumnos', '/alumnos'], ['Contacto', '#contacto']]
+const links = [['Concepto', '#concepto'], ['Perfil', '#perfil'], ['Prácticas', '#pasantias'], ['Plan de estudio', '#plan'], ['Eventos', '/eventos'], ['Preguntas', '#faq'], ['Alumnos', '/alumnos'], ['Contacto', '#contacto']]
 const ids = links.map(([, h]) => h.slice(1))
 
 // Materias del plan de estudio (Res. 3098-E), para el buscador
@@ -623,6 +624,7 @@ export default function App() {
   const act = useActive()
 
   if (window.location.pathname.replace(/\/+$/, '') === '/alumnos') return <StudentsViewExternal standalone />
+  const esEventos = window.location.pathname.replace(/\/+$/, '') === '/eventos'
 
   return (
     <>
@@ -637,12 +639,15 @@ export default function App() {
       <div className="hd-bar">
         <div className="wrap hd-bar-in">
           <button className="burger" aria-label="Menú" aria-expanded={nav} aria-controls="menu-principal" onClick={() => setNav(!nav)}>☰</button>
-          <a className="hd-brand" href="#concepto">
+          <a className="hd-brand" href={esEventos ? '/' : '#concepto'}>
             <img className="brand" src="/logo.jpg" alt="" width="28" height="28" />
             <span>Ciencia de Datos e IA</span>
           </a>
           <nav id="menu-principal" aria-label="Principal" className={nav ? 'open' : ''} onClick={() => setNav(false)}>
-            {links.map(([t, href]) => <a key={href} href={href} aria-current={act === href.slice(1) ? 'location' : undefined} {...(href === '/alumnos' ? { target: '_blank', rel: 'noopener noreferrer', 'aria-label': 'Abrir panel de alumnos en una pestaña nueva' } : {})}>{t}</a>)}
+            {links.map(([t, href]) => {
+              const actual = href === '/eventos' ? esEventos : !esEventos && act === href.slice(1)
+              return <a key={href} href={esEventos && href.startsWith('#') ? '/' + href : href} aria-current={actual ? (href === '/eventos' ? 'page' : 'location') : undefined} {...(href === '/alumnos' ? { target: '_blank', rel: 'noopener noreferrer', 'aria-label': 'Abrir panel de alumnos en una pestaña nueva' } : {})}>{t}</a>
+            })}
           </nav>
           <button className="theme" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-label={theme === 'dark' ? 'Activar modo claro' : 'Activar modo oscuro'} title={theme === 'dark' ? 'Modo claro' : 'Modo oscuro'}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{theme === 'dark' ? themeIcons.sun : themeIcons.moon}</svg>
@@ -651,6 +656,7 @@ export default function App() {
         </div>
       </div>
 
+      {esEventos ? <EventosView ui={{ Calendar, EvIcon, Lightbox }} /> : (<>
       <div className="hero" id="concepto">
         <NetSvg cls="net-tl" />
         <NetSvg cls="net-tr" />
@@ -668,7 +674,6 @@ export default function App() {
       <div className="wrap">
         <Tabs />
         <Stats />
-        <Eventos />
 
         <section id="pasantias" className="reveal">
           <h3>Pasantías</h3>
@@ -699,7 +704,7 @@ export default function App() {
               </div>
             </div>
           </section>
-          <section id="calendario" className="reveal"><h3>Calendario académico</h3><Calendar /></section>
+          <section id="eventos-home" className="reveal"><h3>Eventos y galería</h3><EventosTeaser /></section>
         </div>
 
         <div className="two">
@@ -718,6 +723,8 @@ export default function App() {
           <Contacto />
         </section>
       </div>
+
+      </>)}
 
       <footer>
         <div className="wrap">
