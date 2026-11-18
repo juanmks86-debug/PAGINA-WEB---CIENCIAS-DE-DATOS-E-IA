@@ -656,7 +656,7 @@ export default function App() {
         </div>
       </div>
 
-      {esEventos ? <EventosView ui={{ Calendar, EvIcon, Lightbox }} /> : (<>
+      {esEventos ? <EventosView ui={{ Calendar, Lightbox }} /> : (<>
       <div className="hero" id="concepto">
         <NetSvg cls="net-tl" />
         <NetSvg cls="net-tr" />

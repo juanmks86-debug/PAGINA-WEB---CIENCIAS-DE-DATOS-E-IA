@@ -5,7 +5,19 @@ import { consultar, supabaseListo } from '../supabase.js'
 const aFecha = (s) => { const [y, m, d] = String(s).slice(0, 10).split('-').map(Number); return new Date(y, m - 1, d) }
 const hoyMedianoche = () => { const h = new Date(); h.setHours(0, 0, 0, 0); return h }
 const larga = (f) => { const t = f.toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }); return t.charAt(0).toUpperCase() + t.slice(1) }
-const corta = (f) => f.toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric' })
+const corta = (f) => f.toLocaleDateString('es-AR', { day: 'numeric', month: 'short', year: 'numeric' })
+const media = (f) => f.toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' })
+const nFotos = (n) => `${n} ${n === 1 ? 'foto' : 'fotos'}`
+
+const COLORES = { eventos: '#6d3fd1', visitas: '#15803d', talleres: '#1d6fd6', proyectos: '#c2570c', 'vida estudiantil': '#c2185b' }
+const colorDe = (c) => COLORES[String(c || '').toLowerCase()] || '#2f6f7e'
+
+const Ico = ({ children }) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{children}</svg>
+const IcCal = () => <Ico><rect x="3.5" y="5" width="17" height="15.5" rx="2.5" /><path d="M3.5 10h17M8 3v4M16 3v4" /></Ico>
+const IcImg = () => <Ico><rect x="3.5" y="4.5" width="17" height="15" rx="2.5" /><circle cx="9" cy="10" r="1.6" /><path d="m4 18 5-5 3.5 3.5L15 14l5 5" /></Ico>
+const IcPin = () => <Ico><path d="M12 21s6-5.6 6-10.5a6 6 0 1 0-12 0C6 15.4 12 21 12 21Z" /><circle cx="12" cy="10.5" r="2.2" /></Ico>
+const IcClock = () => <Ico><circle cx="12" cy="12" r="8.5" /><path d="M12 7.5V12l3 2" /></Ico>
+const IcChev = () => <Ico><path d="m9 5 7 7-7 7" /></Ico>
 
 const normaliza = (e) => ({
   id: e.id ?? e.titulo + e.fecha,
@@ -17,6 +29,17 @@ const normaliza = (e) => ({
   flyer: e.flyer_url ?? e.flyer ?? '',
   alt: e.alt || e.titulo,
   enlace: e.enlace || '',
+  albumId: e.album_id || null,
+})
+
+const normalizaAlbum = (r) => ({
+  id: r.id,
+  titulo: r.titulo,
+  categoria: r.categoria || 'Eventos',
+  fecha: r.fecha ? String(r.fecha).slice(0, 10) : '',
+  desc: r.descripcion || '',
+  portada: r.portada_url || '',
+  fotos: r.galeria && r.galeria[0] ? r.galeria[0].count : 0,
 })
 
 // Devuelve null mientras carga. Si Supabase no está configurado o falla, usa los datos locales de data.js.
@@ -34,17 +57,17 @@ export function useEventos() {
   return eventos
 }
 
-function useFotos() {
-  const [fotos, setFotos] = useState(null)
+function useAlbumes() {
+  const [albumes, setAlbumes] = useState(null)
   useEffect(() => {
     let vivo = true
-    if (!supabaseListo) { setFotos([]); return undefined }
-    consultar('galeria', 'select=*&publicado=eq.true&order=orden.asc,created_at.desc')
-      .then((rows) => vivo && setFotos(rows))
-      .catch(() => vivo && setFotos([]))
+    if (!supabaseListo) { setAlbumes([]); return undefined }
+    consultar('albumes', 'select=*,galeria(count)&publicado=eq.true&order=fecha.desc.nullslast,created_at.desc')
+      .then((rows) => vivo && setAlbumes(rows.map(normalizaAlbum)))
+      .catch(() => vivo && setAlbumes([]))
     return () => { vivo = false }
   }, [])
-  return fotos
+  return albumes
 }
 
 export function EventosTeaser() {
@@ -73,29 +96,68 @@ export function EventosTeaser() {
 const PASO = 12
 
 export default function EventosView({ ui }) {
-  const { Calendar, EvIcon, Lightbox } = ui
+  const { Calendar, Lightbox } = ui
   const eventos = useEventos()
-  const fotos = useFotos()
+  const albumes = useAlbumes()
   const [flyer, setFlyer] = useState(null)
   const [foto, setFoto] = useState(null)
   const [filtro, setFiltro] = useState('Todas')
+  const [album, setAlbum] = useState(null)
+  const [fotosAlbum, setFotosAlbum] = useState(null)
   const [cuantas, setCuantas] = useState(PASO)
 
   useEffect(() => { document.title = 'Eventos · Ciencia de Datos e IA' }, [])
+
+  const abrirAlbum = (a, bajar) => {
+    setAlbum(a); setFotosAlbum(null); setCuantas(PASO)
+    consultar('galeria', `select=*&publicado=eq.true&album_id=eq.${encodeURIComponent(a.id)}&order=orden.asc,created_at.asc`)
+      .then(setFotosAlbum)
+      .catch(() => setFotosAlbum([]))
+    if (bajar) requestAnimationFrame(() => { const el = document.getElementById('galeria'); if (el) el.scrollIntoView({ behavior: 'smooth' }) })
+  }
 
   const hoy = hoyMedianoche()
   const lista = (eventos || []).map((e) => ({ ...e, f: aFecha(e.fecha) }))
   const proximos = lista.filter((e) => e.f >= hoy).sort((a, b) => a.f - b.f)
   const anteriores = lista.filter((e) => e.f < hoy).sort((a, b) => b.f - a.f)
 
-  const lista_fotos = fotos || []
-  const nombres = ['Todas', ...new Set(lista_fotos.map((f) => f.evento).filter(Boolean))]
-  const visibles = filtro === 'Todas' ? lista_fotos : lista_fotos.filter((f) => f.evento === filtro)
+  const albs = albumes || []
+  const cats = ['Todas', ...new Set(albs.map((a) => a.categoria))]
+  const visibles = filtro === 'Todas' ? albs : albs.filter((a) => a.categoria === filtro)
 
-  const verFotos = (nombre) => {
-    setFiltro(nombre); setCuantas(PASO)
-    const el = document.getElementById('galeria')
-    if (el) el.scrollIntoView({ behavior: 'smooth' })
+  const tarjeta = (e, esProximo) => {
+    const al = albs.find((a) => a.id === e.albumId)
+    const portada = e.flyer || (al && al.portada) || ''
+    const dias = Math.round((e.f - hoy) / 86400000)
+    const badge = dias === 0 ? '¡Hoy!' : dias === 1 ? '¡Mañana!' : `En ${dias} días`
+    return (
+      <article className={'evc' + (portada ? '' : ' sin-img')} key={e.id}>
+        {portada && (
+          <button className="evc-img" onClick={() => setFlyer({ src: portada, alt: e.alt })} aria-label={'Ampliar la imagen de ' + e.titulo}>
+            <img src={portada} alt={e.alt} loading="lazy" />
+          </button>
+        )}
+        <div className="evc-body">
+          <div className="evc-top">
+            <span className="pill"><IcCal />Eventos</span>
+            {esProximo && <span className="ev-badge">{badge}</span>}
+          </div>
+          <h4>{e.titulo}</h4>
+          <div className="evc-meta">
+            <span><IcCal />{corta(e.f)}</span>
+            {e.hora && <span><IcClock />{e.hora}</span>}
+            {al && <span><IcImg />{nFotos(al.fotos)}</span>}
+            {e.lugar && <span><IcPin />{e.lugar}</span>}
+          </div>
+          {e.desc && <p>{e.desc}</p>}
+          <div className="evc-actions">
+            {e.enlace && <a className="evc-go" href={e.enlace} target="_blank" rel="noopener noreferrer">Más información <IcChev /></a>}
+            {al && <button className="evc-go" onClick={() => abrirAlbum(al, true)}>Ver álbum <IcChev /></button>}
+          </div>
+        </div>
+        <span className="evc-chev"><IcChev /></span>
+      </article>
+    )
   }
 
   return (
@@ -105,90 +167,88 @@ export default function EventosView({ ui }) {
         <p>Próximas actividades, calendario académico y fotos de los lugares donde participaron los alumnos.</p>
       </div>
 
-      <section id="proximos">
-        <h3>Próximos eventos</h3>
-        {eventos === null ? <p className="ev-vacio">Cargando eventos…</p> : proximos.length ? (
-          <div className="events">
-            {proximos.map((e) => {
-              const dias = Math.round((e.f - hoy) / 86400000)
-              const badge = dias === 0 ? '¡Hoy!' : dias === 1 ? '¡Mañana!' : `En ${dias} días`
-              return (
-                <article className={'ev' + (e.flyer ? '' : ' ev-sin-img')} key={e.id}>
-                  {e.flyer && (
-                    <button className="ev-img" onClick={() => setFlyer(e)} aria-label={'Ampliar el flyer de ' + e.titulo}>
-                      <img src={e.flyer} alt={e.alt} loading="lazy" />
-                      <span className="ev-zoom">Tocá para ampliar</span>
-                    </button>
-                  )}
-                  <div className="ev-body">
-                    <span className="ev-badge">{badge}</span>
-                    <h4>{e.titulo}</h4>
-                    {e.desc && <p className="ev-desc">{e.desc}</p>}
-                    <ul className="ev-meta">
-                      <li><EvIcon n="fecha" /><span>{larga(e.f)}</span></li>
-                      {e.hora && <li><EvIcon n="hora" /><span>{e.hora}</span></li>}
-                      {e.lugar && <li><EvIcon n="lugar" /><span>{e.lugar}</span></li>}
-                    </ul>
-                    {e.enlace && <a className="btn" href={e.enlace} target="_blank" rel="noopener noreferrer">Más información</a>}
-                  </div>
-                </article>
-              )
-            })}
-          </div>
-        ) : <p className="ev-vacio">Por ahora no hay eventos próximos. Mirá el calendario y las fotos de los anteriores.</p>}
-      </section>
-
-      <div className="two">
-        <section id="calendario"><h3>Calendario académico</h3><Calendar /></section>
-        <section id="anteriores">
-          <h3>Eventos anteriores</h3>
-          {anteriores.length ? (
-            <ul className="ev-past">
-              {anteriores.map((e) => (
-                <li key={e.id}>
-                  <span className="f">{corta(e.f)}</span>
-                  <div>
-                    <b>{e.titulo}</b>
-                    {e.lugar && <small>{e.lugar}</small>}
-                    {lista_fotos.some((f) => f.evento === e.titulo) && (
-                      <button className="chip" onClick={() => verFotos(e.titulo)}>Ver fotos</button>
-                    )}
-                  </div>
-                </li>
-              ))}
-            </ul>
-          ) : <p className="ev-vacio">Todavía no hay eventos anteriores cargados.</p>}
-        </section>
+      <div className="ev-layout">
+        <div>
+          <section id="proximos">
+            <h3>Próximos eventos</h3>
+            {eventos === null ? <p className="ev-vacio">Cargando eventos…</p> : proximos.length
+              ? proximos.map((e) => tarjeta(e, true))
+              : <p className="ev-vacio">Por ahora no hay eventos próximos. Mirá el calendario y las fotos de los anteriores.</p>}
+          </section>
+          <section id="anteriores">
+            <h3>Eventos anteriores</h3>
+            {eventos === null ? <p className="ev-vacio">Cargando eventos…</p> : anteriores.length
+              ? anteriores.map((e) => tarjeta(e, false))
+              : <p className="ev-vacio">Todavía no hay eventos anteriores cargados.</p>}
+          </section>
+        </div>
+        <aside>
+          <section id="calendario"><h3>Calendario académico</h3><Calendar /></section>
+        </aside>
       </div>
 
       <section id="galeria">
-        <h3>Galería</h3>
-        {fotos === null ? <p className="ev-vacio">Cargando fotos…</p> : !lista_fotos.length ? (
-          <p className="ev-vacio">Todavía no hay fotos cargadas. Pronto vas a ver acá las actividades de los alumnos.</p>
+        <h3>Galería institucional</h3>
+        <p className="gal-sub">Momentos, aprendizajes y experiencias de la carrera</p>
+        {albumes === null ? <p className="ev-vacio">Cargando galería…</p> : album ? (
+          <div>
+            <div className="alb-open-head">
+              <button className="chip" onClick={() => setAlbum(null)}>← Volver a la galería</button>
+              <div>
+                <h4>{album.titulo}</h4>
+                <p>{album.fecha ? media(aFecha(album.fecha)) + ' · ' : ''}{nFotos(album.fotos)}</p>
+              </div>
+            </div>
+            {album.desc && <p className="gal-sub">{album.desc}</p>}
+            {fotosAlbum === null ? <p className="ev-vacio">Cargando fotos…</p> : !fotosAlbum.length ? (
+              <p className="ev-vacio">Este álbum todavía no tiene fotos cargadas.</p>
+            ) : (
+              <>
+                <div className="gal">
+                  {fotosAlbum.slice(0, cuantas).map((f) => (
+                    <figure key={f.id}>
+                      <button className="gal-item" onClick={() => setFoto(f)} aria-label={'Ampliar foto: ' + (f.titulo || album.titulo)}>
+                        <img src={f.foto_url} alt={f.titulo || album.titulo} loading="lazy" />
+                      </button>
+                      {f.titulo && <figcaption>{f.titulo}</figcaption>}
+                    </figure>
+                  ))}
+                </div>
+                {fotosAlbum.length > cuantas && <button className="btn gal-more" onClick={() => setCuantas(cuantas + PASO)}>Ver más fotos</button>}
+              </>
+            )}
+          </div>
+        ) : !albs.length ? (
+          <p className="ev-vacio">Todavía no hay álbumes cargados. Pronto vas a ver acá las actividades de los alumnos.</p>
         ) : (
           <>
-            <div className="chip-row" role="group" aria-label="Filtrar fotos por evento">
-              {nombres.map((n) => (
-                <button key={n} className={'chip' + (filtro === n ? ' on' : '')} aria-pressed={filtro === n} onClick={() => { setFiltro(n); setCuantas(PASO) }}>{n}</button>
+            <div className="chip-row" role="group" aria-label="Filtrar álbumes por categoría">
+              {cats.map((c) => (
+                <button key={c} className={'chip' + (filtro === c ? ' on' : '')} aria-pressed={filtro === c} onClick={() => setFiltro(c)}>{c}</button>
               ))}
             </div>
-            <div className="gal">
-              {visibles.slice(0, cuantas).map((f) => (
-                <figure key={f.id}>
-                  <button className="gal-item" onClick={() => setFoto(f)} aria-label={'Ampliar foto: ' + (f.titulo || f.evento || 'galería')}>
-                    <img src={f.foto_url} alt={f.titulo || f.evento || 'Foto de la galería'} loading="lazy" />
-                  </button>
-                  {(f.titulo || f.evento) && <figcaption>{f.titulo || f.evento}</figcaption>}
-                </figure>
+            <div className="albs">
+              {visibles.map((a) => (
+                <button key={a.id} className="alb" onClick={() => abrirAlbum(a, false)} aria-label={`Ver álbum ${a.titulo}, ${nFotos(a.fotos)}`}>
+                  {a.portada && <img src={a.portada} alt="" loading="lazy" />}
+                  <span className="alb-tag" style={{ background: colorDe(a.categoria) }}>{a.categoria}</span>
+                  <span className="alb-info">
+                    <b>{a.titulo}</b>
+                    <span className="alb-meta">
+                      {a.fecha && <span><IcCal />{media(aFecha(a.fecha))}</span>}
+                      <span><IcImg />{nFotos(a.fotos)}</span>
+                      <span className="alb-go">Ver álbum →</span>
+                    </span>
+                  </span>
+                </button>
               ))}
             </div>
-            {visibles.length > cuantas && <button className="btn gal-more" onClick={() => setCuantas(cuantas + PASO)}>Ver más fotos</button>}
           </>
         )}
       </section>
 
-      {flyer && <Lightbox src={flyer.flyer} alt={flyer.alt} onClose={() => setFlyer(null)} />}
-      {foto && <Lightbox src={foto.foto_url} alt={foto.titulo || foto.evento || 'Foto de la galería'} onClose={() => setFoto(null)} />}
+      {flyer && <Lightbox src={flyer.src} alt={flyer.alt} onClose={() => setFlyer(null)} />}
+      {foto && <Lightbox src={foto.foto_url} alt={foto.titulo || (album && album.titulo) || 'Foto de la galería'} onClose={() => setFoto(null)} />}
     </div>
   )
 }
