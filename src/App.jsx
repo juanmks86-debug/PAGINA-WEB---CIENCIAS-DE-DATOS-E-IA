@@ -474,7 +474,7 @@ function Faq() {
   )
 }
 
-const links = [['Concepto', '#concepto'], ['Perfil', '#perfil'], ['Prácticas', '#pasantias'], ['Plan de estudio', '#plan'], ['Eventos', '/eventos'], ['Preguntas', '#faq'], ['Alumnos', '/alumnos'], ['Contacto', '#contacto']]
+const links = [['Perfil', '#perfil'], ['Prácticas', '#pasantias'], ['Plan de estudio', '#plan'], ['Eventos', '/eventos'], ['Preguntas', '#faq'], ['Alumnos', '/alumnos'], ['Contacto', '#contacto']]
 const ids = links.map(([, h]) => h.slice(1))
 
 // Materias del plan de estudio (Res. 3098-E), para el buscador
@@ -747,7 +747,27 @@ export default function App() {
       </>)}
 
       <footer>
-        <div className="wrap">
+        <div className="wrap ft-top">
+          <div className="ft-brand">
+            <span className="ft-mark" aria-hidden="true">AI</span>
+            <div><b>Ciencia de Datos e IA</b><span>Tecnicatura Superior en Ciencia de Datos e Inteligencia Artificial<br />IES N.º 6 – Sede Perico, Jujuy</span></div>
+          </div>
+          <div className="ft-cta">
+            <small>¿Querés cursar la carrera?</small>
+            <a className="btn" href="https://nexo.jujuy.edu.ar/" target="_blank" rel="noopener noreferrer">Inscribite →</a>
+          </div>
+        </div>
+        <div className="wrap ft-cols">
+          <div>
+            <h5>Enlaces rápidos</h5>
+            <ul className="ft-links">
+              <li><a href={esEventos ? '/#plan' : '#plan'}>Plan de estudio</a></li>
+              <li><a href="/eventos">Eventos</a></li>
+              <li><a href="/eventos#galeria">Galería institucional</a></li>
+              <li><a href={esEventos ? '/#faq' : '#faq'}>Preguntas frecuentes</a></li>
+              <li><a href={esEventos ? '/#contacto' : '#contacto'}>Contacto</a></li>
+            </ul>
+          </div>
           <div>
             <h5>Coordinador</h5>
             <div className="coord">
@@ -793,6 +813,10 @@ export default function App() {
             <h5>Creadores</h5>
             <Creadores />
           </div>
+        </div>
+        <div className="wrap ft-bar">
+          <span>© 2026 Tecnicatura Superior en Ciencia de Datos e IA · IES N.º 6 – Sede Perico, Jujuy</span>
+          <button className="ft-up" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} aria-label="Volver arriba">Volver arriba ↑</button>
         </div>
       </footer>
     </>
