@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { tabs, internships, events, meses, faqs, social, MAPS_LINK, MAP_EMBED, coordinador, stats, contacto, WHATSAPP_GRUPO, equipos, eventosProximos, noticias } from './data.js'
 import StudentsViewExternal from './components/StudentsView.jsx'
 import EventosView, { EventosTeaser } from './components/EventosView.jsx'
+import { esNavidad } from './navidad.js'
 
 const icons = {
   chart: (
@@ -780,7 +781,7 @@ export default function App() {
           </div>
         </div>
         <div className="wrap ft-bar">
-          <span>© 2026 Tecnicatura Superior en Ciencia de Datos e IA · IES N.º 6 – Sede Perico, Jujuy</span>
+          <span>© {new Date().getFullYear()} Tecnicatura Superior en Ciencia de Datos e IA · IES N.º 6 – Sede Perico, Jujuy{esNavidad() ? ' · ¡Felices Fiestas! 🎄' : ''}</span>
           <div className="ft-act">
             <a className="btn" href="https://nexo.jujuy.edu.ar/" target="_blank" rel="noopener noreferrer">Inscribite →</a>
             <button className="ft-up" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} aria-label="Volver arriba" title="Volver arriba">↑</button>
