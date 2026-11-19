@@ -630,6 +630,40 @@ function HeroBadge() {
   )
 }
 
+// Efectos de la portada: un resplandor que sigue al mouse y un leve movimiento de profundidad (solo con mouse; se apaga con "reducir movimiento")
+function useHeroFx() {
+  useEffect(() => {
+    const hero = document.querySelector('.hero')
+    if (!hero || !window.matchMedia) return undefined
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined
+    let raf = 0
+    const mover = (e) => {
+      if (raf) return
+      raf = requestAnimationFrame(() => {
+        raf = 0
+        const r = hero.getBoundingClientRect()
+        const x = (e.clientX - r.left) / r.width
+        const y = (e.clientY - r.top) / r.height
+        hero.style.setProperty('--gx', (x * 100).toFixed(1) + '%')
+        hero.style.setProperty('--gy', (y * 100).toFixed(1) + '%')
+        hero.style.setProperty('--px', ((x - 0.5) * 2).toFixed(3))
+        hero.style.setProperty('--py', ((y - 0.5) * 2).toFixed(3))
+      })
+    }
+    const entrar = () => hero.classList.add('hx-on')
+    const salir = () => { hero.classList.remove('hx-on'); hero.style.setProperty('--px', '0'); hero.style.setProperty('--py', '0') }
+    hero.addEventListener('pointermove', mover)
+    hero.addEventListener('pointerenter', entrar)
+    hero.addEventListener('pointerleave', salir)
+    return () => {
+      hero.removeEventListener('pointermove', mover)
+      hero.removeEventListener('pointerenter', entrar)
+      hero.removeEventListener('pointerleave', salir)
+      if (raf) cancelAnimationFrame(raf)
+    }
+  }, [])
+}
+
 export default function App() {
   const [nav, setNav] = useState(false)
   const [theme, setTheme] = useState(() => {
@@ -643,6 +677,7 @@ export default function App() {
   useReveal()
 
   const act = useActive()
+  useHeroFx()
 
   if (window.location.pathname.replace(/\/+$/, '') === '/alumnos') return <StudentsViewExternal standalone />
   const esEventos = window.location.pathname.replace(/\/+$/, '') === '/eventos'
