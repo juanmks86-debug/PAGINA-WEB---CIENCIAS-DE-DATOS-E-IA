@@ -107,6 +107,13 @@ export default function EventosView({ ui }) {
   const [cuantas, setCuantas] = useState(PASO)
 
   useEffect(() => { document.title = 'Eventos · Ciencia de Datos e IA' }, [])
+  // si el enlace trae un ancla (/eventos#galeria), bajar hasta esa sección una vez dibujada la página
+  useEffect(() => {
+    const id = window.location.hash.slice(1)
+    if (!id) return undefined
+    const t = setTimeout(() => { const el = document.getElementById(id); if (el) el.scrollIntoView() }, 200)
+    return () => clearTimeout(t)
+  }, [])
 
   const abrirAlbum = (a, bajar) => {
     setAlbum(a); setFotosAlbum(null); setCuantas(PASO)
@@ -118,6 +125,8 @@ export default function EventosView({ ui }) {
 
   const hoy = hoyMedianoche()
   const lista = (eventos || []).map((e) => ({ ...e, f: aFecha(e.fecha) }))
+  const extra = {}
+  lista.forEach((e) => { const t = e.titulo.length > 48 ? e.titulo.slice(0, 47) + '…' : e.titulo; extra[e.fecha] = extra[e.fecha] ? extra[e.fecha] + ' / ' + t : t })
   const proximos = lista.filter((e) => e.f >= hoy).sort((a, b) => a.f - b.f)
   const anteriores = lista.filter((e) => e.f < hoy).sort((a, b) => b.f - a.f)
 
@@ -183,7 +192,7 @@ export default function EventosView({ ui }) {
           </section>
         </div>
         <aside>
-          <section id="calendario"><h3>Calendario académico</h3><Calendar /></section>
+          <section id="calendario"><h3>Calendario académico</h3><Calendar extra={extra} /></section>
         </aside>
       </div>
 

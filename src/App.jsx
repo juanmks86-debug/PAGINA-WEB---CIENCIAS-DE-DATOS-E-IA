@@ -420,16 +420,25 @@ function Noticias() {
   )
 }
 
-function Calendar() {
-  const [m, setM] = useState({ y: 2026, mo: 9 })
+function Calendar({ extra = {} }) {
+  const hoy = new Date()
+  const [m, setM] = useState({ y: hoy.getFullYear(), mo: hoy.getMonth() })
+  // fechas fijas (data.js) + eventos de Supabase; si son el mismo evento se muestra solo el de Supabase
+  const ev = (k) => {
+    const a = events[k], b = extra[k]
+    if (!a || !b) return a || b || ''
+    const w = (t) => t.toLowerCase().split(' ').slice(0, 2).join(' ')
+    return w(a) === w(b) ? b : a + ' / ' + b
+  }
   const first = (new Date(m.y, m.mo, 1).getDay() + 6) % 7
   const days = new Date(m.y, m.mo + 1, 0).getDate()
   const list = []
   const cells = Array.from({ length: first }, (_, i) => <div key={'b' + i} className="c x" />)
   for (let d = 1; d <= days; d++) {
     const k = `${m.y}-${String(m.mo + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`
-    if (events[k]) list.push(`${d}: ${events[k]}`)
-    cells.push(<div key={d} className={'c' + (events[k] ? ' e' : '')} title={events[k] || ''}>{d}</div>)
+    const t = ev(k)
+    if (t) list.push(`${d}: ${t}`)
+    cells.push(<div key={d} className={'c' + (t ? ' e' : '')} title={t}>{d}</div>)
   }
   const go = (n) => setM((p) => { const t = new Date(p.y, p.mo + n, 1); return { y: t.getFullYear(), mo: t.getMonth() } })
 
@@ -480,6 +489,9 @@ const norm = (s) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCa
 const indice = [
   ...links.map(([t, href]) => ({ t, w: 'Sección', href })),
   { t: 'Noticias IA', w: 'Sección', href: '#noticias' },
+  { t: 'Eventos', w: 'Sección', href: '/eventos' },
+  { t: 'Calendario académico', w: 'Eventos', href: '/eventos#calendario' },
+  { t: 'Galería institucional', w: 'Eventos', href: '/eventos#galeria', x: 'fotos álbumes' },
   ...tabs.map(([t, , items]) => ({ t, w: 'Perfil', href: '#perfil', x: items.join(' ') })),
   ...internships.map(([t, d]) => ({ t, w: 'Prácticas', href: '#pasantias', x: d })),
   ...noticias.map((n) => ({ t: n.titulo, w: 'Noticias IA', href: '#noticias', x: n.fuente })),
@@ -537,9 +549,17 @@ function SearchBox() {
     .slice(0, 6)
   const show = open && nq.length >= 2
   const cerrar = () => { setOpen(false); setQ('') }
+  // desde /eventos los enlaces internos (#plan, #faq…) deben apuntar a la página de inicio
+  const enEventos = window.location.pathname.replace(/\/+$/, '') === '/eventos'
+  const destino = (h) => (h.startsWith('/') ? h : enEventos ? '/' + h : h)
   const enviar = (e) => {
     e.preventDefault()
-    if (res[0]) { window.location.hash = res[0].href; cerrar() }
+    if (res[0]) {
+      const d = destino(res[0].href)
+      if (d.startsWith('/')) window.location.href = d
+      else window.location.hash = d
+      cerrar()
+    }
   }
   return (
     <form className="srch" role="search" onSubmit={enviar} onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setOpen(false) }}>
@@ -560,7 +580,7 @@ function SearchBox() {
           <ul id="res-busqueda" className="srch-res" onMouseDown={(e) => e.preventDefault()}>
             {res.length
               ? res.map((r, i) => (
-                <li key={r.t + i}><a href={r.href} onClick={cerrar}><b>{r.t}</b><small>{r.w}</small></a></li>
+                <li key={r.t + i}><a href={destino(r.href)} onClick={cerrar}><b>{r.t}</b><small>{r.w}</small></a></li>
               ))
               : <li className="none">Sin resultados para “{q.trim()}”. Probá con otra palabra.</li>}
           </ul>
