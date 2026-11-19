@@ -747,27 +747,7 @@ export default function App() {
       </>)}
 
       <footer>
-        <div className="wrap ft-top">
-          <div className="ft-brand">
-            <span className="ft-mark" aria-hidden="true">AI</span>
-            <div><b>Ciencia de Datos e IA</b><span>Tecnicatura Superior en Ciencia de Datos e Inteligencia Artificial<br />IES N.º 6 – Sede Perico, Jujuy</span></div>
-          </div>
-          <div className="ft-cta">
-            <small>¿Querés cursar la carrera?</small>
-            <a className="btn" href="https://nexo.jujuy.edu.ar/" target="_blank" rel="noopener noreferrer">Inscribite →</a>
-          </div>
-        </div>
         <div className="wrap ft-cols">
-          <div>
-            <h5>Enlaces rápidos</h5>
-            <ul className="ft-links">
-              <li><a href={esEventos ? '/#plan' : '#plan'}>Plan de estudio</a></li>
-              <li><a href="/eventos">Eventos</a></li>
-              <li><a href="/eventos#galeria">Galería institucional</a></li>
-              <li><a href={esEventos ? '/#faq' : '#faq'}>Preguntas frecuentes</a></li>
-              <li><a href={esEventos ? '/#contacto' : '#contacto'}>Contacto</a></li>
-            </ul>
-          </div>
           <div>
             <h5>Coordinador</h5>
             <div className="coord">
@@ -775,29 +755,14 @@ export default function App() {
               <div><p><b>{coordinador.nombre}</b></p><p>Coordinador de la carrera</p></div>
             </div>
           </div>
-          <div>
+          <div className="ft-dir">
             <h5>Dirección</h5>
-            {MAP_EMBED ? (
-              <>
-                <div className="map">
-                  <iframe
-                    title="Ubicación del IES N.º 6 en Google Maps"
-                    src={MAP_EMBED}
-                    loading="lazy"
-                    referrerPolicy="strict-origin-when-cross-origin"
-                    allowFullScreen
-                  />
-                </div>
-                <a className="maplink" href={MAPS_LINK} target="_blank" rel="noopener noreferrer">Abrir en Google Maps</a>
-              </>
-            ) : (
-              <a className="map mapcard" href={MAPS_LINK} target="_blank" rel="noopener noreferrer" aria-label="Ver la ubicación en Google Maps">
-                <svg width="30" height="38" viewBox="0 0 30 38" aria-hidden="true">
-                  <path d="M15 1C8 1 2 7 2 14c0 10 13 23 13 23s13-13 13-23C28 7 22 1 15 1z" fill="#1f2d3a" /><circle cx="15" cy="14" r="5" fill="#4cc3bf" />
-                </svg>
-                <span>Ver en Google Maps</span>
-              </a>
-            )}
+            <a className="ft-map" href={MAPS_LINK} target="_blank" rel="noopener noreferrer" aria-label="Ver la ubicación del IES N.º 6 en Google Maps">
+              <svg width="20" height="26" viewBox="0 0 30 38" aria-hidden="true">
+                <path d="M15 1C8 1 2 7 2 14c0 10 13 23 13 23s13-13 13-23C28 7 22 1 15 1z" fill="#4cc3bf" /><circle cx="15" cy="14" r="5" fill="#1f2d3a" />
+              </svg>
+              <span><b>IES N.º 6 – Sede Perico</b><small>Ver en Google Maps ↗</small></span>
+            </a>
           </div>
           <div>
             <h5>Redes sociales</h5>
@@ -809,14 +774,17 @@ export default function App() {
               ))}
             </div>
           </div>
-          <div>
+          <div className="ft-team">
             <h5>Creadores</h5>
             <Creadores />
           </div>
         </div>
         <div className="wrap ft-bar">
           <span>© 2026 Tecnicatura Superior en Ciencia de Datos e IA · IES N.º 6 – Sede Perico, Jujuy</span>
-          <button className="ft-up" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} aria-label="Volver arriba">Volver arriba ↑</button>
+          <div className="ft-act">
+            <a className="btn" href="https://nexo.jujuy.edu.ar/" target="_blank" rel="noopener noreferrer">Inscribite →</a>
+            <button className="ft-up" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} aria-label="Volver arriba" title="Volver arriba">↑</button>
+          </div>
         </div>
       </footer>
     </>
