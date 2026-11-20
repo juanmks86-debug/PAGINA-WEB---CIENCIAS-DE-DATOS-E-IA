@@ -770,3 +770,45 @@ footer .soc a{display:grid;place-items:center;transition:transform .2s ease,back
 @media(max-width:600px){
  .tm-head{min-height:158px;background-position:center!important}
 }
+
+
+/* WhatsApp en Contacto: microinteracción inspirada en el botón X de los modales */
+.contact .cc.wa{
+ position:relative;
+ overflow:hidden;
+ border:1px solid rgba(37,211,102,.28);
+ background:linear-gradient(115deg,rgba(37,211,102,.10),rgba(37,211,102,.025) 58%,transparent);
+ transition:transform .24s ease,border-color .24s ease,box-shadow .24s ease,background .24s ease;
+}
+.contact .cc.wa .ic{
+ position:relative;
+ flex:none;
+ background:#25d366;
+ color:#062b17;
+ box-shadow:0 0 0 0 rgba(37,211,102,.28);
+ transition:transform .28s cubic-bezier(.2,.8,.2,1),box-shadow .28s ease,background .28s ease;
+}
+.contact .cc.wa b{color:#168a46}
+.contact .cc.wa small{color:var(--muted)}
+@media(hover:hover) and (pointer:fine){
+ .contact .cc.wa:hover{
+  transform:translateY(-4px);
+  border-color:rgba(37,211,102,.75);
+  background:linear-gradient(115deg,rgba(37,211,102,.16),rgba(37,211,102,.045) 65%,transparent);
+  box-shadow:0 10px 26px rgba(37,211,102,.13);
+ }
+ .contact .cc.wa:hover .ic{
+  transform:rotate(90deg) scale(1.08);
+  background:#36e078;
+  box-shadow:0 0 0 7px rgba(37,211,102,.12),0 0 22px rgba(37,211,102,.28);
+ }
+}
+.contact .cc.wa:focus-visible{
+ outline:3px solid #25d366;
+ outline-offset:3px;
+ border-color:#25d366;
+}
+@media(prefers-reduced-motion:reduce){
+ .contact .cc.wa,.contact .cc.wa .ic{transition:none}
+ .contact .cc.wa:hover,.contact .cc.wa:hover .ic{transform:none}
+}
