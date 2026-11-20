@@ -506,3 +506,10 @@ footer h5::after{
 @media(prefers-reduced-motion:reduce){
   .ev-page .gal-item.is-broken{transition:none}
 }
+
+
+/* Álbumes: evitar desbordamiento cuando el ancho útil es menor a 300 px */
+@media(max-width:700px){
+  .ev-page .albs{grid-template-columns:minmax(0,1fr);width:100%}
+  .ev-page .alb{min-width:0}
+}
