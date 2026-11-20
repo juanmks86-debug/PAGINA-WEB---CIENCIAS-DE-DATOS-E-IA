@@ -538,7 +538,7 @@ function Calendar({ extra = {} }) {
     const k = `${m.y}-${String(m.mo + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`
     const t = ev(k)
     if (t) list.push(`${d}: ${t}`)
-    cells.push(<div key={d} className={'c' + (t ? ' e' : '')} title={t} role="gridcell" aria-label={t ? `${d} de ${meses[m.mo]}: ${t}` : `${d} de ${meses[m.mo]}`}>{d}</div>)
+    cells.push(<div key={d} className={'c' + (t ? ' e' : '')} title={t} aria-label={t ? `${d} de ${meses[m.mo]}: ${t}` : `${d} de ${meses[m.mo]}`}>{d}</div>)
   }
   const go = (n) => setM((p) => { const t = new Date(p.y, p.mo + n, 1); return { y: t.getFullYear(), mo: t.getMonth() } })
 
@@ -549,7 +549,7 @@ function Calendar({ extra = {} }) {
         <span aria-live="polite" aria-atomic="true">{meses[m.mo]} {m.y}</span>
         <button type="button" onClick={() => go(1)} aria-label="Mes siguiente">›</button>
       </div>
-      <div className="cal-g" role="grid" aria-label={`Calendario de ${meses[m.mo]} de ${m.y}`}>
+      <div className="cal-g" role="group" aria-label={`Calendario de ${meses[m.mo]} de ${m.y}`}>
         {['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'].map((d) => <div key={d} className="d">{d}</div>)}
         {cells}
       </div>
