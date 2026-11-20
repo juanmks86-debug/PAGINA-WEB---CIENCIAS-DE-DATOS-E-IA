@@ -117,7 +117,7 @@ function htmlImageFrom(html, baseUrl) {
   const tags = html.match(/<(?:meta|link)\b[^>]*>/gi) || []
   for (const tagText of tags) {
     const attr = name => {
-      const match = tagText.match(new RegExp('\\b' + name + '=["']([^"']+)["']', 'i'))
+      const match = tagText.match(new RegExp("\\b" + name + "=[\"']([^\"']+)[\"']", "i"))
       return match ? match[1] : ''
     }
     const key = (attr('property') || attr('name') || attr('rel')).toLowerCase()
