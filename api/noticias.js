@@ -38,11 +38,13 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Método no permitido' })
   }
   try {
-    const responses = await Promise.all(FEEDS.map(async url => {
+    const results = await Promise.allSettled(FEEDS.map(async url => {
       const response = await fetch(url, { headers: { 'User-Agent': 'IES6-NoticiasIA/1.0' }, signal: AbortSignal.timeout(9000) })
       if (!response.ok) throw new Error('Feed no disponible')
       return parseFeed(await response.text())
     }))
+    const responses = results.filter(result => result.status === 'fulfilled').map(result => result.value)
+    if (!responses.length) throw new Error('Todas las fuentes fallaron')
     const seen = new Set()
     const items = responses.flat().sort((a, b) => b.date - a.date).filter(item => {
       const key = item.link.split('?')[0]
