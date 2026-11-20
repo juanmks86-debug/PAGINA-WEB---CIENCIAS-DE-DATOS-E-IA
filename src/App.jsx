@@ -310,16 +310,37 @@ const themeIcons = {
 }
 
 function Lightbox({ src, alt, onClose }) {
+  const closeRef = useRef(onClose)
+  useEffect(() => { closeRef.current = onClose }, [onClose])
   useEffect(() => {
-    const onKey = (e) => { if (e.key === 'Escape') onClose() }
-    window.addEventListener('keydown', onKey)
+    const opener = document.activeElement
     const prev = document.body.style.overflow
+    const onKey = (e) => { if (e.key === 'Escape') closeRef.current() }
     document.body.style.overflow = 'hidden'
-    return () => { window.removeEventListener('keydown', onKey); document.body.style.overflow = prev }
-  }, [onClose])
+    window.addEventListener('keydown', onKey)
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      document.body.style.overflow = prev
+      requestAnimationFrame(() => { if (opener && document.contains(opener)) opener.focus() })
+    }
+  }, [])
+  const contenerTab = (e) => {
+    if (e.key !== 'Tab') return
+    const elementos = Array.from(e.currentTarget.querySelectorAll('button:not([disabled]),a[href],input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])'))
+    if (!elementos.length) return
+    const primero = elementos[0]
+    const ultimo = elementos[elementos.length - 1]
+    if (e.shiftKey && document.activeElement === primero) {
+      e.preventDefault()
+      ultimo.focus()
+    } else if (!e.shiftKey && document.activeElement === ultimo) {
+      e.preventDefault()
+      primero.focus()
+    }
+  }
   return (
     <div className="modal-bg lb" onClick={onClose}>
-      <div className="lb-in" role="dialog" aria-modal="true" aria-label={alt} onClick={(e) => e.stopPropagation()}>
+      <div className="lb-in" role="dialog" aria-modal="true" aria-label={alt} onClick={(e) => e.stopPropagation()} onKeyDown={contenerTab}>
         <button className="lb-x" aria-label="Cerrar" onClick={onClose} autoFocus>×</button>
         <img src={src} alt={alt} />
       </div>
