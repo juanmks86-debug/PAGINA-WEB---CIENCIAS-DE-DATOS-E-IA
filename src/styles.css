@@ -699,3 +699,42 @@ footer .soc a{display:grid;place-items:center;transition:transform .2s ease,back
  .tm .tm-x,.pm .pm-x{top:9px;right:9px;width:44px;height:44px;min-width:44px;font-size:28px}
 }
 @media(prefers-reduced-motion:reduce){.tm .tm-x,.pm .pm-x{transition:none}}
+
+
+/* Creadores: lenguaje visual más reconocible por equipo */
+.tm-head{position:relative}
+.tm-head::after{
+ position:absolute;right:66px;top:38px;z-index:0;
+ font-weight:900;line-height:1;letter-spacing:-.09em;
+ opacity:.12;pointer-events:none;user-select:none;
+}
+.tm-infra .tm-head::after{content:"01 / SYS";font:900 clamp(2.2rem,6vw,4.8rem)/1 ui-monospace,monospace;color:#1cff8a;letter-spacing:-.1em}
+.tm-dev .tm-head::after{content:"</>";font:900 clamp(3.8rem,9vw,6.8rem)/.9 ui-monospace,monospace;color:#c4b5fd;transform:rotate(-8deg)}
+.tm-press .tm-head::after{content:"06";font:900 clamp(4.8rem,10vw,7.5rem)/.8 Georgia,serif;color:#fdba74;right:72px;top:24px}
+.tm-data .tm-head::after{content:"Σ";font:900 clamp(5rem,10vw,7.2rem)/.8 Georgia,serif;color:#6ee7b7;right:76px;top:24px}
+.tm-head>*{z-index:1}
+.tm-infra .tm-card{border-left:3px solid rgba(28,255,138,.65);box-shadow:inset 0 1px rgba(255,255,255,.025)}
+.tm-infra .tm-photo{border-bottom:1px solid rgba(28,255,138,.25)}
+.tm-dev .tm-card{box-shadow:0 12px 28px rgba(5,3,20,.2);transform:translateY(0)}
+.tm-dev .tm-photo{border-radius:12px;margin:8px 8px 0;height:142px}
+.tm-press .tm-card{border-bottom:2px solid rgba(251,146,60,.65)}
+.tm-press .tm-body h5{font-family:Georgia,serif;font-size:1rem}
+.tm-data .tm-card{position:relative;overflow:hidden}
+.tm-data .tm-card::after{content:"";position:absolute;right:0;top:0;width:38px;height:38px;border-top:1px solid rgba(110,231,183,.5);border-right:1px solid rgba(110,231,183,.5);pointer-events:none}
+.tm-data .tm-photo{border-bottom:1px solid rgba(16,185,129,.24)}
+/* El control de cierre adopta la forma y el acento de cada identidad */
+.tm-infra .tm-x{border-radius:8px;background:rgba(4,24,16,.94);font-family:ui-monospace,monospace;font-weight:700}
+.tm-dev .tm-x{border-radius:15px;background:linear-gradient(145deg,#332653,#171329);border-width:1.5px}
+.tm-press .tm-x{border-radius:4px;background:#2a1c12;border-width:2px;font-family:Georgia,serif}
+.tm-data .tm-x{border-radius:12px 50% 50% 50%;background:rgba(4,30,31,.96);border-width:1.5px}
+.tm-infra .tm-x:hover{background:#1cff8a;color:#062015;border-color:#1cff8a}
+.tm-dev .tm-x:hover{background:#c4b5fd;color:#21143f;border-color:#c4b5fd}
+.tm-press .tm-x:hover{background:#fb923c;color:#21160d;border-color:#fb923c}
+.tm-data .tm-x:hover{background:#10b981;color:#05251e;border-color:#10b981}
+@media(max-width:600px){
+ .tm-head::after{right:54px;top:42px;opacity:.09}
+ .tm-dev .tm-photo{height:clamp(100px,30vw,140px)}
+}
+@media(prefers-reduced-motion:reduce){
+ .tm-infra .tm-x,.tm-dev .tm-x,.tm-press .tm-x,.tm-data .tm-x{transition:none}
+}
