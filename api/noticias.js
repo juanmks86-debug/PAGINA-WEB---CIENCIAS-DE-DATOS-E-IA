@@ -87,6 +87,9 @@ function safeImageUrl(raw, base) {
   } catch { return '' }
 }
 function imageFrom(item) {
+  // Normalizamos CDATA y entidades HTML antes de buscar imágenes: varios RSS
+  // entregan el HTML de la descripción escapado (&lt;img ...&gt;).
+  item = decode(item)
   // RSS 2.0 y Media RSS: algunos medios publican la imagen en atributos
   // distintos o dentro de media:group.
   const candidates = [
