@@ -28,7 +28,7 @@ function NotesBank({ query = '' }) {
         <div>
           <span className="student-kicker">ACCESO A LOS ARCHIVOS</span>
           <h2 id="materiales-titulo">Materiales disponibles</h2>
-          <p>Elegí un año para ver guías y apuntes. Los archivos marcados como demostración pueden reemplazarse por los materiales oficiales.</p>
+          <p>Elegí un año para ver guías y apuntes. Los enlaces abren carpetas de Google Drive. Revisá allí las materias y las fechas de actualización.</p>
         </div>
         <label className="materials-filter">
           Filtrar por año
@@ -102,7 +102,7 @@ export default function StudentsView({ standalone = false }) {
       <div className="students-shell">
         <div className="student-heading">
           <div><span className="student-kicker">RECURSOS ACADÉMICOS</span><h2 id="banco-apuntes">Banco de apuntes</h2></div>
-          <label className="student-search"><span aria-hidden="true">⌕</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Buscar por materia o tema..." aria-label="Buscar apuntes por materia o tema" /></label>
+          <label className="student-search"><span aria-hidden="true">⌕</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Buscar por año o material..." aria-label="Buscar carpetas por año o material" /></label>
         </div>
         <div className="year-grid">
           {studentYears.map((item) => (
