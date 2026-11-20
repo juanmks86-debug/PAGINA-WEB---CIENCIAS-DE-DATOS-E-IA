@@ -18,7 +18,7 @@ const PALETTE = [
 ]
 const EXCLUDED = /\b(movie|film|steelbook|soundtrack|trailer|actor|actress|cinema|película|peliculas|películas|estreno|reparto)\b/i
 const LOW_VALUE = /\b(acciones|cotización|ticker|bolsa|stock price|nombra|nombró|nombramiento|director independiente|directora independiente|consejero delegado)\b/i
-const RELEVANT = /(inteligencia artificial|ia generativa|generative ai|artificial intelligence|machine learning|aprendizaje automático|aprendizaje automatico|ciencia de datos|data science|deep learning|computer vision|visión artificial|vision artificial|computer-vision|robotics|robótica|robotica|large language model|\bllm\b|neural network|redes neuronales|ai-powered|ai[- ]driven|ciberseguridad.*ia|ia.*ciberseguridad)/i
+const RELEVANT = /(inteligencia artificial|ia generativa|generative ai|artificial intelligence|machine learning|aprendizaje automático|aprendizaje automatico|ciencia de datos|data science|deep learning|computer vision|visión artificial|vision artificial|computer-vision|robotics|robótica|robotica|large language model|\bllm\b|neural network|redes neuronales|ai-powered|ai[- ]driven|ai agents?|agentic ai|ai models?|ai startups?|ai chips?|anthropic|openai|chatgpt|gemini|claude|ciberseguridad.*ia|ia.*ciberseguridad)/i
 
 function categoryFor(item) {
   const value = item.title.toLowerCase()
