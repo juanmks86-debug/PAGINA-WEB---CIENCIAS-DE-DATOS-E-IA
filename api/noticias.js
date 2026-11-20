@@ -95,6 +95,19 @@ function imageFrom(item) {
   }
   return ''
 }
+function feedPreview(xml) {
+  const entries = [
+    ...[...xml.matchAll(/<item(?:\\s[^>]*)?>([\\s\\S]*?)<\\/item>/gi)].map(match => match[1]),
+    ...[...xml.matchAll(/<entry(?:\\s[^>]*)?>([\\s\\S]*?)<\\/entry>/gi)].map(match => match[1])
+  ]
+  return entries.slice(0, 5).map(item => ({
+    title: tag(item, 'title'),
+    date: tag(item, 'pubDate') || tag(item, 'published') || tag(item, 'updated') || tag(item, 'dc:date'),
+    hasLink: /<link\\b/i.test(item),
+    relevant: RELEVANT.test(tag(item, 'title') + ' ' + tag(item, 'description') + ' ' + tag(item, 'summary'))
+  }))
+}
+
 function parseFeed(xml) {
   // Google News suele entregar RSS 2.0; algunos medios tecnológicos publican Atom.
   const rssItems = [...xml.matchAll(/<item(?:\s[^>]*)?>([\s\S]*?)<\/item>/gi)].map(match => match[1])
@@ -186,7 +199,7 @@ export default async function handler(req, res) {
       if (!response.ok) throw new Error('HTTP ' + response.status)
       const xml = await response.text()
       const items = parseFeed(xml).map(item => ({ ...item, directFeed: !url.includes('news.google.com/') }))
-      return { items, diagnostic: { index, host: new URL(url).hostname, status: response.status, bytes: xml.length, parsed: items.length, sample: items.slice(0, 3).map(item => item.title) } }
+      return { items, diagnostic: { index, host: new URL(url).hostname, status: response.status, bytes: xml.length, parsed: items.length, rawEntries: feedPreview(xml).length, preview: feedPreview(xml) } }
     }))
     const responses = results.filter(result => result.status === 'fulfilled').map(result => result.value.items)
     const diagnostics = results.map((result, index) => result.status === 'fulfilled'
