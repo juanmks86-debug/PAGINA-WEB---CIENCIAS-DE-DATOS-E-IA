@@ -200,7 +200,7 @@ export default function EventosView({ ui }) {
         <h3>Galería institucional</h3>
         <p className="gal-sub">Momentos, aprendizajes y experiencias de la carrera</p>
         {albumes === null ? <p className="ev-vacio">Cargando galería…</p> : album ? (
-          <div>
+          <div className="album-view">
             <div className="alb-open-head">
               <button className="chip" onClick={() => setAlbum(null)}>← Volver a la galería</button>
               <div>
