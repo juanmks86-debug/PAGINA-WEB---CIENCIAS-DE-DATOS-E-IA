@@ -357,3 +357,11 @@ footer h5::after{
 .pj-dialog .pj-chips .pj-tech{display:inline-flex;align-items:center;gap:5px;padding:2px 8px;font-size:.75rem;line-height:1.35;min-height:0;border-color:color-mix(in srgb,var(--tech-color) 42%,var(--student-line));color:var(--tech-color);background:color-mix(in srgb,var(--tech-color) 9%,transparent);white-space:nowrap}
 .pj-dialog .pj-chips .pj-tech i{display:inline-flex;align-items:center;justify-content:center;min-width:13px;height:13px;font-size:.58rem;line-height:1;font-style:normal;font-weight:900;letter-spacing:-.04em;color:var(--tech-color)}
 @media(hover:hover) and (pointer:fine){.pj-dialog .pj-chips .pj-tech:hover{border-color:var(--tech-color);background:color-mix(in srgb,var(--tech-color) 15%,transparent);box-shadow:0 3px 12px color-mix(in srgb,var(--tech-color) 18%,transparent)}}
+
+
+/* Distintivos tecnológicos: iconos de marca y paleta ampliada */
+.pj-dialog .pj-chips .pj-tech{gap:6px;padding:2px 8px;border-color:color-mix(in srgb,var(--tech-color) 48%,var(--student-line));color:var(--tech-color);background:color-mix(in srgb,var(--tech-color) 11%,transparent)}
+.pj-dialog .pj-chips .pj-tech-icon{display:inline-flex;align-items:center;justify-content:center;flex:0 0 14px;width:14px;height:14px;color:var(--tech-color)}
+.pj-dialog .pj-chips .pj-tech-icon img,.pj-dialog .pj-chips .pj-tech-icon svg{display:block;width:14px;height:14px;object-fit:contain}
+.pj-dialog .pj-chips .pj-tech-icon img{filter:drop-shadow(0 0 2px color-mix(in srgb,var(--tech-color) 24%,transparent))}
+@media(hover:hover) and (pointer:fine){.pj-dialog .pj-chips .pj-tech:hover{border-color:var(--tech-color);background:color-mix(in srgb,var(--tech-color) 19%,transparent);box-shadow:0 3px 12px color-mix(in srgb,var(--tech-color) 24%,transparent)}}
