@@ -84,10 +84,12 @@ const socialIcons = {
       <path fill="#fff" d="M13.5 22v-8h2.7l.4-3.2h-3.1V8.9c0-.9.3-1.5 1.6-1.5h1.7V4.5c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.1v2.3H7.7V14h2.7v8z" />
     </svg>
   ),
-  youtube: (
+  tiktok: (
     <svg width="40" height="40" viewBox="0 0 24 24" aria-hidden="true">
-      <rect x="1" y="4.5" width="22" height="15" rx="4.5" fill="#ff0000" />
-      <path fill="#fff" d="M10 8.7v6.6l5.7-3.3z" />
+      <rect width="24" height="24" rx="5" fill="#111" />
+      <path d="M14.2 3.5v10.2a3.2 3.2 0 1 1-2.8-3.17V7.7a6.1 6.1 0 1 0 6.1 6V9.8a8.1 8.1 0 0 0 3 1V7.5a5.1 5.1 0 0 1-3.9-4z" fill="#25F4EE" transform="translate(-.8 .4)" />
+      <path d="M14.2 3.5v10.2a3.2 3.2 0 1 1-2.8-3.17V7.7a6.1 6.1 0 1 0 6.1 6V9.8a8.1 8.1 0 0 0 3 1V7.5a5.1 5.1 0 0 1-3.9-4z" fill="#FE2C55" transform="translate(.45 .15)" />
+      <path d="M14.2 3.5v10.2a3.2 3.2 0 1 1-2.8-3.17V7.7a6.1 6.1 0 1 0 6.1 6V9.8a8.1 8.1 0 0 0 3 1V7.5a5.1 5.1 0 0 1-3.9-4z" fill="#fff" />
     </svg>
   ),
   instagram: (
@@ -104,7 +106,7 @@ const socialIcons = {
     </svg>
   ),
 }
-const socialNames = { facebook: 'Facebook', youtube: 'YouTube', instagram: 'Instagram' }
+const socialNames = { facebook: 'Facebook', tiktok: 'TikTok', instagram: 'Instagram' }
 
 function useReveal() {
   useEffect(() => {
