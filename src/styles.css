@@ -513,3 +513,7 @@ footer h5::after{
   .ev-page .albs{grid-template-columns:minmax(0,1fr);width:100%}
   .ev-page .alb{min-width:0}
 }
+
+
+/* Estado de las carpetas que todavía no tienen enlace publicado */
+.year-coming{color:#9ccbd4;font-size:.78rem;font-weight:700;opacity:.82}
