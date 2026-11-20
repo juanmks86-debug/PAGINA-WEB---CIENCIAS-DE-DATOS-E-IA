@@ -17,14 +17,31 @@ const EXCLUDED = /\b(movie|film|steelbook|soundtrack|trailer|actor|actress|cinem
 const RELEVANT = /(inteligencia artificial|ia generativa|generative ai|artificial intelligence|machine learning|aprendizaje automático|aprendizaje automatico|ciencia de datos|data science|deep learning|computer vision|visión artificial|vision artificial|computer-vision|robotics|robótica|robotica|large language model|\bllm\b|neural network|redes neuronales|ai-powered|ai[- ]driven|ciberseguridad.*ia|ia.*ciberseguridad)/i
 
 function categoryFor(item) {
-  const value = (item.title + ' ' + item.description).toLowerCase()
+  const value = item.title.toLowerCase()
   if (/ciberseguridad|ciberataque|phishing|malware|ransomware|ai security/.test(value)) return 'CIBERSEGURIDAD · IA'
-  if (/robot|autónom|autonom|dron|robótica/.test(value)) return 'ROBÓTICA · INNOVACIÓN'
+  if (/robot humanoide|robots? industriales|robot agrícola|robotica aplicada|robótica aplicada|brazo robot|automatización|automatizacion|drones? autónomos|drones? autonomos/.test(value)) return 'ROBÓTICA · INNOVACIÓN'
   if (/educaci|universidad|escuela|docente|estudiante|aula/.test(value)) return 'IA · EDUCACIÓN'
   if (/empleo|trabajo|laboral|empresa|industria|comercio/.test(value)) return 'IA · TRABAJO E INDUSTRIA'
-  if (/medicina|salud|hospital|diagnóstico|paciente/.test(value)) return 'IA · SALUD'
-  if (/datos|data science|machine learning|aprendizaje automático|estadístic/.test(value)) return 'CIENCIA DE DATOS · ML'
+  if (/medicina|salud|hospital|diagnóstico|diagnostico|paciente/.test(value)) return 'IA · SALUD'
+  if (/datos|data science|machine learning|aprendizaje automático|aprendizaje automatico|estadístic|estadistic/.test(value)) return 'CIENCIA DE DATOS · ML'
   return 'ACTUALIDAD · INTELIGENCIA ARTIFICIAL'
+}
+
+function titleTokens(title) {
+  const normalized = title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+  const stop = new Set(['ante', 'para', 'por', 'con', 'del', 'las', 'los', 'una', 'uno', 'como', 'sobre', 'desde', 'entre'])
+  return new Set(normalized.split(/[^a-z0-9]+/).filter(word => word.length > 2 && !stop.has(word)))
+}
+
+function isNearDuplicate(title, previousTitles) {
+  const current = titleTokens(title)
+  for (const previous of previousTitles) {
+    const other = titleTokens(previous)
+    const intersection = [...current].filter(word => other.has(word)).length
+    const union = new Set([...current, ...other]).size
+    if (union && intersection / union >= 0.58) return true
+  }
+  return false
 }
 
 function decode(value = '') {
@@ -80,7 +97,7 @@ function parseFeed(xml) {
     return item.title && item.link && !Number.isNaN(item.date.getTime()) &&
       item.date.getTime() <= Date.now() + 86400000 &&
       item.date.getTime() >= Date.now() - 14 * 86400000 &&
-      RELEVANT.test(text) && !EXCLUDED.test(item.title)
+      RELEVANT.test(text) && !EXCLUDED.test(item.title) && !LOW_VALUE.test(item.title) && !(/TradingView/i.test(item.source) && /\\b(nombra|nombró|director|directora|acciones|ticker)\\b/i.test(item.title))
   })
 }
 async function resolvePublisherUrl(url) {
@@ -118,12 +135,15 @@ export default async function handler(req, res) {
     if (!responses.length) throw new Error('Todas las fuentes fallaron')
 
     const seen = new Set()
-    const selected = responses.flat().sort((a, b) => b.date - a.date).filter(item => {
-      const key = item.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ').trim()
-      if (seen.has(key)) return false
+    const selected = []
+    const ordered = responses.flat().sort((a, b) => b.date - a.date)
+    for (const item of ordered) {
+      const key = item.title.toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ').trim()
+      if (seen.has(key) || isNearDuplicate(item.title, selected.map(entry => entry.title))) continue
       seen.add(key)
-      return true
-    }).slice(0, 8)
+      selected.push(item)
+      if (selected.length === 8) break
+    }
 
     const urls = await Promise.all(selected.map(item => resolvePublisherUrl(item.link)))
     const items = selected.map((item, index) => ({
