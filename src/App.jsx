@@ -363,12 +363,36 @@ function useCols() {
 
 function Noticias() {
   const n = useCols()
-  const total = noticias.length
-  const pages = Math.max(1, Math.ceil(total / n))
+  const [noticiasActuales, setNoticiasActuales] = useState(noticias)
+  const [cargando, setCargando] = useState(true)
+  const [errorNoticias, setErrorNoticias] = useState(false)
+  const [actualizado, setActualizado] = useState(null)
   const [page, setPage] = useState(0)
-  const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  const [play, setPlay] = useState(!reduce)
+  const [play, setPlay] = useState(!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches))
   const [pausa, setPausa] = useState(false)
+
+  const cargarNoticias = async () => {
+    setCargando(true)
+    try {
+      const respuesta = await fetch('/api/noticias')
+      if (!respuesta.ok) throw new Error('No se pudieron obtener las noticias')
+      const datos = await respuesta.json()
+      if (!Array.isArray(datos.noticias)) throw new Error('Respuesta de noticias inválida')
+      setNoticiasActuales(datos.noticias)
+      setActualizado(datos.actualizado || new Date().toISOString())
+      setErrorNoticias(false)
+      setPage(0)
+    } catch {
+      setErrorNoticias(true)
+    } finally {
+      setCargando(false)
+    }
+  }
+
+  useEffect(() => { cargarNoticias() }, [])
+
+  const total = noticiasActuales.length
+  const pages = Math.max(1, Math.ceil(total / n))
   const p = Math.min(page, pages - 1)
   const idx = Math.max(0, Math.min(p * n, total - n))
   useEffect(() => {
@@ -377,6 +401,9 @@ function Noticias() {
     return () => clearInterval(t)
   }, [play, pausa, pages])
   const go = (d) => setPage((x) => (Math.min(x, pages - 1) + d + pages) % pages)
+  const fechaActualizacion = actualizado
+    ? new Date(actualizado).toLocaleString('es-AR', { dateStyle: 'short', timeStyle: 'short' })
+    : ''
 
   return (
     <section id="noticias" className="reveal" aria-roledescription="carrusel" aria-label="Noticias IA"
@@ -389,20 +416,19 @@ function Noticias() {
           ))}
         </div>
         <div className="nw-ctl">
-          <button aria-label="Noticias anteriores" onClick={() => go(-1)}>←</button>
-          <button aria-label="Noticias siguientes" onClick={() => go(1)}>→</button>
+          <button aria-label="Noticias anteriores" onClick={() => go(-1)} disabled={!total}>←</button>
+          <button aria-label="Noticias siguientes" onClick={() => go(1)} disabled={!total}>→</button>
           <button aria-label={play ? 'Pausar el carrusel' : 'Reanudar el carrusel'} aria-pressed={!play} onClick={() => setPlay(!play)}>{play ? '❚❚' : '▶'}</button>
         </div>
       </div>
       <div className="nw-view">
         <div className="nw-track" style={{ '--n': n, '--i': idx }} aria-live={play && !pausa ? 'off' : 'polite'}>
-          {noticias.map((nw, i) => {
+          {noticiasActuales.map((nw, i) => {
             const vis = i >= idx && i < idx + n
-            const href = nw.enlace || 'https://www.google.com/search?q=' + encodeURIComponent(nw.busqueda || nw.titulo)
             return (
-              <article className="nw-card" key={nw.titulo} aria-hidden={!vis}>
+              <article className="nw-card" key={nw.enlace || nw.titulo} aria-hidden={!vis}>
                 <p className="nw-cat">{nw.categoria}</p>
-                <h4 className="nw-t"><a href={href} target="_blank" rel="noopener noreferrer" tabIndex={vis ? 0 : -1}>{nw.titulo}</a></h4>
+                <h4 className="nw-t"><a href={nw.enlace} target="_blank" rel="noopener noreferrer" tabIndex={vis ? 0 : -1}>{nw.titulo}</a></h4>
                 <p className="nw-date">{nw.fecha}</p>
                 <div className="nw-body">
                   <div className="nw-thumb" style={{ background: `linear-gradient(135deg, ${nw.colores[0]}, ${nw.colores[1]})` }} aria-hidden="true">
@@ -415,8 +441,15 @@ function Noticias() {
             )
           })}
         </div>
+        {cargando && <p className="nw-note">Buscando las noticias más recientes…</p>}
+        {!cargando && !total && <p className="nw-note">No hay noticias disponibles en este momento. Volvé a intentarlo más tarde.</p>}
+        {errorNoticias && <p className="nw-note">No se pudo actualizar el feed. Se volverá a intentar en la próxima visita.</p>}
       </div>
-      <p className="nw-note">Resúmenes de informes publicados. Consultá la fuente original para ver el detalle completo.</p>
+      <p className="nw-note">
+        {actualizado ? `Actualizado: ${fechaActualizacion} · ` : ''}
+        Noticias recientes de fuentes externas. Consultá cada publicación original para ver el detalle completo.
+        <button type="button" onClick={cargarNoticias} disabled={cargando}> {cargando ? 'Actualizando…' : 'Actualizar ahora'}</button>
+      </p>
     </section>
   )
 }
