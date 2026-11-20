@@ -512,7 +512,8 @@ function Faq() {
 }
 
 const links = [['Inicio', '#concepto'], ['Perfil', '#perfil'], ['Prácticas', '#pasantias'], ['Plan de estudio', '#plan'], ['Eventos', '/eventos'], ['Noticias IA', '#noticias'], ['Preguntas', '#faq'], ['Alumnos', '/alumnos'], ['Contacto', '#contacto']]
-const ids = links.filter(([, h]) => h.startsWith('#')).map(([, h]) => h.slice(1))
+// Orden real de aparición en la página (no el orden visual del menú).
+const ids = ['concepto', 'perfil', 'pasantias', 'noticias', 'plan', 'faq', 'contacto']
 
 // Materias del plan de estudio (Res. 3098-E), para el buscador
 const materias = [
@@ -542,12 +543,6 @@ function useActive() {
     const calc = () => {
       raf = 0
       const barra = document.querySelector('.hd-bar')
-      // Si se llegó a una sección desde el menú, respetar ese destino.
-      const hash = window.location.hash.slice(1)
-      if (hash && ids.includes(hash) && document.getElementById(hash)) {
-        setAct(hash)
-        return
-      }
       // Al llegar al final del documento, la última sección debe quedar activa.
       const alFinal = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 12
       if (alFinal) {
@@ -561,24 +556,15 @@ function useActive() {
         return
       }
 
-      let dentro = null
-      let distancia = Infinity
-      let cercano = null
-      let distanciaCercana = Infinity
+      // La sección activa es la última que ya alcanzó la línea de lectura.
+      // Se usa el orden real del documento para que Plan no quede detrás de Noticias IA.
+      let activa = 'concepto'
       for (const id of ids) {
         const el = document.getElementById(id)
         if (!el) continue
-        const rect = el.getBoundingClientRect()
-        // Prioriza la sección que realmente ocupa la línea de lectura.
-        if (rect.top <= linea && rect.bottom > linea) {
-          const d = Math.abs(rect.top - linea)
-          if (d < distancia) { dentro = id; distancia = d }
-        }
-        // Respaldo para espacios entre secciones o páginas con contenido corto.
-        const dTop = Math.abs(rect.top - linea)
-        if (dTop < distanciaCercana) { cercano = id; distanciaCercana = dTop }
+        if (el.getBoundingClientRect().top <= linea) activa = id
       }
-      setAct(dentro || cercano || 'concepto')
+      setAct(activa)
     }
     const programar = () => {
       if (!raf) raf = requestAnimationFrame(calc)
