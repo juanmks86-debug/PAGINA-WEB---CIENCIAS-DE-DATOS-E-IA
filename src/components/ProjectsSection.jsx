@@ -91,7 +91,7 @@ const TECNOLOGIAS = {
 }
 const PALETA_TECNOLOGIAS = ['#F97316','#22C55E','#A78BFA','#38BDF8','#F472B6','#EAB308','#14B8A6','#FB7185']
 const estiloTecnologia = (nombre) => {
-  const clave = quitaAcentos(nombre).replace(/\\s+/g, ' ').trim()
+  const clave = quitaAcentos(nombre).replace(/\s+/g, ' ').trim()
   const dato = TECNOLOGIAS[clave]
   if (dato) return dato
   const hash = [...clave].reduce((n, ch) => n + ch.charCodeAt(0), 0)
