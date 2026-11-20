@@ -77,21 +77,63 @@ function tag(xml, name) {
   const match = xml.match(new RegExp('<' + name + '(?:\\s[^>]*)?>([\\s\\S]*?)<\\/' + name + '>', 'i'))
   return match ? cleanText(match[1]) : ''
 }
+function safeImageUrl(raw, base) {
+  if (!raw) return ''
+  try {
+    const value = decode(raw).trim().replace(/^url\(["']?|["']?\)$/g, '')
+    const url = new URL(value.startsWith('//') ? 'https:' + value : value, base)
+    if (url.protocol === 'http:') url.protocol = 'https:'
+    return url.protocol === 'https:' ? url.href : ''
+  } catch { return '' }
+}
 function imageFrom(item) {
-  const patterns = [
-    /<media:content[^>]*\burl=["']([^"']+)["']/i,
-    /<media:thumbnail[^>]*\burl=["']([^"']+)["']/i,
-    /<enclosure[^>]*\burl=["']([^"']+)["']/i,
-    /<img[^>]*\bsrc=["']([^"']+)["']/i
+  // RSS 2.0 y Media RSS: algunos medios publican la imagen en atributos
+  // distintos o dentro de media:group.
+  const candidates = [
+    /<(?:media:content|media:thumbnail|itunes:image|image)[^>]*\burl=["']([^"']+)["']/i,
+    /<enclosure[^>]*\burl=["']([^"']+)["'][^>]*>/i,
+    /<img[^>]*\b(?:src|data-src|data-original)=["']([^"']+)["']/i,
+    /<img[^>]*\bsrcset=["']([^"']+)["']/i,
+    /<content:encoded[^>]*>([\s\S]*?)<\/content:encoded>/i,
+    /<description[^>]*>([\s\S]*?)<\/description>/i,
+    /<summary[^>]*>([\s\S]*?)<\/summary>/i
   ]
-  for (const pattern of patterns) {
+  for (const pattern of candidates) {
     const match = item.match(pattern)
     if (!match) continue
-    const raw = decode(match[1]).trim()
-    try {
-      const url = new URL(raw.startsWith('//') ? 'https:' + raw : raw)
-      if (url.protocol === 'https:') return url.href
-    } catch { /* URL de imagen no válida */ }
+    let raw = match[1]
+    if (/srcset=/i.test(match[0])) raw = raw.split(',')[0].trim().split(/\s+/)[0]
+    else if (/content:encoded|description|summary/i.test(pattern.source)) {
+      const embedded = raw.match(/<img[^>]*\b(?:src|data-src|data-original)=["']([^"']+)["']/i)
+      if (!embedded) continue
+      raw = embedded[1]
+    }
+    const url = safeImageUrl(raw)
+    if (url) return url
+  }
+  return ''
+}
+function htmlImageFrom(html, baseUrl) {
+  const tags = html.match(/<(?:meta|link)\b[^>]*>/gi) || []
+  for (const tagText of tags) {
+    const attr = name => {
+      const match = tagText.match(new RegExp('\\b' + name + '=["']([^"']+)["']', 'i'))
+      return match ? match[1] : ''
+    }
+    const key = (attr('property') || attr('name') || attr('rel')).toLowerCase()
+    if (['og:image', 'og:image:secure_url', 'twitter:image', 'twitter:image:src', 'image_src'].includes(key)) {
+      const image = safeImageUrl(attr('content') || attr('href'), baseUrl)
+      if (image) return image
+    }
+  }
+  // Algunos sitios sólo exponen la imagen en JSON-LD.
+  const jsonImages = [
+    ...html.matchAll(/["']image["']\s*:\s*["']([^"']+)["']/gi),
+    ...html.matchAll(/["']image["']\s*:\s*\{[\s\S]{0,300}?["']url["']\s*:\s*["']([^"']+)["']/gi)
+  ]
+  for (const match of jsonImages) {
+    const image = safeImageUrl(match[1], baseUrl)
+    if (image) return image
   }
   return ''
 }
@@ -240,12 +282,8 @@ export default async function handler(req, res) {
           signal: AbortSignal.timeout(3500)
         })
         if (!response.ok) return ''
-        const html = (await response.text()).slice(0, 250000)
-        const match = html.match(/<meta[^>]+(?:property|name)=["'](?:og:image|twitter:image)["'][^>]+content=["']([^"']+)["']/i) ||
-          html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+(?:property|name)=["'](?:og:image|twitter:image)["']/i)
-        if (!match) return ''
-        const imageUrl = new URL(decode(match[1]), articleUrl)
-        return imageUrl.protocol === 'https:' ? imageUrl.href : ''
+        const html = (await response.text()).slice(0, 400000)
+        return htmlImageFrom(html, articleUrl)
       } catch { return '' }
     }))
     const items = selected.map((item, index) => ({
