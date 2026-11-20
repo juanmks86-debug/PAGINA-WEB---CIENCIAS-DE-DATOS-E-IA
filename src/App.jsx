@@ -541,27 +541,32 @@ function useActive() {
     let raf = 0
     const calc = () => {
       raf = 0
-      // Inicio solo permanece activo mientras la portada siga ocupando la zona superior.
       const barra = document.querySelector('.hd-bar')
-      const limite = (barra?.getBoundingClientRect().height || 54) + 28
+      // La línea de activación queda dentro del contenido, debajo de la barra fija.
+      const linea = Math.max(150, (barra?.getBoundingClientRect().height || 54) + 88)
       if (window.scrollY < 90) {
         setAct('concepto')
         return
       }
 
-      // Activa la sección más cercana que ya alcanzó la línea inferior del menú fijo.
-      let mejor = null
+      let dentro = null
       let distancia = Infinity
+      let cercano = null
+      let distanciaCercana = Infinity
       for (const id of ids) {
         const el = document.getElementById(id)
         if (!el) continue
-        const top = el.getBoundingClientRect().top
-        if (top <= limite && limite - top < distancia) {
-          mejor = id
-          distancia = limite - top
+        const rect = el.getBoundingClientRect()
+        // Prioriza la sección que realmente ocupa la línea de lectura.
+        if (rect.top <= linea && rect.bottom > linea) {
+          const d = Math.abs(rect.top - linea)
+          if (d < distancia) { dentro = id; distancia = d }
         }
+        // Respaldo para espacios entre secciones o páginas con contenido corto.
+        const dTop = Math.abs(rect.top - linea)
+        if (dTop < distanciaCercana) { cercano = id; distanciaCercana = dTop }
       }
-      setAct(mejor || 'concepto')
+      setAct(dentro || cercano || 'concepto')
     }
     const programar = () => {
       if (!raf) raf = requestAnimationFrame(calc)
