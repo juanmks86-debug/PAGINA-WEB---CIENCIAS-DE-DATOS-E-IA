@@ -1,8 +1,55 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { projects } from '../data.js'
+import { projects as proyectosLocales } from '../data.js'
+import { consultar, supabaseListo } from '../supabase.js'
 
 const LIMITE = 8
 const lista = (v) => (Array.isArray(v) ? v.filter(Boolean) : [])
+const quitaAcentos = (t) => String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+const partir = (t) => String(t || '').split(/[\n,;]+/).map((x) => x.trim()).filter(Boolean)
+// categoría → color de fondo, símbolo y abreviatura (si es una categoría nueva, usa valores neutros)
+const ESTILOS = [['dato', 'dashboard-art', '▥', 'DATA'], ['inteligencia', 'ai-art', '✦', 'IA'], ['ia', 'ai-art', '✦', 'IA'], ['desarrollo', 'dev-art', '</>', 'DEV'], ['web', 'web-art', '⌁', 'WEB']]
+
+function normalizaProyecto(r, i) {
+  const cat = r.categoria || 'Datos'
+  const k = quitaAcentos(cat)
+  const e = ESTILOS.find(([clave]) => k.startsWith(clave)) || ['', 'dashboard-art', '◆', cat.slice(0, 4).toUpperCase()]
+  return {
+    title: r.titulo,
+    category: cat,
+    description: r.descripcion || '',
+    long: r.descripcion_larga || '',
+    image: r.imagen_url || '',
+    gallery: partir(r.galeria),
+    tags: partir(r.herramientas),
+    team: partir(r.equipo),
+    year: r.anio || '',
+    date: r.fecha || '',
+    subject: r.materia || '',
+    goal: r.objetivo || '',
+    results: r.resultados || '',
+    url: r.enlace || '',
+    repo: r.repositorio || '',
+    report: r.informe || '',
+    tone: e[1],
+    symbol: e[2],
+    code: `${String(i + 1).padStart(2, '0')} / ${e[3]}`,
+  }
+}
+
+// null mientras carga. Sin Supabase, con error o con la tabla vacía, usa los proyectos de data.js.
+function useProyectos() {
+  const [items, setItems] = useState(null)
+  useEffect(() => {
+    let vivo = true
+    if (!supabaseListo) { setItems(proyectosLocales); return undefined }
+    consultar('proyectos', 'select=*&publicado=eq.true&order=orden.asc,created_at.asc')
+      .then((rows) => vivo && setItems(rows.length ? rows.map(normalizaProyecto) : proyectosLocales))
+      .catch(() => vivo && setItems(proyectosLocales))
+    return () => { vivo = false }
+  }, [])
+  return items
+}
+
 const iniciales = (n) => String(n).trim().split(/\s+/).slice(0, 2).map((w) => w[0]).join('').toUpperCase()
 
 // Muestra la imagen del proyecto; si no existe o no carga, queda el fondo con el símbolo.
@@ -104,8 +151,9 @@ export default function ProjectsSection() {
   const [cat, setCat] = useState('Todos')
   const [todos, setTodos] = useState(false)
   const [abierto, setAbierto] = useState(null)
-  const cats = ['Todos', ...new Set(projects.map((p) => p.category))]
-  const filtrados = cat === 'Todos' ? projects : projects.filter((p) => p.category === cat)
+  const proyectos = useProyectos() || []
+  const cats = ['Todos', ...new Set(proyectos.map((p) => p.category))]
+  const filtrados = cat === 'Todos' ? proyectos : proyectos.filter((p) => p.category === cat)
   const visibles = todos ? filtrados : filtrados.slice(0, LIMITE)
 
   return (
@@ -124,6 +172,7 @@ export default function ProjectsSection() {
           {cats.map((c) => <button key={c} className="pj-chip" aria-pressed={cat === c} onClick={() => { setCat(c); setTodos(false) }}>{c}</button>)}
         </div>
       )}
+      {!proyectos.length && <p className="pj-soon" role="status">Cargando proyectos…</p>}
       <div className="pj-grid">
         {visibles.map((p, i) => {
           const tags = lista(p.tags).slice(0, 3)
