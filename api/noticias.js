@@ -175,15 +175,27 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Método no permitido' })
   }
   try {
-    const results = await Promise.allSettled(FEEDS.map(async url => {
+    const results = await Promise.allSettled(FEEDS.map(async (url, index) => {
       const response = await fetch(url, {
-        headers: { 'User-Agent': 'IES6-NoticiasIA/1.0' },
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124.0.0.0 Safari/537.36',
+          'Accept': 'application/rss+xml, application/atom+xml, application/xml, text/xml, */*'
+        },
         signal: AbortSignal.timeout(9000)
       })
-      if (!response.ok) throw new Error('Feed no disponible')
-      return parseFeed(await response.text()).map(item => ({ ...item, directFeed: !url.includes('news.google.com/') }))
+      if (!response.ok) throw new Error('HTTP ' + response.status)
+      const xml = await response.text()
+      const items = parseFeed(xml).map(item => ({ ...item, directFeed: !url.includes('news.google.com/') }))
+      return { items, diagnostic: { index, host: new URL(url).hostname, status: response.status, bytes: xml.length, parsed: items.length, sample: items.slice(0, 3).map(item => item.title) } }
     }))
-    const responses = results.filter(result => result.status === 'fulfilled').map(result => result.value)
+    const responses = results.filter(result => result.status === 'fulfilled').map(result => result.value.items)
+    const diagnostics = results.map((result, index) => result.status === 'fulfilled'
+      ? result.value.diagnostic
+      : { index, host: new URL(FEEDS[index]).hostname, error: String(result.reason?.message || result.reason) })
+    if (req.query?.debug === '1') {
+      res.setHeader('Cache-Control', 'no-store')
+      return res.status(200).json({ feeds: diagnostics })
+    }
     if (!responses.length) throw new Error('Todas las fuentes fallaron')
 
     const seen = new Set()
