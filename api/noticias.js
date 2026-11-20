@@ -97,24 +97,24 @@ function imageFrom(item) {
 }
 function parseFeed(xml) {
   // Google News suele entregar RSS 2.0; algunos medios tecnológicos publican Atom.
-  const rssItems = [...xml.matchAll(/<item(?:\\s[^>]*)?>([\\s\\S]*?)<\\/item>/gi)].map(match => match[1])
-  const atomItems = [...xml.matchAll(/<entry(?:\\s[^>]*)?>([\\s\\S]*?)<\\/entry>/gi)].map(match => match[1])
+  const rssItems = [...xml.matchAll(/<item(?:\s[^>]*)?>([\s\S]*?)<\/item>/gi)].map(match => match[1])
+  const atomItems = [...xml.matchAll(/<entry(?:\s[^>]*)?>([\s\S]*?)<\/entry>/gi)].map(match => match[1])
   const entries = [...rssItems, ...atomItems]
   return entries.map(item => {
-    const isAtom = /<entry(?:\\s[^>]*)?>/i.test(item) || /<published[\\s>]|<updated[\\s>]/i.test(item)
-    const source = item.match(/<source(?:\\s[^>]*)?>([\\s\\S]*?)<\\/source>/i)
-    const author = item.match(/<author(?:\\s[^>]*)?>([\\s\\S]*?)<\\/author>/i)
+    const isAtom = /<entry(?:\s[^>]*)?>/i.test(item) || /<published[\s>]|<updated[\s>]/i.test(item)
+    const source = item.match(/<source(?:\s[^>]*)?>([\s\S]*?)<\/source>/i)
+    const author = item.match(/<author(?:\s[^>]*)?>([\s\S]*?)<\/author>/i)
     const title = tag(item, 'title')
     const image = imageFrom(item)
     let description = tag(item, 'description') || tag(item, 'summary') || tag(item, 'content')
     const sourceName = source ? cleanText(tag(source[1], 'title') || source[1]) :
       author ? cleanText(tag(author[1], 'name') || author[1]) : ''
-    description = description.replace(/\\s+/g, ' ').trim()
+    description = description.replace(/\s+/g, ' ').trim()
     if (description.toLowerCase().startsWith(title.toLowerCase())) {
-      description = description.slice(title.length).replace(/^[\\s:–—-]+/, '').trim()
+      description = description.slice(title.length).replace(/^[\s:–—-]+/, '').trim()
     }
     const normalize = value => value.toLowerCase()
-      .normalize('NFD').replace(/[\\u0300-\\u036f]/g, '')
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
       .replace(/[^a-z0-9]+/g, ' ').trim()
     const titleWithoutSource = sourceName && title.toLowerCase().endsWith(' - ' + sourceName.toLowerCase())
       ? title.slice(0, -(sourceName.length + 3))
@@ -133,14 +133,14 @@ function parseFeed(xml) {
     const date = new Date(dateValue)
     let link = tag(item, 'link')
     if (isAtom) {
-      const alternate = [...item.matchAll(/<link\\b([^>]*)\\/?\\s*>/gi)]
+      const alternate = [...item.matchAll(/<link\b([^>]*)\/?\s*>/gi)]
         .map(match => match[1])
-        .find(attrs => !/\\brel=["'](?:self|enclosure)["']/i.test(attrs))
-      const href = alternate && alternate.match(/\\bhref=["']([^"']+)["']/i)
+        .find(attrs => !/\brel=["'](?:self|enclosure)["']/i.test(attrs))
+      const href = alternate && alternate.match(/\bhref=["']([^"']+)["']/i)
       if (href) link = decode(href[1])
     }
     if (!link) {
-      const enclosureLink = item.match(/<link\\b[^>]*\\brel=["']enclosure["'][^>]*\\bhref=["']([^"']+)["']/i)
+      const enclosureLink = item.match(/<link\b[^>]*\brel=["']enclosure["'][^>]*\bhref=["']([^"']+)["']/i)
       if (enclosureLink) link = decode(enclosureLink[1])
     }
     return { title, link, description, image, source: sourceName, date }
@@ -190,7 +190,7 @@ export default async function handler(req, res) {
     const selected = []
     const ordered = responses.flat().sort((a, b) => b.date - a.date)
     for (const item of ordered) {
-      const key = item.title.toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ').trim()
+      const key = item.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ').trim()
       if (seen.has(key) || isNearDuplicate(item.title, selected.map(entry => entry.title))) continue
       seen.add(key)
       selected.push(item)
