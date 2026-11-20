@@ -6,7 +6,10 @@ const FEEDS = [
   // Robótica, ciberseguridad y tecnología aplicada.
   'https://news.google.com/rss/search?q=%28rob%C3%B3tica+OR+robotics+OR+ciberseguridad+OR+%22AI+security%22+OR+%22computer+vision%22%29+when%3A7d&hl=es-419&gl=ES&ceid=ES%3Aes',
   // Cobertura internacional en inglés.
-  'https://news.google.com/rss/search?q=%28%22generative+AI%22+OR+%22artificial+intelligence%22+OR+%22machine+learning%22+OR+%22data+science%22+OR+robotics%29+when%3A7d&hl=en-US&gl=US&ceid=US%3Aen'
+  'https://news.google.com/rss/search?q=%28%22generative+AI%22+OR+%22artificial+intelligence%22+OR+%22machine+learning%22+OR+%22data+science%22+OR+robotics%29+when%3A7d&hl=en-US&gl=US&ceid=US%3Aen',
+  // Medios tecnológicos con RSS propio: suelen incluir imágenes y enlaces directos.
+  'https://techcrunch.com/category/artificial-intelligence/feed/',
+  'https://arstechnica.com/ai/feed/'
 ]
 const PALETTE = [
   ['#0b57a4', '#2a9d9a'], ['#5b21b6', '#2563eb'],
@@ -172,10 +175,30 @@ export default async function handler(req, res) {
       if (seen.has(key) || isNearDuplicate(item.title, selected.map(entry => entry.title))) continue
       seen.add(key)
       selected.push(item)
-      if (selected.length === 12) break
+      if (selected.length === 16) break
     }
 
     const urls = await Promise.all(selected.map(item => resolvePublisherUrl(item.link)))
+    const previewImages = await Promise.all(selected.map(async (item, index) => {
+      if (item.image) return item.image
+      // Google News no expone una URL de imagen fiable en su RSS. Para enlaces
+      // directos de medios, intentamos leer og:image sin depender de servicios pagos.
+      const articleUrl = urls[index]
+      if (!articleUrl || articleUrl.includes('news.google.com/')) return ''
+      try {
+        const response = await fetch(articleUrl, {
+          headers: { 'User-Agent': 'Mozilla/5.0 (compatible; IES6Noticias/1.0)' },
+          signal: AbortSignal.timeout(3500)
+        })
+        if (!response.ok) return ''
+        const html = (await response.text()).slice(0, 250000)
+        const match = html.match(/<meta[^>]+(?:property|name)=["'](?:og:image|twitter:image)["'][^>]+content=["']([^"']+)["']/i) ||
+          html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+(?:property|name)=["'](?:og:image|twitter:image)["']/i)
+        if (!match) return ''
+        const imageUrl = new URL(decode(match[1]), articleUrl)
+        return imageUrl.protocol === 'https:' ? imageUrl.href : ''
+      } catch { return '' }
+    }))
     const items = selected.map((item, index) => ({
       categoria: categoryFor(item),
       titulo: item.title,
@@ -183,7 +206,7 @@ export default async function handler(req, res) {
       cifra: 'IA',
       cifraTxt: 'noticia reciente',
       colores: PALETTE[index % PALETTE.length],
-      imagen: item.image || '',
+      imagen: previewImages[index] || '',
       texto: item.description || 'Leé la publicación original para conocer todos los detalles.',
       fuente: item.source || 'Medio de comunicación',
       enlace: urls[index]
