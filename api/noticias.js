@@ -39,7 +39,20 @@ function parseFeed(xml) {
     if (title && description.toLowerCase().startsWith(title.toLowerCase())) {
       description = description.slice(title.length).replace(/^[\s:–—-]+/, '').trim()
     }
-    if (!description || description.length < 80 || description.toLowerCase() === sourceName.toLowerCase()) {
+    const normalize = value => value.toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9]+/g, ' ').trim()
+    const titleWithoutSource = sourceName && title.toLowerCase().endsWith(' - ' + sourceName.toLowerCase())
+      ? title.slice(0, -(sourceName.length + 3))
+      : title
+    const descriptionKey = normalize(description)
+    const titleKey = normalize(titleWithoutSource)
+    const sourceKey = normalize(sourceName)
+    const isOnlyHeadline = !description || description.length < 80 ||
+      descriptionKey === sourceKey ||
+      descriptionKey === titleKey ||
+      descriptionKey === normalize(titleWithoutSource + ' ' + sourceName)
+    if (isOnlyHeadline) {
       description = 'Leé la publicación original para conocer todos los detalles.'
     }
     const date = new Date(tag(item, 'pubDate'))
