@@ -40,29 +40,52 @@ function TabIcon({ name, size = 40 }) {
 
 function Tabs() {
   const [sel, setSel] = useState(null)
+  const triggerRef = useRef(null)
+  const cerrar = () => {
+    setSel(null)
+    requestAnimationFrame(() => triggerRef.current?.focus())
+  }
   useEffect(() => {
     if (sel === null) return
-    const onKey = (e) => { if (e.key === 'Escape') setSel(null) }
+    const onKey = (e) => {
+      if (e.key === 'Escape') cerrar()
+    }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [sel])
   const cur = sel !== null ? tabs[sel] : null
+  const contenerTab = (e) => {
+    if (e.key !== 'Tab') return
+    const elementos = Array.from(e.currentTarget.querySelectorAll('button:not([disabled]),a[href],input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])'))
+    if (!elementos.length) return
+    const primero = elementos[0]
+    const ultimo = elementos[elementos.length - 1]
+    if (e.shiftKey && document.activeElement === primero) {
+      e.preventDefault()
+      ultimo.focus()
+    } else if (!e.shiftKey && document.activeElement === ultimo) {
+      e.preventDefault()
+      primero.focus()
+    }
+  }
 
   return (
     <>
       <div className="tabs" id="perfil">
         {tabs.map(([t, icon], i) => (
-          <button className="tab" key={t} onClick={() => setSel(i)} aria-haspopup="dialog">
+          <button className="tab" key={t} onClick={(e) => { triggerRef.current = e.currentTarget; setSel(i) }}
+            aria-haspopup="dialog" aria-expanded={sel === i} aria-controls="perfil-dialog">
             <TabIcon name={icon} />
             <span>{t}</span>
           </button>
         ))}
       </div>
       {cur && (
-        <div className="modal-bg" onClick={() => setSel(null)}>
-          <div className="modal" role="dialog" aria-modal="true" aria-label={cur[0]} onClick={(e) => e.stopPropagation()}>
-            <button className="x" aria-label="Cerrar" onClick={() => setSel(null)} autoFocus>×</button>
-            <h4><TabIcon name={cur[1]} size={22} />{cur[0]}</h4>
+        <div className="modal-bg" onClick={cerrar}>
+          <div id="perfil-dialog" className="modal" role="dialog" aria-modal="true" aria-labelledby="perfil-dialog-title"
+            onClick={(e) => e.stopPropagation()} onKeyDown={contenerTab}>
+            <button className="x" aria-label="Cerrar" onClick={cerrar} autoFocus>×</button>
+            <h4 id="perfil-dialog-title"><TabIcon name={cur[1]} size={22} />{cur[0]}</h4>
             <ul>{cur[2].map((x) => <li key={x}>{x}</li>)}</ul>
           </div>
         </div>
