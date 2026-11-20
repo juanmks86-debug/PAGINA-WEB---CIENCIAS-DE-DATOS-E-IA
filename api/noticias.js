@@ -96,18 +96,25 @@ function imageFrom(item) {
   return ''
 }
 function parseFeed(xml) {
-  return [...xml.matchAll(/<item(?:\s[^>]*)?>([\s\S]*?)<\/item>/gi)].map(([, item]) => {
-    const source = item.match(/<source(?:\s[^>]*)?>([\s\S]*?)<\/source>/i)
+  // Google News suele entregar RSS 2.0; algunos medios tecnológicos publican Atom.
+  const rssItems = [...xml.matchAll(/<item(?:\\s[^>]*)?>([\\s\\S]*?)<\\/item>/gi)].map(match => match[1])
+  const atomItems = [...xml.matchAll(/<entry(?:\\s[^>]*)?>([\\s\\S]*?)<\\/entry>/gi)].map(match => match[1])
+  const entries = [...rssItems, ...atomItems]
+  return entries.map(item => {
+    const isAtom = /<entry(?:\\s[^>]*)?>/i.test(item) || /<published[\\s>]|<updated[\\s>]/i.test(item)
+    const source = item.match(/<source(?:\\s[^>]*)?>([\\s\\S]*?)<\\/source>/i)
+    const author = item.match(/<author(?:\\s[^>]*)?>([\\s\\S]*?)<\\/author>/i)
     const title = tag(item, 'title')
     const image = imageFrom(item)
-    let description = tag(item, 'description')
-    const sourceName = source ? cleanText(source[1]) : ''
-    description = description.replace(/\s+/g, ' ').trim()
-    if (title && description.toLowerCase().startsWith(title.toLowerCase())) {
-      description = description.slice(title.length).replace(/^[\s:–—-]+/, '').trim()
+    let description = tag(item, 'description') || tag(item, 'summary') || tag(item, 'content')
+    const sourceName = source ? cleanText(tag(source[1], 'title') || source[1]) :
+      author ? cleanText(tag(author[1], 'name') || author[1]) : ''
+    description = description.replace(/\\s+/g, ' ').trim()
+    if (description.toLowerCase().startsWith(title.toLowerCase())) {
+      description = description.slice(title.length).replace(/^[\\s:–—-]+/, '').trim()
     }
     const normalize = value => value.toLowerCase()
-      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .normalize('NFD').replace(/[\\u0300-\\u036f]/g, '')
       .replace(/[^a-z0-9]+/g, ' ').trim()
     const titleWithoutSource = sourceName && title.toLowerCase().endsWith(' - ' + sourceName.toLowerCase())
       ? title.slice(0, -(sourceName.length + 3))
@@ -122,8 +129,20 @@ function parseFeed(xml) {
     if (isOnlyHeadline) {
       description = 'Leé la publicación original para conocer todos los detalles.'
     }
-    const date = new Date(tag(item, 'pubDate'))
-    const link = tag(item, 'link')
+    const dateValue = tag(item, 'pubDate') || tag(item, 'published') || tag(item, 'updated') || tag(item, 'dc:date')
+    const date = new Date(dateValue)
+    let link = tag(item, 'link')
+    if (isAtom) {
+      const alternate = [...item.matchAll(/<link\\b([^>]*)\\/?\\s*>/gi)]
+        .map(match => match[1])
+        .find(attrs => !/\\brel=["'](?:self|enclosure)["']/i.test(attrs))
+      const href = alternate && alternate.match(/\\bhref=["']([^"']+)["']/i)
+      if (href) link = decode(href[1])
+    }
+    if (!link) {
+      const enclosureLink = item.match(/<link\\b[^>]*\\brel=["']enclosure["'][^>]*\\bhref=["']([^"']+)["']/i)
+      if (enclosureLink) link = decode(enclosureLink[1])
+    }
     return { title, link, description, image, source: sourceName, date }
   }).filter(item => {
     const text = item.title + ' ' + item.description
@@ -139,7 +158,7 @@ async function resolvePublisherUrl(url) {
     const response = await fetch(url, {
       method: 'GET',
       redirect: 'follow',
-      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; IES6Noticias/1.0)', 'Range': 'bytes=0-1023' },
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; IES6Noticias/1.0)', 'Accept': 'text/html,application/xhtml+xml' },
       signal: AbortSignal.timeout(4500)
     })
     const finalUrl = response.url || url
