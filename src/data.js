@@ -72,6 +72,7 @@ export const projects = [
 
 export const resources = [
   { title: 'Buscar apuntes', description: 'Encontrá rápidamente lo que necesitás.', icon: '⌕', href: '#materiales-titulo' },
+  { title: 'Compartir material', description: 'Solo compartí el link de tu Drive.', icon: '↗', href: '#alumnos' },
   { title: 'Agenda académica', description: 'Fechas de exámenes y entregas.', icon: '▦', href: '/eventos#calendario' },
   { title: 'Ayudante de IA', description: 'Consultas, resúmenes y más.', icon: '✦', href: '#alumnos' },
 ]
