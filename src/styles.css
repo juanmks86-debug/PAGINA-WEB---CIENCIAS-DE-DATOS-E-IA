@@ -441,3 +441,19 @@ footer h5::after{
   #pasantias .card:hover .art svg{transform:scale(1.08)}
 }
 @media(prefers-reduced-motion:reduce){#pasantias .card,#pasantias .card .art svg{transition:none}}
+
+
+/* Plan de estudio: acceso claro para consultar o descargar el documento */
+.plan-card{align-items:flex-start;gap:16px;border:1px solid color-mix(in srgb,var(--teal) 30%,var(--line));background:linear-gradient(125deg,color-mix(in srgb,var(--teal) 7%,var(--surface)),var(--surface) 72%);transition:transform .28s ease,border-color .28s ease,box-shadow .28s ease}
+.plan-file-icon{flex:0 0 56px;width:56px;height:68px;display:grid;place-items:center;color:var(--teal)}
+.plan-copy{min-width:0;flex:1}
+.plan-kicker{display:inline-block;margin:0 0 7px;color:var(--teal);font-size:.7rem;font-weight:800;letter-spacing:.11em;text-transform:uppercase}
+.plan-copy p{max-width:38ch}
+.plan-actions{display:flex;align-items:center;flex-wrap:wrap;gap:10px}
+.plan-actions .btn{display:inline-flex;align-items:center;gap:8px}
+.plan-download{display:inline-flex;align-items:center;gap:7px;min-height:40px;padding:8px 10px;border-radius:9px;color:var(--ink);font-size:.86rem;font-weight:700;text-decoration:none;transition:background .2s ease,color .2s ease}
+.plan-download:hover,.plan-download:focus-visible{background:color-mix(in srgb,var(--teal) 12%,transparent);color:var(--teal)}
+.plan-actions a:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
+@media(hover:hover) and (pointer:fine){.plan-card:hover{transform:translateY(-3px);border-color:var(--teal);box-shadow:0 12px 26px rgba(31,45,58,.12)}}
+@media(max-width:480px){.plan-card{gap:11px;padding:14px}.plan-file-icon{flex-basis:44px;width:44px;height:58px}.plan-file-icon svg{width:44px;height:56px}.plan-actions{align-items:stretch;flex-direction:column;gap:5px}.plan-actions .btn{justify-content:center}.plan-download{justify-content:center}}
+@media(prefers-reduced-motion:reduce){.plan-card,.plan-download{transition:none!important}.plan-card:hover{transform:none}}
