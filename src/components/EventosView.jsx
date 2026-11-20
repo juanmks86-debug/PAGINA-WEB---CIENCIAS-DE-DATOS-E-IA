@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { eventosProximos } from '../data.js'
 import { consultar, supabaseListo } from '../supabase.js'
 
@@ -105,8 +105,10 @@ export default function EventosView({ ui }) {
   const [album, setAlbum] = useState(null)
   const [fotosAlbum, setFotosAlbum] = useState(null)
   const [cuantas, setCuantas] = useState(PASO)
+  const albumRequestRef = useRef(0)
 
   useEffect(() => { document.title = 'Eventos · Ciencia de Datos e IA' }, [])
+  useEffect(() => () => { albumRequestRef.current += 1 }, [])
   // Esperar a que los datos dinámicos estén listos antes de resolver el ancla.
   // Así /eventos#galeria y /eventos#calendario no quedan desplazados por el contenido que llega después.
   useEffect(() => {
@@ -129,11 +131,22 @@ export default function EventosView({ ui }) {
   }, [eventos, albumes])
 
   const abrirAlbum = (a, bajar) => {
+    const solicitud = ++albumRequestRef.current
     setAlbum(a); setFotosAlbum(null); setCuantas(PASO)
     consultar('galeria', `select=*&publicado=eq.true&album_id=eq.${encodeURIComponent(a.id)}&order=orden.asc,created_at.asc`)
-      .then(setFotosAlbum)
-      .catch(() => setFotosAlbum([]))
-    if (bajar) requestAnimationFrame(() => { const el = document.getElementById('galeria'); if (el) el.scrollIntoView({ behavior: 'smooth' }) })
+      .then((rows) => { if (albumRequestRef.current === solicitud) setFotosAlbum(rows) })
+      .catch(() => { if (albumRequestRef.current === solicitud) setFotosAlbum([]) })
+    if (bajar) requestAnimationFrame(() => {
+      const el = document.getElementById('galeria')
+      if (!el) return
+      const reducir = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      el.scrollIntoView({ behavior: reducir ? 'auto' : 'smooth' })
+    })
+  }
+  const volverGaleria = () => {
+    albumRequestRef.current += 1
+    setAlbum(null)
+    setFotosAlbum(null)
   }
 
   const hoy = hoyMedianoche()
@@ -215,7 +228,7 @@ export default function EventosView({ ui }) {
         {albumes === null ? <p className="ev-vacio">Cargando galería…</p> : album ? (
           <div className="album-view">
             <div className="alb-open-head">
-              <button className="chip" onClick={() => setAlbum(null)}>← Volver a la galería</button>
+              <button className="chip" onClick={volverGaleria}>← Volver a la galería</button>
               <div>
                 <h4>{album.titulo}</h4>
                 <p>{album.fecha ? media(aFecha(album.fecha)) + ' · ' : ''}{nFotos(album.fotos)}</p>
