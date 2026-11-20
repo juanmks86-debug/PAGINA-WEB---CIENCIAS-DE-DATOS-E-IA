@@ -3,12 +3,9 @@ const FEEDS = [
   'https://news.google.com/rss/search?q=%28artificial+intelligence+OR+generative+AI%29+when%3A7d&hl=en-US&gl=US&ceid=US%3Aen'
 ]
 const PALETTE = [
-  ['#0b57a4', '#2a9d9a'],
-  ['#5b21b6', '#2563eb'],
-  ['#0f766e', '#0b57a4'],
-  ['#1d4ed8', '#0891b2'],
-  ['#b45309', '#be123c'],
-  ['#0e7490', '#4338ca']
+  ['#0b57a4', '#2a9d9a'], ['#5b21b6', '#2563eb'],
+  ['#0f766e', '#0b57a4'], ['#1d4ed8', '#0891b2'],
+  ['#b45309', '#be123c'], ['#0e7490', '#4338ca']
 ]
 
 function decode(value = '') {
@@ -21,18 +18,18 @@ function decode(value = '') {
 }
 function tag(xml, name) {
   const match = xml.match(new RegExp('<' + name + '(?:\\s[^>]*)?>([\\s\\S]*?)<\\/' + name + '>', 'i'))
-  return match ? decode(match[1]).replace(/<[^>]*>/g, ' ').replace(/\\s+/g, ' ').trim() : ''
+  return match ? decode(match[1]).replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim() : ''
 }
 function parseFeed(xml) {
-  return [...xml.matchAll(/<item(?:\\s[^>]*)?>([\\s\\S]*?)<\\/item>/gi)].map(([, item]) => {
-    const source = item.match(/<source(?:\\s[^>]*)?>([\\s\\S]*?)<\\/source>/i)
+  return [...xml.matchAll(/<item(?:\s[^>]*)?>([\s\S]*?)<\/item>/gi)].map(([, item]) => {
+    const source = item.match(/<source(?:\s[^>]*)?>([\s\S]*?)<\/source>/i)
     const link = tag(item, 'link')
     const title = tag(item, 'title')
     const description = tag(item, 'description')
-    const dateRaw = tag(item, 'pubDate')
-    const date = new Date(dateRaw)
-    return { title, link, description, source: source ? decode(source[1]).replace(/<[^>]*>/g, '').trim() : '', date: Number.isNaN(date.getTime()) ? null : date }
-  }).filter(item => item.title && item.link && item.date && item.date.getTime() <= Date.now() + 86400000 && item.date.getTime() >= Date.now() - 14 * 86400000)
+    const date = new Date(tag(item, 'pubDate'))
+    return { title, link, description, source: source ? decode(source[1]).replace(/<[^>]*>/g, '').trim() : '', date }
+  }).filter(item => item.title && item.link && !Number.isNaN(item.date.getTime()) &&
+    item.date.getTime() <= Date.now() + 86400000 && item.date.getTime() >= Date.now() - 14 * 86400000)
 }
 
 export default async function handler(req, res) {
