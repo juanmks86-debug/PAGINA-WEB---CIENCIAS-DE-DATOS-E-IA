@@ -39,10 +39,19 @@ function isNearDuplicate(title, previousTitles) {
   for (const previous of previousTitles) {
     const other = titleTokens(previous)
     const intersection = [...current].filter(word => other.has(word)).length
-    const union = new Set([...current, ...other]).size
-    if (union && intersection / union >= 0.58) return true
+    const overlap = intersection / Math.max(1, Math.min(current.size, other.size))
+    // El solapamiento sobre el título más corto detecta titulares de la misma noticia
+    // aunque cada medio use palabras distintas o agregue su nombre al final.
+    if (intersection >= 4 && overlap >= 0.55) return true
   }
   return false
+}
+
+function isWeakRoboticsMatch(item) {
+  const title = item.title.toLowerCase()
+  return /rob[oó]tica|robotics|robots?/.test(title) &&
+    titleTokens(item.title).size < 5 &&
+    !/inteligencia artificial|artificial intelligence|machine learning|automatizaci[oó]n|robot humanoide|robot industrial|drones? aut[oó]nomos/.test(title)
 }
 
 function decode(value = '') {
@@ -98,7 +107,7 @@ function parseFeed(xml) {
     return item.title && item.link && !Number.isNaN(item.date.getTime()) &&
       item.date.getTime() <= Date.now() + 86400000 &&
       item.date.getTime() >= Date.now() - 14 * 86400000 &&
-      RELEVANT.test(text) && !EXCLUDED.test(item.title) && !LOW_VALUE.test(item.title)
+      RELEVANT.test(text) && !EXCLUDED.test(item.title) && !LOW_VALUE.test(item.title) && !isWeakRoboticsMatch(item)
   })
 }
 async function resolvePublisherUrl(url) {
