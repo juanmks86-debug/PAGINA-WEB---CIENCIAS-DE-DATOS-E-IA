@@ -1,6 +1,12 @@
 const FEEDS = [
-  'https://news.google.com/rss/search?q=%28%22inteligencia+artificial%22+OR+%22IA+generativa%22+OR+%22aprendizaje+autom%C3%A1tico%22+OR+%22ciencia+de+datos%22+OR+rob%C3%B3tica+OR+%22visi%C3%B3n+artificial%22%29+when%3A7d&hl=es-419&gl=AR&ceid=AR%3Aes-419',
-  'https://news.google.com/rss/search?q=%28%22generative+AI%22+OR+%22artificial+intelligence%22+OR+%22machine+learning%22+OR+%22data+science%22+OR+robotics+OR+%22computer+vision%22+OR+%22AI+cybersecurity%22%29+when%3A7d&hl=en-US&gl=US&ceid=US%3Aen'
+  // Argentina: actualidad, educación, industria y políticas públicas.
+  'https://news.google.com/rss/search?q=%28%22inteligencia+artificial%22+OR+%22IA+generativa%22+OR+%22ciencia+de+datos%22+OR+rob%C3%B3tica%29+when%3A7d&hl=es-419&gl=AR&ceid=AR%3Aes-419',
+  // Latinoamérica y España: investigación e innovación en español.
+  'https://news.google.com/rss/search?q=%28%22inteligencia+artificial%22+OR+%22aprendizaje+autom%C3%A1tico%22+OR+%22visi%C3%B3n+artificial%22+OR+%22procesamiento+del+lenguaje%22%29+when%3A7d&hl=es-419&gl=MX&ceid=MX%3Aes-419',
+  // Robótica, ciberseguridad y tecnología aplicada.
+  'https://news.google.com/rss/search?q=%28rob%C3%B3tica+OR+robotics+OR+ciberseguridad+OR+%22AI+security%22+OR+%22computer+vision%22%29+when%3A7d&hl=es-419&gl=ES&ceid=ES%3Aes',
+  // Cobertura internacional en inglés.
+  'https://news.google.com/rss/search?q=%28%22generative+AI%22+OR+%22artificial+intelligence%22+OR+%22machine+learning%22+OR+%22data+science%22+OR+robotics%29+when%3A7d&hl=en-US&gl=US&ceid=US%3Aen'
 ]
 const PALETTE = [
   ['#0b57a4', '#2a9d9a'], ['#5b21b6', '#2563eb'],
@@ -9,6 +15,17 @@ const PALETTE = [
 ]
 const EXCLUDED = /\b(movie|film|steelbook|soundtrack|trailer|actor|actress|cinema|película|peliculas|películas|estreno|reparto)\b/i
 const RELEVANT = /(inteligencia artificial|ia generativa|generative ai|artificial intelligence|machine learning|aprendizaje automático|aprendizaje automatico|ciencia de datos|data science|deep learning|computer vision|visión artificial|vision artificial|computer-vision|robotics|robótica|robotica|large language model|\bllm\b|neural network|redes neuronales|ai-powered|ai[- ]driven|ciberseguridad.*ia|ia.*ciberseguridad)/i
+
+function categoryFor(item) {
+  const value = (item.title + ' ' + item.description).toLowerCase()
+  if (/ciberseguridad|ciberataque|phishing|malware|ransomware|ai security/.test(value)) return 'CIBERSEGURIDAD · IA'
+  if (/robot|autónom|autonom|dron|robótica/.test(value)) return 'ROBÓTICA · INNOVACIÓN'
+  if (/educaci|universidad|escuela|docente|estudiante|aula/.test(value)) return 'IA · EDUCACIÓN'
+  if (/empleo|trabajo|laboral|empresa|industria|comercio/.test(value)) return 'IA · TRABAJO E INDUSTRIA'
+  if (/medicina|salud|hospital|diagnóstico|paciente/.test(value)) return 'IA · SALUD'
+  if (/datos|data science|machine learning|aprendizaje automático|estadístic/.test(value)) return 'CIENCIA DE DATOS · ML'
+  return 'ACTUALIDAD · INTELIGENCIA ARTIFICIAL'
+}
 
 function decode(value = '') {
   return value
@@ -102,7 +119,7 @@ export default async function handler(req, res) {
 
     const seen = new Set()
     const selected = responses.flat().sort((a, b) => b.date - a.date).filter(item => {
-      const key = item.link.split('?')[0]
+      const key = item.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ').trim()
       if (seen.has(key)) return false
       seen.add(key)
       return true
@@ -110,7 +127,7 @@ export default async function handler(req, res) {
 
     const urls = await Promise.all(selected.map(item => resolvePublisherUrl(item.link)))
     const items = selected.map((item, index) => ({
-      categoria: 'ACTUALIDAD · INTELIGENCIA ARTIFICIAL',
+      categoria: categoryFor(item),
       titulo: item.title,
       fecha: item.date.toLocaleDateString('es-AR', { day: '2-digit', month: 'long', year: 'numeric' }),
       cifra: 'IA',
