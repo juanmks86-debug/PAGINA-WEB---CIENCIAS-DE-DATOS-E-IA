@@ -749,6 +749,7 @@ export default function App() {
 
   return (
     <>
+      <a className="skip-link" href="#contenido-principal">Saltar al contenido</a>
       <header className="hd-top">
         <div className="wrap hd-top-in">
           <Wordmark />
@@ -778,6 +779,7 @@ export default function App() {
         </div>
       </div>
 
+      <main id="contenido-principal" tabIndex="-1">
       {esEventos ? <EventosView ui={{ Calendar, Lightbox }} /> : esAlumnos ? <StudentsViewExternal standalone /> : (<>
       <div className="hero" id="concepto">
         <NetSvg cls="net-tl" />
@@ -847,6 +849,7 @@ export default function App() {
       </div>
 
       </>)}
+      </main>
 
       <footer>
         <div className="wrap ft-cols">
