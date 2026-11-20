@@ -152,21 +152,92 @@ function parseFeed(xml) {
       RELEVANT.test(text) && !EXCLUDED.test(item.title) && !LOW_VALUE.test(item.title) && !isWeakRoboticsMatch(item)
   })
 }
+function articleIdFromGoogleUrl(value) {
+  try {
+    const url = new URL(value)
+    if (url.hostname !== 'news.google.com') return ''
+    return url.pathname.match(/\\/(?:rss\\/)?(?:articles|read)\\/([\\w-]+)/)?.[1] || ''
+  } catch {
+    return ''
+  }
+}
+
+function googleDecodeParams(html) {
+  const sg = html.match(/data-n-a-sg="([^"]+)"/)?.[1]
+  const ts = html.match(/data-n-a-ts="([^"]+)"/)?.[1]
+  return sg && ts ? { sg, ts: Number(ts) } : null
+}
+
+function googleBatchBody(articleId, { sg, ts }) {
+  const inner = JSON.stringify([
+    'garturlreq',
+    [['X', 'X', ['X', 'X'], null, null, 1, 1, 'US:en', null, 1, null, null, null, null, null, 0, 1], 'X', 'X', 1, [1, 1, 1], 1, 1, null, 0, 0, null, 0],
+    articleId, ts, sg
+  ])
+  return 'f.req=' + encodeURIComponent(JSON.stringify([[['Fbv4je', inner, null, 'generic']]]))
+}
+
+function googleBatchResult(body) {
+  for (const line of body.split('\\n')) {
+    if (!line.startsWith('[[')) continue
+    try {
+      const rows = JSON.parse(line)
+      for (const row of rows) {
+        if (row[1] !== 'Fbv4je' || typeof row[2] !== 'string') continue
+        const url = JSON.parse(row[2])?.[1]
+        if (typeof url === 'string' && /^https?:\\/\\//i.test(url)) return url
+      }
+    } catch { /* Respuesta de Google no reconocida */ }
+  }
+  return ''
+}
+
 async function resolvePublisherUrl(url) {
   if (!url || !url.includes('news.google.com/')) return url
+  const articleId = articleIdFromGoogleUrl(url)
+  if (!articleId) return url
   try {
-    const response = await fetch(url, {
+    const headers = {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/130.0.0.0 Safari/537.36',
+      'Accept-Language': 'en-US,en;q=0.9'
+    }
+    // Google ya no redirige por HTTP: la página contiene una firma necesaria
+    // para consultar su endpoint interno Fbv4je y recuperar la URL editorial.
+    const page = await fetch('https://news.google.com/rss/articles/' + articleId, {
       method: 'GET',
       redirect: 'follow',
-      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; IES6Noticias/1.0)', 'Accept': 'text/html,application/xhtml+xml' },
+      headers,
       signal: AbortSignal.timeout(4500)
     })
-    const finalUrl = response.url || url
-    if (response.body) await response.body.cancel().catch(() => {})
-    return finalUrl && !finalUrl.includes('news.google.com/') ? finalUrl : url
+    if (!page.ok) return url
+    const html = await page.text()
+    const params = googleDecodeParams(html)
+    if (!params) return url
+    const response = await fetch('https://news.google.com/_/DotsSplashUi/data/batchexecute', {
+      method: 'POST',
+      headers: { ...headers, 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+      body: googleBatchBody(articleId, params),
+      signal: AbortSignal.timeout(4500)
+    })
+    if (!response.ok) return url
+    const publisherUrl = googleBatchResult(await response.text())
+    return publisherUrl || url
   } catch {
     return url
   }
+}
+
+async function mapWithConcurrency(items, limit, callback) {
+  const output = new Array(items.length)
+  let next = 0
+  const workers = Array.from({ length: Math.min(limit, items.length) }, async () => {
+    while (next < items.length) {
+      const index = next++
+      output[index] = await callback(items[index], index)
+    }
+  })
+  await Promise.all(workers)
+  return output
 }
 
 export default async function handler(req, res) {
@@ -197,8 +268,8 @@ export default async function handler(req, res) {
       if (selected.length === 16) break
     }
 
-    const urls = await Promise.all(selected.map(item => resolvePublisherUrl(item.link)))
-    const previewImages = await Promise.all(selected.map(async (item, index) => {
+    const urls = await mapWithConcurrency(selected, 5, item => resolvePublisherUrl(item.link))
+    const previewImages = await mapWithConcurrency(selected, 6, async (item, index) => {
       if (item.image) return item.image
       // Google News no expone una URL de imagen fiable en su RSS. Para enlaces
       // directos de medios, intentamos leer og:image sin depender de servicios pagos.
@@ -217,7 +288,7 @@ export default async function handler(req, res) {
         const imageUrl = new URL(decode(match[1]), articleUrl)
         return imageUrl.protocol === 'https:' ? imageUrl.href : ''
       } catch { return '' }
-    }))
+    })
     const items = selected.map((item, index) => ({
       categoria: categoryFor(item),
       titulo: item.title,
