@@ -350,3 +350,10 @@ footer h5::after{
  .pj-modal,.pj-dialog,.pj-top,.pj-cols,.pj-two,.pj-act,.pj-nav,.pj-soon,.pj-main>img,.pj-main .project-art{animation:none!important}
  .pj-thumbs button,.pj-x,.pj-dialog .pj-chips span,.pj-team>div,.pj-team i,.pj-act .pj-go,.pj-act .pj-o,.pj-nav button{transition:none!important}
 }
+
+
+/* Herramientas del modal: distintivos compactos por tecnología */
+.pj-dialog .pj-chips{align-items:center;gap:6px}
+.pj-dialog .pj-chips .pj-tech{display:inline-flex;align-items:center;gap:5px;padding:2px 8px;font-size:.75rem;line-height:1.35;min-height:0;border-color:color-mix(in srgb,var(--tech-color) 42%,var(--student-line));color:var(--tech-color);background:color-mix(in srgb,var(--tech-color) 9%,transparent);white-space:nowrap}
+.pj-dialog .pj-chips .pj-tech i{display:inline-flex;align-items:center;justify-content:center;min-width:13px;height:13px;font-size:.58rem;line-height:1;font-style:normal;font-weight:900;letter-spacing:-.04em;color:var(--tech-color)}
+@media(hover:hover) and (pointer:fine){.pj-dialog .pj-chips .pj-tech:hover{border-color:var(--tech-color);background:color-mix(in srgb,var(--tech-color) 15%,transparent);box-shadow:0 3px 12px color-mix(in srgb,var(--tech-color) 18%,transparent)}}
