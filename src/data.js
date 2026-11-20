@@ -79,9 +79,9 @@ export const resources = [
 ]
 
 export const recentNotes = [
-  { title: 'Guía de introducción a Python', year: '1.º Año', subject: 'Actualizado recientemente' },
-  { title: 'Práctica de bases de datos', year: '2.º Año', subject: 'Actualizado recientemente' },
-  { title: 'Guía de proyecto integrador', year: '3.º Año', subject: 'En revisión' },
+  { title: 'Carpeta de apuntes de 1.º año', year: '1.º Año', subject: 'Apuntes y trabajos prácticos', href: 'https://drive.google.com/drive/folders/1qjZJVN52NdBsZ6x5pERRxHWYOgpe1VTG?usp=drive_link' },
+  { title: 'Carpeta de apuntes de 2.º año', year: '2.º Año', subject: 'Cursada, programación y bases de datos', href: 'https://drive.google.com/drive/folders/1rpcYxC9gOGY-uix-7wtFfpXDWTY88L-3?usp=sharing' },
+  { title: 'Carpeta de apuntes de 3.º año', year: '3.º Año', subject: 'Proyectos y material avanzado', href: 'https://drive.google.com/drive/folders/1jLCMk3oeBbqqVlEWeH4EBfIjTO1sIYHa?usp=sharing' },
 ]
 
 export const materialsByYear = [
