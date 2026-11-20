@@ -97,13 +97,13 @@ function imageFrom(item) {
 }
 function feedPreview(xml) {
   const entries = [
-    ...[...xml.matchAll(/<item(?:\\s[^>]*)?>([\\s\\S]*?)<\\/item>/gi)].map(match => match[1]),
-    ...[...xml.matchAll(/<entry(?:\\s[^>]*)?>([\\s\\S]*?)<\\/entry>/gi)].map(match => match[1])
+    ...[...xml.matchAll(/<item(?:\s[^>]*)?>([\s\S]*?)<\/item>/gi)].map(match => match[1]),
+    ...[...xml.matchAll(/<entry(?:\s[^>]*)?>([\s\S]*?)<\/entry>/gi)].map(match => match[1])
   ]
   return entries.slice(0, 5).map(item => ({
     title: tag(item, 'title'),
     date: tag(item, 'pubDate') || tag(item, 'published') || tag(item, 'updated') || tag(item, 'dc:date'),
-    hasLink: /<link\\b/i.test(item),
+    hasLink: /<link\b/i.test(item),
     relevant: RELEVANT.test(tag(item, 'title') + ' ' + tag(item, 'description') + ' ' + tag(item, 'summary'))
   }))
 }
