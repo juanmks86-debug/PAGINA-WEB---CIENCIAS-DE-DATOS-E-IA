@@ -312,3 +312,41 @@ footer h5::after{
   .album-view .alb-open-head .chip,.album-view .gal-more{transition:none!important}
   .album-view .alb-open-head .chip:hover,.album-view .gal-more:hover{transform:none}
 }
+
+
+/* Ventana de detalle de proyectos: apertura cinematográfica y microinteracciones */
+@keyframes pj-overlay-in{from{opacity:0;backdrop-filter:blur(0)}to{opacity:1;backdrop-filter:blur(7px)}}
+@keyframes pj-dialog-in{from{opacity:0;transform:translateY(22px) scale(.975)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes pj-content-in{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pj-image-in{from{opacity:.55;transform:scale(1.025)}to{opacity:1;transform:scale(1)}}
+.pj-modal{background:rgba(2,11,16,.78);backdrop-filter:blur(7px);animation:pj-overlay-in .28s ease both}
+.pj-dialog{transform-origin:center top;animation:pj-dialog-in .42s cubic-bezier(.2,.75,.25,1) both;box-shadow:0 28px 90px rgba(0,0,0,.48),0 0 0 1px rgba(0,229,255,.08),0 0 34px rgba(0,229,255,.08)}
+.pj-top{animation:pj-content-in .42s .08s both}
+.pj-cols{animation:pj-content-in .48s .12s both}
+.pj-two{animation:pj-content-in .48s .18s both}
+.pj-act,.pj-nav,.pj-soon{animation:pj-content-in .48s .22s both}
+.pj-main{border:1px solid rgba(0,229,255,.18);box-shadow:0 12px 30px rgba(0,0,0,.2)}
+.pj-main>img,.pj-main .project-art{animation:pj-image-in .42s ease both;transition:transform .45s cubic-bezier(.2,.75,.25,1),filter .35s ease}
+.pj-thumbs button{transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease,opacity .22s ease;opacity:.78}
+.pj-thumbs button:hover,.pj-thumbs button.on{opacity:1;transform:translateY(-2px);border-color:var(--cyan);box-shadow:0 5px 16px rgba(0,229,255,.14)}
+.pj-x{transition:transform .25s ease,color .25s ease,border-color .25s ease,background .25s ease}
+.pj-x:hover{transform:rotate(90deg);border-color:var(--cyan);background:rgba(0,229,255,.09);color:var(--cyan)}
+.pj-dialog h2{transition:color .25s ease}
+.pj-dialog .pj-chips span{transition:transform .22s ease,border-color .22s ease,background .22s ease}
+.pj-dialog .pj-chips span:hover{transform:translateY(-2px);border-color:var(--cyan);background:rgba(0,229,255,.07)}
+.pj-team>div{transition:transform .22s ease,color .22s ease}
+.pj-team>div:hover{transform:translateX(3px);color:#fff}
+.pj-team i{transition:box-shadow .22s ease,background .22s ease}
+.pj-team>div:hover i{background:#17647a;box-shadow:0 0 0 3px rgba(0,229,255,.1),0 0 16px rgba(0,229,255,.16)}
+.pj-act .pj-go,.pj-act .pj-o,.pj-nav button{transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease,background .22s ease,color .22s ease}
+.pj-act .pj-go:hover,.pj-act .pj-o:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,229,255,.12)}
+.pj-act .pj-go span,.pj-act .pj-o span{display:inline-block;transition:transform .22s ease}
+.pj-act .pj-go:hover span,.pj-act .pj-o:hover span{transform:translate(3px,-2px)}
+.pj-nav button:hover:not(:disabled){transform:translateX(2px);text-shadow:0 0 14px rgba(0,229,255,.3)}
+.pj-nav button:first-child:hover:not(:disabled){transform:translateX(-2px)}
+.pj-dialog :focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+@media(hover:none){.pj-thumbs button:hover,.pj-dialog .pj-chips span:hover,.pj-team>div:hover{transform:none}}
+@media(prefers-reduced-motion:reduce){
+ .pj-modal,.pj-dialog,.pj-top,.pj-cols,.pj-two,.pj-act,.pj-nav,.pj-soon,.pj-main>img,.pj-main .project-art{animation:none!important}
+ .pj-thumbs button,.pj-x,.pj-dialog .pj-chips span,.pj-team>div,.pj-team i,.pj-act .pj-go,.pj-act .pj-o,.pj-nav button{transition:none!important}
+}
