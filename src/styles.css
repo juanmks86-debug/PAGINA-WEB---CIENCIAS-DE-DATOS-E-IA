@@ -457,3 +457,22 @@ footer h5::after{
 @media(hover:hover) and (pointer:fine){.plan-card:hover{transform:translateY(-3px);border-color:var(--teal);box-shadow:0 12px 26px rgba(31,45,58,.12)}}
 @media(max-width:480px){.plan-card{gap:11px;padding:14px}.plan-file-icon{flex-basis:44px;width:44px;height:58px}.plan-file-icon svg{width:44px;height:56px}.plan-actions{align-items:stretch;flex-direction:column;gap:5px}.plan-actions .btn{justify-content:center}.plan-download{justify-content:center}}
 @media(prefers-reduced-motion:reduce){.plan-card,.plan-download{transition:none!important}.plan-card:hover{transform:none}}
+
+
+/* Controles de Noticias IA: mejor área táctil y distribución en móvil */
+#noticias .nw-dots button{width:28px;height:28px;padding:0;display:grid;place-items:center;background:transparent;border:0;border-radius:50%}
+#noticias .nw-dots button::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--line);transition:transform .2s ease,background .2s ease}
+#noticias .nw-dots button.on::before{background:var(--teal);transform:scale(1.25)}
+#noticias .nw-dots button:focus-visible,#noticias .nw-ctl button:focus-visible,#noticias .nw-note button:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
+#noticias .nw-ctl button:disabled{opacity:.4;cursor:not-allowed}
+#noticias .nw-ctl button:not(:disabled):hover{border-color:var(--teal);color:var(--teal)}
+#noticias .nw-t a:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:3px}
+@media(max-width:520px){
+  #noticias .nw-head{grid-template-columns:minmax(0,1fr) auto;row-gap:3px}
+  #noticias .nw-head h3{grid-column:1;grid-row:1}
+  #noticias .nw-ctl{grid-column:2;grid-row:1}
+  #noticias .nw-dots{grid-column:1/-1;grid-row:2;justify-content:center}
+}
+@media(prefers-reduced-motion:reduce){
+  #noticias .nw-dots button::before{transition:none}
+}
