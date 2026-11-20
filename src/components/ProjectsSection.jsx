@@ -50,6 +50,28 @@ function useProyectos() {
   return items
 }
 
+
+const TECNOLOGIAS = {
+  react: ['R', '#61DAFB'], javascript: ['JS', '#F7DF1E'], typescript: ['TS', '#3178C6'],
+  python: ['Py', '#3776AB'], supabase: ['S', '#3ECF8E'], 'three.js': ['3D', '#FFFFFF'],
+  threejs: ['3D', '#FFFFFF'], html: ['5', '#E34F26'], html5: ['5', '#E34F26'],
+  css: ['3', '#1572B6'], css3: ['3', '#1572B6'], node: ['N', '#5FA04E'],
+  'node.js': ['N', '#5FA04E'], vite: ['V', '#A78BFA'], firebase: ['F', '#FFCA28'],
+  mysql: ['SQL', '#4479A1'], postgresql: ['PG', '#4169E1'], postgres: ['PG', '#4169E1'],
+  mongodb: ['M', '#47A248'], docker: ['D', '#2496ED'], git: ['G', '#F05032'],
+  github: ['GH', '#FFFFFF'], figma: ['F', '#F24E1E'], java: ['J', '#ED8B00'],
+  php: ['PHP', '#777BB4'], 'c#': ['C#', '#9B4F96'], c: ['C', '#A8B9CC'],
+  'c++': ['C++', '#00599C'], wordpress: ['W', '#21759B'], excel: ['X', '#217346'],
+  powerbi: ['BI', '#F2C811'], 'power bi': ['BI', '#F2C811'], streamlit: ['S', '#FF4B4B'],
+  flask: ['F', '#FFFFFF'], django: ['D', '#092E20'], tailwind: ['TW', '#06B6D4'],
+  bootstrap: ['B', '#7952B3'], pandas: ['P', '#150458'], numpy: ['N', '#4DABCF'],
+}
+const estiloTecnologia = (nombre) => {
+  const clave = quitaAcentos(nombre).replace(/\\s+/g, ' ').trim()
+  const dato = TECNOLOGIAS[clave]
+  return dato || [String(nombre).trim().slice(0, 2).toUpperCase(), '#55DDE0']
+}
+
 const iniciales = (n) => String(n).trim().split(/\s+/).slice(0, 2).map((w) => w[0]).join('').toUpperCase()
 
 // Muestra la imagen del proyecto; si no existe o no carga, queda el fondo con el símbolo.
@@ -120,7 +142,7 @@ function Detalle({ items, indice, onCerrar, onIr }) {
             <div className="pj-meta"><span>{p.year || '3.º año'}</span>{p.date && <span>{p.date}</span>}{p.subject && <span>{p.subject}</span>}</div>
             <p className="pj-lead">{p.description}</p>
             {p.long && <p className="pj-lead">{p.long}</p>}
-            {tags.length > 0 && (<><div className="pj-lbl">HERRAMIENTAS</div><div className="pj-chips">{tags.map((t) => <span key={t}>{t}</span>)}</div></>)}
+            {tags.length > 0 && (<><div className="pj-lbl">HERRAMIENTAS</div><div className="pj-chips">{tags.map((t) => { const [sigla, color] = estiloTecnologia(t); return <span className="pj-tech" key={t} style={{ '--tech-color': color }}><i aria-hidden="true">{sigla}</i>{t}</span> })}</div></>)}
             {team.length > 0 && (<><div className="pj-lbl">EQUIPO</div><div className="pj-team">{team.map((n) => <div key={n}><i aria-hidden="true">{iniciales(n)}</i>{n}</div>)}</div></>)}
           </div>
         </div>
