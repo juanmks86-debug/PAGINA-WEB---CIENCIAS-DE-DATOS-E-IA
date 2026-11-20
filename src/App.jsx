@@ -419,26 +419,40 @@ function Noticias() {
   const [page, setPage] = useState(0)
   const [play, setPlay] = useState(!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches))
   const [pausa, setPausa] = useState(false)
+  const requestRef = useRef(null)
 
   const cargarNoticias = async () => {
+    requestRef.current?.abort()
+    const controller = new AbortController()
+    requestRef.current = controller
     setCargando(true)
     try {
-      const respuesta = await fetch('/api/noticias')
+      const respuesta = await fetch('/api/noticias', { signal: controller.signal })
       if (!respuesta.ok) throw new Error('No se pudieron obtener las noticias')
       const datos = await respuesta.json()
       if (!Array.isArray(datos.noticias)) throw new Error('Respuesta de noticias inválida')
+      if (requestRef.current !== controller) return
       setNoticiasActuales(datos.noticias)
       setActualizado(datos.actualizado || new Date().toISOString())
       setErrorNoticias(false)
       setPage(0)
-    } catch {
-      setErrorNoticias(true)
+    } catch (error) {
+      if (error.name !== 'AbortError' && requestRef.current === controller) setErrorNoticias(true)
     } finally {
-      setCargando(false)
+      if (requestRef.current === controller) {
+        requestRef.current = null
+        setCargando(false)
+      }
     }
   }
 
-  useEffect(() => { cargarNoticias() }, [])
+  useEffect(() => {
+    cargarNoticias()
+    return () => {
+      requestRef.current?.abort()
+      requestRef.current = null
+    }
+  }, [])
 
   const total = noticiasActuales.length
   const pages = Math.max(1, Math.ceil(total / n))
@@ -446,7 +460,9 @@ function Noticias() {
   const idx = Math.max(0, Math.min(p * n, total - n))
   useEffect(() => {
     if (!play || pausa || pages < 2) return
-    const t = setInterval(() => setPage((x) => (Math.min(x, pages - 1) + 1) % pages), 6500)
+    const t = setInterval(() => {
+      if (!document.hidden) setPage((x) => (Math.min(x, pages - 1) + 1) % pages)
+    }, 6500)
     return () => clearInterval(t)
   }, [play, pausa, pages])
   const go = (d) => setPage((x) => (Math.min(x, pages - 1) + d + pages) % pages)
@@ -461,13 +477,13 @@ function Noticias() {
         <h3>Noticias IA</h3>
         <div className="nw-dots" role="group" aria-label="Páginas del carrusel">
           {Array.from({ length: pages }, (_, i) => (
-            <button key={i} className={i === p ? 'on' : ''} aria-label={`Página ${i + 1} de ${pages}`} aria-current={i === p ? 'true' : undefined} onClick={() => setPage(i)} />
+            <button type="button" key={i} className={i === p ? 'on' : ''} aria-label={`Página ${i + 1} de ${pages}`} aria-current={i === p ? 'page' : undefined} onClick={() => setPage(i)} />
           ))}
         </div>
         <div className="nw-ctl">
-          <button aria-label="Noticias anteriores" onClick={() => go(-1)} disabled={!total}>←</button>
-          <button aria-label="Noticias siguientes" onClick={() => go(1)} disabled={!total}>→</button>
-          <button aria-label={play ? 'Pausar el carrusel' : 'Reanudar el carrusel'} aria-pressed={!play} onClick={() => setPlay(!play)}>{play ? '❚❚' : '▶'}</button>
+          <button type="button" aria-label="Noticias anteriores" onClick={() => go(-1)} disabled={!total || pages < 2}>←</button>
+          <button type="button" aria-label="Noticias siguientes" onClick={() => go(1)} disabled={!total || pages < 2}>→</button>
+          <button type="button" aria-label={play ? 'Pausar el carrusel' : 'Reanudar el carrusel'} aria-pressed={!play} onClick={() => setPlay(!play)} disabled={pages < 2}>{play ? '❚❚' : '▶'}</button>
         </div>
       </div>
       <div className="nw-view">
