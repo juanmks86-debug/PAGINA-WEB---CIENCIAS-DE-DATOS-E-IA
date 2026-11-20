@@ -736,7 +736,7 @@ export default function App() {
           <nav id="menu-principal" aria-label="Principal" className={nav ? 'open' : ''} onClick={() => setNav(false)}>
             {links.map(([t, href]) => {
               const actual = href === '/eventos' ? esEventos : !esEventos && act === href.slice(1)
-              return <a key={href} href={esEventos && href.startsWith('#') ? '/' + href : href} aria-current={actual ? (href === '/eventos' ? 'page' : 'location') : undefined} {...(href === '/alumnos' ? { target: '_blank', rel: 'noopener noreferrer', 'aria-label': 'Abrir panel de alumnos en una pestaña nueva' } : {})}>{t}</a>
+              return <a key={href} href={esEventos && href.startsWith('#') ? '/' + href : href} aria-current={actual ? (href === '/eventos' ? 'page' : 'location') : undefined}>{t}</a>
             })}
           </nav>
           <button className="theme" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-label={theme === 'dark' ? 'Activar modo claro' : 'Activar modo oscuro'} title={theme === 'dark' ? 'Modo claro' : 'Modo oscuro'}>
