@@ -169,7 +169,13 @@ export default function EventosView({ ui }) {
       <article className={'evc' + (portada ? '' : ' sin-img')} key={e.id}>
         {portada && (
           <button className="evc-img" onClick={() => setFlyer({ src: portada, alt: e.alt })} aria-label={'Ampliar la imagen de ' + e.titulo}>
-            <img src={portada} alt={e.alt} loading="lazy" />
+            <img src={portada} alt={e.alt} loading="lazy" decoding="async"
+              onError={(event) => {
+                const button = event.currentTarget.closest('.evc-img')
+                const card = button?.closest('.evc')
+                if (button) button.remove()
+                card?.classList.add('sin-img')
+              }} />
           </button>
         )}
         <div className="evc-body">
@@ -243,7 +249,16 @@ export default function EventosView({ ui }) {
                   {fotosAlbum.slice(0, cuantas).map((f) => (
                     <figure key={f.id}>
                       <button className="gal-item" onClick={() => setFoto(f)} aria-label={'Ampliar foto: ' + (f.titulo || album.titulo)}>
-                        <img src={f.foto_url} alt={f.titulo || album.titulo} loading="lazy" />
+                        <img src={f.foto_url} alt={f.titulo || album.titulo} loading="lazy" decoding="async"
+                          onError={(event) => {
+                            const button = event.currentTarget.closest('.gal-item')
+                            event.currentTarget.remove()
+                            if (button) {
+                              button.classList.add('is-broken')
+                              button.disabled = true
+                              button.setAttribute('aria-label', 'Fotografía no disponible')
+                            }
+                          }} />
                       </button>
                       {f.titulo && <figcaption>{f.titulo}</figcaption>}
                     </figure>
@@ -265,7 +280,11 @@ export default function EventosView({ ui }) {
             <div className="albs">
               {visibles.map((a) => (
                 <button key={a.id} className="alb" onClick={() => abrirAlbum(a, false)} aria-label={`Ver álbum ${a.titulo}, ${nFotos(a.fotos)}`}>
-                  {a.portada && <img src={a.portada} alt="" loading="lazy" />}
+                  {a.portada && <img src={a.portada} alt="" loading="lazy" decoding="async"
+                    onError={(event) => {
+                      event.currentTarget.remove()
+                      event.currentTarget.closest('.alb')?.classList.add('sin-portada')
+                    }} />}
                   <span className="alb-tag" style={{ background: colorDe(a.categoria) }}>{a.categoria}</span>
                   <span className="alb-info">
                     <b>{a.titulo}</b>
