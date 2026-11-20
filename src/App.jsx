@@ -266,10 +266,10 @@ function TeamModal({ equipo, onClose }) {
   const miembros = equipo.miembros.slice(0, 4)
   const n = miembros.length
   const head = {
-    infra: <span className="tm-prompt">$ ./equipo --area=infraestructura</span>,
-    dev: <span className="tm-pill">Equipo creativo</span>,
-    press: <span className="tm-kicker">Edición especial · El equipo</span>,
-    data: <span className="tm-kicker">Panel de equipo</span>,
+    infra: <div className="tm-identity tm-identity-infra"><span className="tm-prompt"><i aria-hidden="true">●</i> sistema / equipos / infraestructura</span><span className="tm-overline">CENTRO DE OPERACIONES</span></div>,
+    dev: <div className="tm-identity tm-identity-dev"><span className="tm-pill">✳ ESTUDIO DIGITAL</span><span className="tm-overline">DISEÑO · CÓDIGO · EXPERIENCIA</span></div>,
+    press: <div className="tm-identity tm-identity-press"><span className="tm-overline">BOLETÍN INSTITUCIONAL / EQUIPO</span><span className="tm-press-rule">EDICIÓN <b>IES 06</b></span></div>,
+    data: <div className="tm-identity tm-identity-data"><span className="tm-pill">◫ DATA & INSIGHTS</span><span className="tm-overline">OBSERVAR · MEDIR · CRECER</span></div>,
   }[equipo.id]
 
   return (
@@ -285,7 +285,7 @@ function TeamModal({ equipo, onClose }) {
             ? <div className="tm-kpis"><div className="tm-kpi"><b>{n}</b>integrantes</div><div className="tm-kpi"><b>4</b>áreas del proyecto</div></div>
             : <p className="tm-count">{n} {n === 1 ? 'integrante' : 'integrantes'}</p>}
         </div>
-        <div className="tm-grid">
+        <div className={'tm-grid tm-grid-' + equipo.id}>
           {miembros.map((m, i) => (
             <article className={'tm-card' + (m.foto ? ' tm-click' : '')} key={i}
               {...(m.foto ? { role: 'button', tabIndex: 0, 'aria-label': 'Ver la foto de ' + m.nombre, onClick: () => setPerson(m), onKeyDown: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setPerson(m) } } } : {})}>
