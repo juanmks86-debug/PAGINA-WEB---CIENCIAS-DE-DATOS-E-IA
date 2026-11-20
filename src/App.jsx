@@ -525,7 +525,6 @@ const norm = (s) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCa
 
 const indice = [
   ...links.map(([t, href]) => ({ t, w: 'Sección', href })),
-  { t: 'Noticias IA', w: 'Sección', href: '#noticias' },
   { t: 'Eventos', w: 'Sección', href: '/eventos' },
   { t: 'Calendario académico', w: 'Eventos', href: '/eventos#calendario' },
   { t: 'Galería institucional', w: 'Eventos', href: '/eventos#galeria', x: 'fotos álbumes' },
