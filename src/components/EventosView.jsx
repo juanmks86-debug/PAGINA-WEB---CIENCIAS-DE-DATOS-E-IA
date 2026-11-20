@@ -107,13 +107,26 @@ export default function EventosView({ ui }) {
   const [cuantas, setCuantas] = useState(PASO)
 
   useEffect(() => { document.title = 'Eventos · Ciencia de Datos e IA' }, [])
-  // si el enlace trae un ancla (/eventos#galeria), bajar hasta esa sección una vez dibujada la página
+  // Esperar a que los datos dinámicos estén listos antes de resolver el ancla.
+  // Así /eventos#galeria y /eventos#calendario no quedan desplazados por el contenido que llega después.
   useEffect(() => {
     const id = window.location.hash.slice(1)
-    if (!id) return undefined
-    const t = setTimeout(() => { const el = document.getElementById(id); if (el) el.scrollIntoView() }, 200)
-    return () => clearTimeout(t)
-  }, [])
+    if (!id || eventos === null || albumes === null) return undefined
+    let frame1 = 0
+    let frame2 = 0
+    frame1 = requestAnimationFrame(() => {
+      frame2 = requestAnimationFrame(() => {
+        const el = document.getElementById(id)
+        if (!el) return
+        const reducir = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        el.scrollIntoView({ behavior: reducir ? 'auto' : 'smooth', block: 'start' })
+      })
+    })
+    return () => {
+      if (frame1) cancelAnimationFrame(frame1)
+      if (frame2) cancelAnimationFrame(frame2)
+    }
+  }, [eventos, albumes])
 
   const abrirAlbum = (a, bajar) => {
     setAlbum(a); setFotosAlbum(null); setCuantas(PASO)
