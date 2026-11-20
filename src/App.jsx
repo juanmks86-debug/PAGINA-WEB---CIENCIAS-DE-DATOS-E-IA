@@ -526,7 +526,6 @@ const norm = (s) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCa
 
 const indice = [
   ...links.map(([t, href]) => ({ t, w: 'Sección', href })),
-  { t: 'Eventos', w: 'Sección', href: '/eventos' },
   { t: 'Calendario académico', w: 'Eventos', href: '/eventos#calendario' },
   { t: 'Galería institucional', w: 'Eventos', href: '/eventos#galeria', x: 'fotos álbumes' },
   ...tabs.map(([t, , items]) => ({ t, w: 'Perfil', href: '#perfil', x: items.join(' ') })),
@@ -765,17 +764,17 @@ export default function App() {
             <img className="brand" src="/logo.jpg" alt="" width="28" height="28" />
             <span>Ciencia de Datos e IA</span>
           </a>
-          <nav id="menu-principal" aria-label="Principal" className={nav ? 'open' : ''} onClick={() => setNav(false)}>
+          <nav id="menu-principal" aria-label="Principal" className={nav ? 'open' : ''} onClick={(e) => { if (e.target.closest('a')) setNav(false) }}>
             {links.map(([t, href]) => {
               const actual = href === '/eventos' ? esEventos : href === '/alumnos' ? esAlumnos : !esEventos && !esAlumnos && act === href.slice(1)
               const destino = (esEventos || esAlumnos) && href.startsWith('#') ? '/' + href : href
               return <a key={href} href={destino} aria-current={actual ? (href.startsWith('/') ? 'page' : 'location') : undefined}>{t}</a>
             })}
+            <SearchBox />
           </nav>
           <button className="theme" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-label={theme === 'dark' ? 'Activar modo claro' : 'Activar modo oscuro'} title={theme === 'dark' ? 'Modo claro' : 'Modo oscuro'}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{theme === 'dark' ? themeIcons.sun : themeIcons.moon}</svg>
           </button>
-          <SearchBox />
         </div>
       </div>
 
