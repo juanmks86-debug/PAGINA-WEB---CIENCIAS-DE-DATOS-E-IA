@@ -93,7 +93,14 @@ function StudentsHero() {
 
 export default function StudentsView({ standalone = false }) {
   const [query, setQuery] = useState('')
-  const filteredNotes = recentNotes.filter((note) => `${note.title} ${note.year} ${note.subject}`.toLowerCase().includes(query.toLowerCase()))
+  const termino = query.trim().toLocaleLowerCase('es')
+  const filteredNotes = recentNotes.filter((note) => `${note.title} ${note.year} ${note.subject}`.toLocaleLowerCase('es').includes(termino))
+  const filteredYears = studentYears.filter((year) => {
+    if (!termino) return true
+    const materiales = materialsByYear.find((group) => group.year === year.title)
+    const contenido = `${year.title} ${year.description} ${materiales?.items.map((item) => `${item.title} ${item.description} ${item.type}`).join(' ') || ''}`
+    return contenido.toLocaleLowerCase('es').includes(termino)
+  })
 
   return (
     <section id="alumnos" className={`students-view${standalone ? ' students-route' : ''}`}>
@@ -102,10 +109,10 @@ export default function StudentsView({ standalone = false }) {
       <div className="students-shell">
         <div className="student-heading">
           <div><span className="student-kicker">RECURSOS ACADÉMICOS</span><h2 id="banco-apuntes">Banco de apuntes</h2></div>
-          <label className="student-search"><span aria-hidden="true">⌕</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Buscar por año o material..." aria-label="Buscar carpetas por año o material" /></label>
+          <label className="student-search"><span aria-hidden="true">⌕</span><input type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Buscar por año o material..." aria-label="Buscar carpetas por año o material" /></label>
         </div>
-        <div className="year-grid">
-          {studentYears.map((item) => (
+        <div className="year-grid" aria-live="polite">
+          {filteredYears.map((item) => (
             <article className="year-card" key={item.title}>
               <div className="year-icon">{icons[item.icon]}</div>
               <div className="year-top"><h3>{item.title}</h3><Status value={item.status} tone={item.statusKey} /></div>
@@ -114,6 +121,7 @@ export default function StudentsView({ standalone = false }) {
             </article>
           ))}
         </div>
+        {query.trim() && !filteredYears.length && <p className="materials-empty" role="status">No hay carpetas de años que coincidan con “{query.trim()}”.</p>}
         <p className="temporary-note"><span aria-hidden="true">ⓘ</span> Los materiales se actualizan progresivamente. Consultá la fecha de actualización antes de descargar.</p>
         <NotesBank query={query} />
         <ProjectsSection />
