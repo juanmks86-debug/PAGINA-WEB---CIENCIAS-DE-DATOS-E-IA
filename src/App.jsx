@@ -227,13 +227,42 @@ function TeamIcon({ id, size = 20 }) {
 
 function TeamModal({ equipo, onClose }) {
   const [person, setPerson] = useState(null)
+  const closeRef = useRef(onClose)
+  const personRef = useRef(person)
+  useEffect(() => { closeRef.current = onClose }, [onClose])
+  useEffect(() => { personRef.current = person }, [person])
   useEffect(() => {
-    const onKey = (e) => { if (e.key === 'Escape') { if (person) setPerson(null); else onClose() } }
-    window.addEventListener('keydown', onKey)
+    const opener = document.activeElement
     const prev = document.body.style.overflow
+    const onKey = (e) => {
+      if (e.key !== 'Escape') return
+      if (personRef.current) setPerson(null)
+      else closeRef.current()
+    }
     document.body.style.overflow = 'hidden'
-    return () => { window.removeEventListener('keydown', onKey); document.body.style.overflow = prev }
-  }, [onClose, person])
+    window.addEventListener('keydown', onKey)
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      document.body.style.overflow = prev
+      requestAnimationFrame(() => { if (opener && document.contains(opener)) opener.focus() })
+    }
+  }, [])
+  const contenerTab = (e) => {
+    if (personRef.current || e.key !== 'Tab') return
+    const items = Array.from(e.currentTarget.querySelectorAll('button:not([disabled]),[tabindex]:not([tabindex="-1"])'))
+    if (!items.length) return
+    const first = items[0], last = items[items.length - 1]
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus() }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus() }
+  }
+  const contenerTabFoto = (e) => {
+    if (e.key !== 'Tab') return
+    const items = Array.from(e.currentTarget.querySelectorAll('button:not([disabled]),[tabindex]:not([tabindex="-1"])'))
+    if (!items.length) return
+    const first = items[0], last = items[items.length - 1]
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus() }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus() }
+  }
   const miembros = equipo.miembros.slice(0, 4)
   const n = miembros.length
   const head = {
@@ -246,8 +275,8 @@ function TeamModal({ equipo, onClose }) {
   return (
     <>
     <div className="tm-bg" onClick={onClose}>
-      <div className={'tm tm-' + equipo.id} role="dialog" aria-modal="true" aria-label={equipo.nombre} onClick={(e) => e.stopPropagation()}>
-        <button className="tm-x" aria-label="Cerrar" onClick={onClose} autoFocus>×</button>
+      <div id={'equipo-dialog-' + equipo.id} className={'tm tm-' + equipo.id} role="dialog" aria-modal="true" aria-label={equipo.nombre} onClick={(e) => e.stopPropagation()} onKeyDown={contenerTab}>
+        <button type="button" className="tm-x" aria-label="Cerrar" onClick={onClose} autoFocus>×</button>
         <div className="tm-head">
           {head}
           <h4>{equipo.nombre}</h4>
@@ -275,8 +304,8 @@ function TeamModal({ equipo, onClose }) {
     </div>
     {person && (
       <div className="pm-bg" onClick={() => setPerson(null)}>
-        <figure className="pm" role="dialog" aria-modal="true" aria-label={person.nombre} style={{ '--c': teamColors[equipo.id] }} onClick={(e) => e.stopPropagation()}>
-          <button className="pm-x" aria-label="Cerrar" onClick={() => setPerson(null)} autoFocus>×</button>
+        <figure className="pm" role="dialog" aria-modal="true" aria-label={person.nombre} style={{ '--c': teamColors[equipo.id] }} onClick={(e) => e.stopPropagation()} onKeyDown={contenerTabFoto}>
+          <button type="button" className="pm-x" aria-label="Cerrar" onClick={() => setPerson(null)} autoFocus>×</button>
           <img src={person.foto} alt={person.nombre} />
           <figcaption>{person.nombre}</figcaption>
         </figure>
@@ -293,7 +322,7 @@ function Creadores() {
     <>
       <div className="teams">
         {equipos.map((e) => (
-          <button key={e.id} className="team-btn" style={{ '--c': teamColors[e.id] }} onClick={() => setSel(e.id)} aria-haspopup="dialog">
+          <button type="button" key={e.id} className="team-btn" style={{ '--c': teamColors[e.id] }} onClick={() => setSel(e.id)} aria-haspopup="dialog" aria-expanded={sel === e.id} aria-controls={'equipo-dialog-' + e.id}>
             <TeamIcon id={e.id} />
             <span>{e.corto}</span>
           </button>
