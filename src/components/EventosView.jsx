@@ -106,6 +106,8 @@ export default function EventosView({ ui }) {
   const [fotosAlbum, setFotosAlbum] = useState(null)
   const [cuantas, setCuantas] = useState(PASO)
   const albumRequestRef = useRef(0)
+  const albumTriggerRef = useRef(null)
+  const albumBackRef = useRef(null)
 
   useEffect(() => { document.title = 'Eventos · Ciencia de Datos e IA' }, [])
   useEffect(() => () => { albumRequestRef.current += 1 }, [])
@@ -131,8 +133,10 @@ export default function EventosView({ ui }) {
   }, [eventos, albumes])
 
   const abrirAlbum = (a, bajar) => {
+    albumTriggerRef.current = document.activeElement
     const solicitud = ++albumRequestRef.current
     setAlbum(a); setFotosAlbum(null); setCuantas(PASO)
+    requestAnimationFrame(() => albumBackRef.current?.focus())
     consultar('galeria', `select=*&publicado=eq.true&album_id=eq.${encodeURIComponent(a.id)}&order=orden.asc,created_at.asc`)
       .then((rows) => { if (albumRequestRef.current === solicitud) setFotosAlbum(rows) })
       .catch(() => { if (albumRequestRef.current === solicitud) setFotosAlbum([]) })
@@ -147,6 +151,7 @@ export default function EventosView({ ui }) {
     albumRequestRef.current += 1
     setAlbum(null)
     setFotosAlbum(null)
+    requestAnimationFrame(() => albumTriggerRef.current?.isConnected && albumTriggerRef.current.focus())
   }
 
   const hoy = hoyMedianoche()
@@ -168,7 +173,7 @@ export default function EventosView({ ui }) {
     return (
       <article className={'evc' + (portada ? '' : ' sin-img')} key={e.id}>
         {portada && (
-          <button className="evc-img" onClick={() => setFlyer({ src: portada, alt: e.alt })} aria-label={'Ampliar la imagen de ' + e.titulo}>
+          <button type="button" className="evc-img" onClick={() => setFlyer({ src: portada, alt: e.alt })} aria-label={'Ampliar la imagen de ' + e.titulo}>
             <img src={portada} alt={e.alt} loading="lazy" decoding="async"
               onError={(event) => {
                 const button = event.currentTarget.closest('.evc-img')
@@ -193,7 +198,7 @@ export default function EventosView({ ui }) {
           {e.desc && <p>{e.desc}</p>}
           <div className="evc-actions">
             {e.enlace && <a className="evc-go" href={e.enlace} target="_blank" rel="noopener noreferrer">Más información <IcChev /></a>}
-            {al && <button className="evc-go" onClick={() => abrirAlbum(al, true)}>Ver álbum <IcChev /></button>}
+            {al && <button type="button" className="evc-go" onClick={() => abrirAlbum(al, true)}>Ver álbum <IcChev /></button>}
           </div>
         </div>
         <span className="evc-chev"><IcChev /></span>
@@ -212,7 +217,7 @@ export default function EventosView({ ui }) {
         <div>
           <section id="proximos">
             <h3>Próximos eventos</h3>
-            {eventos === null ? <p className="ev-vacio">Cargando eventos…</p> : proximos.length
+            {eventos === null ? <p className="ev-vacio" role="status">Cargando eventos…</p> : proximos.length
               ? proximos.map((e) => tarjeta(e, true))
               : <p className="ev-vacio">Por ahora no hay eventos próximos. Mirá el calendario y las fotos de los anteriores.</p>}
           </section>
@@ -231,24 +236,24 @@ export default function EventosView({ ui }) {
       <section id="galeria">
         <h3>Galería institucional</h3>
         <p className="gal-sub">Momentos, aprendizajes y experiencias de la carrera</p>
-        {albumes === null ? <p className="ev-vacio">Cargando galería…</p> : album ? (
-          <div className="album-view">
+        {albumes === null ? <p className="ev-vacio" role="status">Cargando galería…</p> : album ? (
+          <div className="album-view" aria-busy={fotosAlbum === null}>
             <div className="alb-open-head">
-              <button className="chip" onClick={volverGaleria}>← Volver a la galería</button>
+              <button ref={albumBackRef} type="button" className="chip" onClick={volverGaleria}>← Volver a la galería</button>
               <div>
                 <h4>{album.titulo}</h4>
                 <p>{album.fecha ? media(aFecha(album.fecha)) + ' · ' : ''}{nFotos(album.fotos)}</p>
               </div>
             </div>
             {album.desc && <p className="gal-sub">{album.desc}</p>}
-            {fotosAlbum === null ? <p className="ev-vacio">Cargando fotos…</p> : !fotosAlbum.length ? (
+            {fotosAlbum === null ? <p className="ev-vacio" role="status">Cargando fotos…</p> : !fotosAlbum.length ? (
               <p className="ev-vacio">Este álbum todavía no tiene fotos cargadas.</p>
             ) : (
               <>
                 <div className="gal">
                   {fotosAlbum.slice(0, cuantas).map((f) => (
                     <figure key={f.id}>
-                      <button className="gal-item" onClick={() => setFoto(f)} aria-label={'Ampliar foto: ' + (f.titulo || album.titulo)}>
+                      <button type="button" className="gal-item" onClick={() => setFoto(f)} aria-label={'Ampliar foto: ' + (f.titulo || album.titulo)}>
                         <img src={f.foto_url} alt={f.titulo || album.titulo} loading="lazy" decoding="async"
                           onError={(event) => {
                             const button = event.currentTarget.closest('.gal-item')
@@ -264,7 +269,7 @@ export default function EventosView({ ui }) {
                     </figure>
                   ))}
                 </div>
-                {fotosAlbum.length > cuantas && <button className="btn gal-more" onClick={() => setCuantas(cuantas + PASO)}>Ver más fotos</button>}
+                {fotosAlbum.length > cuantas && <button type="button" className="btn gal-more" onClick={() => setCuantas(cuantas + PASO)}>Ver más fotos</button>}
               </>
             )}
           </div>
@@ -274,12 +279,12 @@ export default function EventosView({ ui }) {
           <>
             <div className="chip-row" role="group" aria-label="Filtrar álbumes por categoría">
               {cats.map((c) => (
-                <button key={c} className={'chip' + (filtro === c ? ' on' : '')} aria-pressed={filtro === c} onClick={() => setFiltro(c)}>{c}</button>
+                <button type="button" key={c} className={'chip' + (filtro === c ? ' on' : '')} aria-pressed={filtro === c} onClick={() => setFiltro(c)}>{c}</button>
               ))}
             </div>
             <div className="albs">
               {visibles.map((a) => (
-                <button key={a.id} className="alb" onClick={() => abrirAlbum(a, false)} aria-label={`Ver álbum ${a.titulo}, ${nFotos(a.fotos)}`}>
+                <button type="button" key={a.id} className="alb" onClick={() => abrirAlbum(a, false)} aria-label={`Ver álbum ${a.titulo}, ${nFotos(a.fotos)}`}>
                   {a.portada && <img src={a.portada} alt="" loading="lazy" decoding="async"
                     onError={(event) => {
                       const card = event.currentTarget.closest('.alb')
