@@ -525,14 +525,20 @@ function Faq() {
   const [open, setOpen] = useState(null)
   return (
     <div className="faq">
-      {faqs.map(([q, a], i) => (
-        <div key={q} className={open === i ? 'open' : ''}>
-          <button onClick={() => setOpen(open === i ? null : i)} aria-expanded={open === i}>
-            {q}<span className="chev">⌄</span>
-          </button>
-          {open === i && <div className="a"><Linkify text={a} /></div>}
-        </div>
-      ))}
+      {faqs.map(([q, a], i) => {
+        const expandida = open === i
+        const triggerId = 'faq-trigger-' + i
+        const panelId = 'faq-panel-' + i
+        return (
+          <div key={q} className={expandida ? 'open' : ''}>
+            <button id={triggerId} type="button" onClick={() => setOpen(expandida ? null : i)}
+              aria-expanded={expandida} aria-controls={panelId}>
+              {q}<span className="chev" aria-hidden="true">⌄</span>
+            </button>
+            {expandida && <div id={panelId} className="a" role="region" aria-labelledby={triggerId}><Linkify text={a} /></div>}
+          </div>
+        )
+      })}
     </div>
   )
 }
