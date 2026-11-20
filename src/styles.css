@@ -812,3 +812,100 @@ footer .soc a{display:grid;place-items:center;transition:transform .2s ease,back
  .contact .cc.wa,.contact .cc.wa .ic{transition:none}
  .contact .cc.wa:hover,.contact .cc.wa:hover .ic{transform:none}
 }
+
+
+/* Vista Alumnos: adaptar superficies y tipografía al tema global claro */
+:root[data-theme="light"] .students-view{
+ --student-bg:#f1f6f8;
+ --student-surface:#ffffff;
+ --student-line:#c9dce3;
+ background:var(--student-bg);
+ color:#203744;
+}
+:root[data-theme="light"] .students-view .students-hero{
+ background:linear-gradient(115deg,rgba(239,248,250,.97),rgba(222,240,245,.94));
+ border-bottom-color:#c6dce3;
+}
+:root[data-theme="light"] .students-view .students-hero-photo{opacity:.13}
+:root[data-theme="light"] .students-view .students-network{stroke:#147b91;opacity:.18}
+:root[data-theme="light"] .students-view .students-network circle{fill:#00a9c2}
+:root[data-theme="light"] .students-view .students-hero h2{color:#173544}
+:root[data-theme="light"] .students-view .students-hero h3{color:#276d7c}
+:root[data-theme="light"] .students-view .students-hero p{color:#496775}
+:root[data-theme="light"] .students-view .student-eyebrow,
+:root[data-theme="light"] .students-view .student-kicker{color:#087f96}
+:root[data-theme="light"] .students-view .graduation-mark{color:#079bb2;border-color:#079bb2}
+:root[data-theme="light"] .students-view .hero-slogan{color:#087f96}
+:root[data-theme="light"] .students-view .students-route-back{color:#176b7d}
+:root[data-theme="light"] .students-view h2{color:#203744}
+:root[data-theme="light"] .students-view .student-search{
+ background:#fff;border-color:#c5d8df;color:#087f96;
+ box-shadow:0 2px 8px rgba(27,73,88,.05)
+}
+:root[data-theme="light"] .students-view .student-search input{color:#203744}
+:root[data-theme="light"] .students-view .student-search input::placeholder{color:#718792}
+:root[data-theme="light"] .students-view .year-card,
+:root[data-theme="light"] .students-view .project-card,
+:root[data-theme="light"] .students-view .resource-card,
+:root[data-theme="light"] .students-view .recent-panel{
+ background:#fff;border-color:#c9dce3;
+ box-shadow:0 5px 18px rgba(29,66,78,.06)
+}
+:root[data-theme="light"] .students-view .year-top h3,
+:root[data-theme="light"] .students-view .project-content h3,
+:root[data-theme="light"] .students-view .resource-card,
+:root[data-theme="light"] .students-view .note-row b,
+:root[data-theme="light"] .students-view .materials-group-title h3,
+:root[data-theme="light"] .students-view .materials-group li b{color:#203744}
+:root[data-theme="light"] .students-view .year-card p,
+:root[data-theme="light"] .students-view .year-bottom small,
+:root[data-theme="light"] .students-view .project-content p,
+:root[data-theme="light"] .students-view .resource-card small,
+:root[data-theme="light"] .students-view .note-row small,
+:root[data-theme="light"] .students-view .materials-header p,
+:root[data-theme="light"] .students-view .materials-filter,
+:root[data-theme="light"] .students-view .materials-group li small,
+:root[data-theme="light"] .students-view .temporary-note,
+:root[data-theme="light"] .students-view .empty-state,
+:root[data-theme="light"] .students-view .materials-empty{color:#607985}
+:root[data-theme="light"] .students-view .year-icon,
+:root[data-theme="light"] .students-view .resource-icon,
+:root[data-theme="light"] .students-view .file-type{
+ background:#e0f3f6;color:#087f96
+}
+:root[data-theme="light"] .students-view .year-bottom a,
+:root[data-theme="light"] .students-view .project-content a,
+:root[data-theme="light"] .students-view .ghost-btn,
+:root[data-theme="light"] .students-view .student-link,
+:root[data-theme="light"] .students-view .resource-card strong,
+:root[data-theme="light"] .students-view .panel-title a,
+:root[data-theme="light"] .students-view .materials-group li a{color:#087f96}
+:root[data-theme="light"] .students-view .materials-browser{
+ background:#eaf2f5;border-color:#c5d9e0
+}
+:root[data-theme="light"] .students-view .materials-header h2{color:#203744}
+:root[data-theme="light"] .students-view .materials-filter select{
+ background:#fff;color:#203744;border-color:#c5d9e0
+}
+:root[data-theme="light"] .students-view .materials-group{
+ background:#fff;border-color:#d2e1e6
+}
+:root[data-theme="light"] .students-view .materials-group li,
+:root[data-theme="light"] .students-view .note-row,
+:root[data-theme="light"] .students-view .panel-title{
+ border-color:#d8e5e9
+}
+:root[data-theme="light"] .students-view .status-updated{
+ color:#087f96;background:rgba(0,160,190,.1)
+}
+:root[data-theme="light"] .students-view .students-quote{color:#496775}
+:root[data-theme="light"] .students-view .students-quote strong,
+:root[data-theme="light"] .students-view .quote-mark,
+:root[data-theme="light"] .students-view .quote-line{color:#087f96}
+:root[data-theme="light"] .students-view .quote-line{background:#087f96}
+:root[data-theme="light"] .students-view a:focus-visible,
+:root[data-theme="light"] .students-view button:focus-visible,
+:root[data-theme="light"] .students-view input:focus-visible{outline-color:#087f96}
+:root[data-theme="light"] .students-view .student-search:focus-within{
+ border-color:#00a9c2;box-shadow:0 0 0 3px rgba(0,169,194,.15)
+}
