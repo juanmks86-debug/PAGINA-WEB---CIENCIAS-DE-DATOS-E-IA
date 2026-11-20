@@ -48,7 +48,10 @@ function Tabs() {
   useEffect(() => {
     if (sel === null) return
     const onKey = (e) => {
-      if (e.key === 'Escape') cerrar()
+      if (e.key === 'Escape') {
+        setSel(null)
+        requestAnimationFrame(() => triggerRef.current?.focus())
+      }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
