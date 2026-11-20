@@ -19,8 +19,11 @@ function decode(value = '') {
     .replace(/&#x([\da-f]+);/gi, (_, n) => String.fromCodePoint(parseInt(n, 16)))
 }
 function cleanText(value = '') {
-  return decode(value.replace(/<[^>]*>/g, ' '))
-    .replace(/&nbsp;/gi, ' ').replace(/\s+/g, ' ').trim()
+  return decode(value)
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/&nbsp;|&#160;/gi, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
 }
 function tag(xml, name) {
   const match = xml.match(new RegExp('<' + name + '(?:\\s[^>]*)?>([\\s\\S]*?)<\\/' + name + '>', 'i'))
