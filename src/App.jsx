@@ -869,15 +869,22 @@ export default function App() {
         <div className="two">
           <section id="plan" className="reveal">
             <h3>Plan de estudio</h3>
-            <div className="pdf">
-              <svg width="56" height="72" viewBox="0 0 56 72">
-                <path d="M4 2h34l14 14v54H4z" fill="#3d5365" /><path d="M38 2v14h14" fill="#6f8596" />
-                <text x="28" y="52" textAnchor="middle" fontSize="15" fontWeight="700" fill="#fff">PDF</text>
-              </svg>
-              <div>
+            <div className="pdf plan-card">
+              <div className="plan-file-icon" aria-hidden="true">
+                <svg width="56" height="68" viewBox="0 0 56 68" fill="none">
+                  <path d="M5 2h30l16 16v46a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z" fill="currentColor" opacity=".16" />
+                  <path d="M35 2v16h16" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+                  <path d="M3 42h48v14H3z" fill="#d94343" />
+                  <text x="27" y="53" textAnchor="middle" fontSize="11" fontWeight="800" fill="#fff">PDF</text>
+                </svg>
+              </div>
+              <div className="plan-copy">
+                <span className="plan-kicker">Documento de consulta</span>
                 <p>Consultá las materias de cada año, la carga horaria y los requisitos de cursada.</p>
-                {/* Poné tu PDF en la carpeta public/ y cambiá href por "/plan-de-estudio.pdf" */}
-                <a className="btn" href="/plan-de-estudio.pdf" download>Descargar PDF</a>
+                <div className="plan-actions">
+                  <a className="btn" href="/plan-de-estudio.pdf" target="_blank" rel="noopener noreferrer">Ver plan de estudio <span aria-hidden="true">↗</span></a>
+                  <a className="plan-download" href="/plan-de-estudio.pdf" download>Descargar PDF <span aria-hidden="true">↓</span></a>
+                </div>
               </div>
             </div>
           </section>
