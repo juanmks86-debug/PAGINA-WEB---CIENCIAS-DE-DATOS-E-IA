@@ -476,3 +476,33 @@ footer h5::after{
 @media(prefers-reduced-motion:reduce){
   #noticias .nw-dots button::before{transition:none}
 }
+
+
+/* Galería institucional: estados visuales claros ante imágenes no disponibles */
+.ev-page .alb.sin-portada{
+  background:linear-gradient(135deg,color-mix(in srgb,var(--teal) 32%,var(--slate)),var(--slate) 72%);
+}
+.ev-page .alb.sin-portada::after{
+  background:linear-gradient(to top,rgba(4,25,35,.96) 0%,rgba(4,25,35,.38) 72%,rgba(4,25,35,.12) 100%);
+}
+.ev-page .gal-item.is-broken{
+  display:grid;
+  place-items:center;
+  padding:16px;
+  border:1px dashed var(--line);
+  background:color-mix(in srgb,var(--teal) 7%,var(--surface));
+  color:var(--muted);
+  cursor:not-allowed;
+  box-shadow:none;
+}
+.ev-page .gal-item.is-broken::after{
+  content:"Fotografía no disponible";
+  font-size:.85rem;
+  font-weight:700;
+  text-align:center;
+}
+.ev-page .gal-item.is-broken:disabled{opacity:1}
+.ev-page .gal-item.is-broken:focus-visible{outline-offset:3px}
+@media(prefers-reduced-motion:reduce){
+  .ev-page .gal-item.is-broken{transition:none}
+}
