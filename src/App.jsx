@@ -511,8 +511,8 @@ function Faq() {
   )
 }
 
-const links = [['Perfil', '#perfil'], ['Prácticas', '#pasantias'], ['Plan de estudio', '#plan'], ['Eventos', '/eventos'], ['Preguntas', '#faq'], ['Alumnos', '/alumnos'], ['Contacto', '#contacto']]
-const ids = links.map(([, h]) => h.slice(1))
+const links = [['Inicio', '#concepto'], ['Perfil', '#perfil'], ['Prácticas', '#pasantias'], ['Plan de estudio', '#plan'], ['Eventos', '/eventos'], ['Noticias IA', '#noticias'], ['Preguntas', '#faq'], ['Alumnos', '/alumnos'], ['Contacto', '#contacto']]
+const ids = links.filter(([, h]) => h.startsWith('#')).map(([, h]) => h.slice(1))
 
 // Materias del plan de estudio (Res. 3098-E), para el buscador
 const materias = [
@@ -587,8 +587,9 @@ function SearchBox() {
   const show = open && nq.length >= 2
   const cerrar = () => { setOpen(false); setQ('') }
   // desde /eventos los enlaces internos (#plan, #faq…) deben apuntar a la página de inicio
-  const enEventos = window.location.pathname.replace(/\/+$/, '') === '/eventos'
-  const destino = (h) => (h.startsWith('/') ? h : enEventos ? '/' + h : h)
+  const ruta = window.location.pathname.replace(/\/+$/, '')
+  const enOtraPagina = ruta === '/eventos' || ruta === '/alumnos'
+  const destino = (h) => (h.startsWith('/') ? h : enOtraPagina ? '/' + h : h)
   const enviar = (e) => {
     e.preventDefault()
     if (res[0]) {
@@ -715,8 +716,14 @@ export default function App() {
   const act = useActive()
   useHeroFx()
 
-  if (window.location.pathname.replace(/\/+$/, '') === '/alumnos') return <StudentsViewExternal standalone />
-  const esEventos = window.location.pathname.replace(/\/+$/, '') === '/eventos'
+  const rutaActual = window.location.pathname.replace(/\/+$/, '')
+  const esEventos = rutaActual === '/eventos'
+  const esAlumnos = rutaActual === '/alumnos'
+  useEffect(() => {
+    const cerrarConEscape = (e) => { if (e.key === 'Escape') setNav(false) }
+    window.addEventListener('keydown', cerrarConEscape)
+    return () => window.removeEventListener('keydown', cerrarConEscape)
+  }, [])
 
   return (
     <>
@@ -730,15 +737,16 @@ export default function App() {
       </header>
       <div className="hd-bar">
         <div className="wrap hd-bar-in">
-          <button className="burger" aria-label="Menú" aria-expanded={nav} aria-controls="menu-principal" onClick={() => setNav(!nav)}>☰</button>
-          <a className="hd-brand" href={esEventos ? '/' : '#concepto'}>
+          <button className={'burger' + (nav ? ' is-open' : '')} aria-label={nav ? 'Cerrar menú' : 'Abrir menú'} aria-expanded={nav} aria-controls="menu-principal" onClick={() => setNav(!nav)}><span aria-hidden="true">{nav ? '×' : '☰'}</span></button>
+          <a className="hd-brand" href={esEventos || esAlumnos ? '/' : '#concepto'}>
             <img className="brand" src="/logo.jpg" alt="" width="28" height="28" />
             <span>Ciencia de Datos e IA</span>
           </a>
           <nav id="menu-principal" aria-label="Principal" className={nav ? 'open' : ''} onClick={() => setNav(false)}>
             {links.map(([t, href]) => {
-              const actual = href === '/eventos' ? esEventos : !esEventos && act === href.slice(1)
-              return <a key={href} href={esEventos && href.startsWith('#') ? '/' + href : href} aria-current={actual ? (href === '/eventos' ? 'page' : 'location') : undefined}>{t}</a>
+              const actual = href === '/eventos' ? esEventos : href === '/alumnos' ? esAlumnos : !esEventos && !esAlumnos && act === href.slice(1)
+              const destino = (esEventos || esAlumnos) && href.startsWith('#') ? '/' + href : href
+              return <a key={href} href={destino} aria-current={actual ? (href.startsWith('/') ? 'page' : 'location') : undefined}>{t}</a>
             })}
           </nav>
           <button className="theme" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-label={theme === 'dark' ? 'Activar modo claro' : 'Activar modo oscuro'} title={theme === 'dark' ? 'Modo claro' : 'Modo oscuro'}>
@@ -748,7 +756,7 @@ export default function App() {
         </div>
       </div>
 
-      {esEventos ? <EventosView ui={{ Calendar, Lightbox }} /> : (<>
+      {esEventos ? <EventosView ui={{ Calendar, Lightbox }} /> : esAlumnos ? <StudentsViewExternal standalone /> : (<>
       <div className="hero" id="concepto">
         <NetSvg cls="net-tl" />
         <NetSvg cls="net-tr" />
