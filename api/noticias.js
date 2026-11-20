@@ -14,7 +14,7 @@ const PALETTE = [
   ['#b45309', '#be123c'], ['#0e7490', '#4338ca']
 ]
 const EXCLUDED = /\b(movie|film|steelbook|soundtrack|trailer|actor|actress|cinema|película|peliculas|películas|estreno|reparto)\b/i
-const LOW_VALUE = /\\b(acciones|cotización|ticker|bolsa|stock price|nombra|nombró|nombramiento|director independiente|directora independiente|consejero delegado)\\b/i
+const LOW_VALUE = /\b(acciones|cotización|ticker|bolsa|stock price|nombra|nombró|nombramiento|director independiente|directora independiente|consejero delegado)\b/i
 const RELEVANT = /(inteligencia artificial|ia generativa|generative ai|artificial intelligence|machine learning|aprendizaje automático|aprendizaje automatico|ciencia de datos|data science|deep learning|computer vision|visión artificial|vision artificial|computer-vision|robotics|robótica|robotica|large language model|\bllm\b|neural network|redes neuronales|ai-powered|ai[- ]driven|ciberseguridad.*ia|ia.*ciberseguridad)/i
 
 function categoryFor(item) {
@@ -98,7 +98,7 @@ function parseFeed(xml) {
     return item.title && item.link && !Number.isNaN(item.date.getTime()) &&
       item.date.getTime() <= Date.now() + 86400000 &&
       item.date.getTime() >= Date.now() - 14 * 86400000 &&
-      RELEVANT.test(text) && !EXCLUDED.test(item.title) && !LOW_VALUE.test(item.title) && !LOW_VALUE.test(item.title) && !(/TradingView/i.test(item.source) && /\\b(nombra|nombró|director|directora|acciones|ticker)\\b/i.test(item.title))
+      RELEVANT.test(text) && !EXCLUDED.test(item.title) && !LOW_VALUE.test(item.title)
   })
 }
 async function resolvePublisherUrl(url) {
