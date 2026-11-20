@@ -541,20 +541,41 @@ function useActive() {
     let raf = 0
     const calc = () => {
       raf = 0
-      let best = null
-      let bt = -Infinity
+      // Inicio solo permanece activo mientras la portada siga ocupando la zona superior.
+      const barra = document.querySelector('.hd-bar')
+      const limite = (barra?.getBoundingClientRect().height || 54) + 28
+      if (window.scrollY < 90) {
+        setAct('concepto')
+        return
+      }
+
+      // Activa la sección más cercana que ya alcanzó la línea inferior del menú fijo.
+      let mejor = null
+      let distancia = Infinity
       for (const id of ids) {
         const el = document.getElementById(id)
         if (!el) continue
-        const t = el.getBoundingClientRect().top
-        if (t <= 120 && t > bt) { best = id; bt = t }
+        const top = el.getBoundingClientRect().top
+        if (top <= limite && limite - top < distancia) {
+          mejor = id
+          distancia = limite - top
+        }
       }
-      setAct(best || ids[0])
+      setAct(mejor || 'concepto')
     }
-    const onScroll = () => { if (!raf) raf = requestAnimationFrame(calc) }
-    window.addEventListener('scroll', onScroll, { passive: true })
+    const programar = () => {
+      if (!raf) raf = requestAnimationFrame(calc)
+    }
+    window.addEventListener('scroll', programar, { passive: true })
+    window.addEventListener('resize', programar)
+    window.addEventListener('hashchange', programar)
     calc()
-    return () => { window.removeEventListener('scroll', onScroll); if (raf) cancelAnimationFrame(raf) }
+    return () => {
+      window.removeEventListener('scroll', programar)
+      window.removeEventListener('resize', programar)
+      window.removeEventListener('hashchange', programar)
+      if (raf) cancelAnimationFrame(raf)
+    }
   }, [])
   return act
 }
