@@ -431,3 +431,13 @@ footer h5::after{
 .skip-link:focus{transform:translateY(0);outline:3px solid var(--ink);outline-offset:3px}
 #contenido-principal:focus{outline:none}
 @media(prefers-reduced-motion:reduce){.skip-link{transition:none}}
+
+
+/* Pasantías: interacción visual sutil, sin alterar la estructura de las tarjetas */
+#pasantias .card{border:1px solid var(--line);transition:transform .28s cubic-bezier(.2,.7,.2,1),box-shadow .28s ease,border-color .28s ease}
+#pasantias .card .art svg{transition:transform .32s ease}
+@media(hover:hover) and (pointer:fine){
+  #pasantias .card:hover{transform:translateY(-5px);border-color:var(--teal);box-shadow:0 14px 28px rgba(31,45,58,.16)}
+  #pasantias .card:hover .art svg{transform:scale(1.08)}
+}
+@media(prefers-reduced-motion:reduce){#pasantias .card,#pasantias .card .art svg{transition:none}}
