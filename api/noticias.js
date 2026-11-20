@@ -20,7 +20,8 @@ const RELEVANT = /(inteligencia artificial|ia generativa|generative ai|artificia
 function categoryFor(item) {
   const value = item.title.toLowerCase()
   if (/ciberseguridad|ciberataque|phishing|malware|ransomware|ai security/.test(value)) return 'CIBERSEGURIDAD · IA'
-  if (/robot humanoide|robots? industriales|robot agrícola|robotica aplicada|robótica aplicada|brazo robot|automatización|automatizacion|drones? autónomos|drones? autonomos/.test(value)) return 'ROBÓTICA · INNOVACIÓN'
+  if (/robot|robotics|rob[oó]tica|brazo rob[oó]tico|drones?|automatizaci[oó]n/.test(value)) return 'ROBÓTICA · INNOVACIÓN'
+  if (/agricultura|agr[ií]cola|cultivos|huertos|orchard/.test(value)) return 'IA · AGRO E INDUSTRIA'
   if (/educaci|universidad|escuela|docente|estudiante|aula/.test(value)) return 'IA · EDUCACIÓN'
   if (/empleo|trabajo|laboral|empresa|industria|comercio/.test(value)) return 'IA · TRABAJO E INDUSTRIA'
   if (/medicina|salud|hospital|diagnóstico|diagnostico|paciente/.test(value)) return 'IA · SALUD'
@@ -73,10 +74,29 @@ function tag(xml, name) {
   const match = xml.match(new RegExp('<' + name + '(?:\\s[^>]*)?>([\\s\\S]*?)<\\/' + name + '>', 'i'))
   return match ? cleanText(match[1]) : ''
 }
+function imageFrom(item) {
+  const patterns = [
+    /<media:content[^>]*\burl=["']([^"']+)["']/i,
+    /<media:thumbnail[^>]*\burl=["']([^"']+)["']/i,
+    /<enclosure[^>]*\burl=["']([^"']+)["']/i,
+    /<img[^>]*\bsrc=["']([^"']+)["']/i
+  ]
+  for (const pattern of patterns) {
+    const match = item.match(pattern)
+    if (!match) continue
+    const raw = decode(match[1]).trim()
+    try {
+      const url = new URL(raw.startsWith('//') ? 'https:' + raw : raw)
+      if (url.protocol === 'https:') return url.href
+    } catch { /* URL de imagen no válida */ }
+  }
+  return ''
+}
 function parseFeed(xml) {
   return [...xml.matchAll(/<item(?:\s[^>]*)?>([\s\S]*?)<\/item>/gi)].map(([, item]) => {
     const source = item.match(/<source(?:\s[^>]*)?>([\s\S]*?)<\/source>/i)
     const title = tag(item, 'title')
+    const image = imageFrom(item)
     let description = tag(item, 'description')
     const sourceName = source ? cleanText(source[1]) : ''
     description = description.replace(/\s+/g, ' ').trim()
@@ -101,7 +121,7 @@ function parseFeed(xml) {
     }
     const date = new Date(tag(item, 'pubDate'))
     const link = tag(item, 'link')
-    return { title, link, description, source: sourceName, date }
+    return { title, link, description, image, source: sourceName, date }
   }).filter(item => {
     const text = item.title + ' ' + item.description
     return item.title && item.link && !Number.isNaN(item.date.getTime()) &&
@@ -152,7 +172,7 @@ export default async function handler(req, res) {
       if (seen.has(key) || isNearDuplicate(item.title, selected.map(entry => entry.title))) continue
       seen.add(key)
       selected.push(item)
-      if (selected.length === 8) break
+      if (selected.length === 12) break
     }
 
     const urls = await Promise.all(selected.map(item => resolvePublisherUrl(item.link)))
@@ -163,6 +183,7 @@ export default async function handler(req, res) {
       cifra: 'IA',
       cifraTxt: 'noticia reciente',
       colores: PALETTE[index % PALETTE.length],
+      imagen: item.image || '',
       texto: item.description || 'Leé la publicación original para conocer todos los detalles.',
       fuente: item.source || 'Medio de comunicación',
       enlace: urls[index]
