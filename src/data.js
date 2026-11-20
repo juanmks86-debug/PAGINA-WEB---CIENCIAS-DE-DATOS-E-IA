@@ -52,7 +52,6 @@ export const eventosProximos = [{ titulo: 'Expo Educativa Ciudad Perico 2026', f
 export const noticias = []
 
 export const studentYears = [
-  { title: 'Ingresantes', description: 'Material de ingreso, guías introductorias, ejercicios de nivelación y tutoriales.', materials: 0, icon: 'rocket', status: 'Próximamente', statusKey: 'soon', slug: 'ingresantes', badge: 'Sección temporal' },
   { title: '1.º Año', description: 'Apuntes organizados por materia, resúmenes y trabajos prácticos.', materials: 1, icon: 'book', status: 'Disponible', statusKey: 'available', slug: 'primero', drive: 'https://drive.google.com/drive/folders/1qjZJVN52NdBsZ6x5pERRxHWYOgpe1VTG?usp=drive_link' },
   { title: '2.º Año', description: 'Materiales de cursada, ejercicios resueltos, prácticas de programación y bases de datos.', materials: 1, icon: 'database', status: 'Actualizado', statusKey: 'updated', slug: 'segundo', drive: 'https://drive.google.com/drive/folders/1rpcYxC9gOGY-uix-7wtFfpXDWTY88L-3?usp=sharing' },
   { title: '3.º Año', description: 'Apuntes avanzados, proyectos integradores y material para evaluaciones finales.', materials: 1, icon: 'brain', status: 'En revisión', statusKey: 'review', slug: 'tercero', drive: 'https://drive.google.com/drive/folders/1jLCMk3oeBbqqVlEWeH4EBfIjTO1sIYHa?usp=sharing' },
@@ -85,7 +84,6 @@ export const recentNotes = [
 ]
 
 export const materialsByYear = [
-  { year: 'Ingresantes', status: 'Próximamente', statusKey: 'soon', items: [] },
   { year: '1.º Año', status: 'Disponible', statusKey: 'available', items: [{ title: 'Carpeta de apuntes de 1.º año', description: 'Google Drive · apuntes y trabajos prácticos', type: 'DRIVE', href: 'https://drive.google.com/drive/folders/1qjZJVN52NdBsZ6x5pERRxHWYOgpe1VTG?usp=drive_link' }] },
   { year: '2.º Año', status: 'Actualizado', statusKey: 'updated', items: [{ title: 'Carpeta de apuntes de 2.º año', description: 'Google Drive · cursada, programación y bases de datos', type: 'DRIVE', href: 'https://drive.google.com/drive/folders/1rpcYxC9gOGY-uix-7wtFfpXDWTY88L-3?usp=sharing' }] },
   { year: '3.º Año', status: 'En revisión', statusKey: 'review', items: [{ title: 'Carpeta de apuntes de 3.º año', description: 'Google Drive · proyectos y material avanzado', type: 'DRIVE', href: 'https://drive.google.com/drive/folders/1jLCMk3oeBbqqVlEWeH4EBfIjTO1sIYHa?usp=sharing' }] },
