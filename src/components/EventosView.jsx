@@ -282,8 +282,9 @@ export default function EventosView({ ui }) {
                 <button key={a.id} className="alb" onClick={() => abrirAlbum(a, false)} aria-label={`Ver álbum ${a.titulo}, ${nFotos(a.fotos)}`}>
                   {a.portada && <img src={a.portada} alt="" loading="lazy" decoding="async"
                     onError={(event) => {
+                      const card = event.currentTarget.closest('.alb')
                       event.currentTarget.remove()
-                      event.currentTarget.closest('.alb')?.classList.add('sin-portada')
+                      card?.classList.add('sin-portada')
                     }} />}
                   <span className="alb-tag" style={{ background: colorDe(a.categoria) }}>{a.categoria}</span>
                   <span className="alb-info">
