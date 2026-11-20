@@ -65,3 +65,28 @@ footer .ft-cols{grid-template-columns:1fr 1fr 1fr 1.7fr;gap:16px 24px;padding-to
   .hero h2{font-size:clamp(1.85rem,8vw,2.5rem);overflow-wrap:break-word}
   .hero p{max-width:100%;overflow-wrap:break-word}
 }
+
+/* Efectos interactivos para Proyectos destacados */
+.pj-card{position:relative;isolation:isolate;border-color:rgba(18,97,122,.85);transition:transform .32s cubic-bezier(.2,.75,.25,1),box-shadow .32s ease,border-color .32s ease}
+.pj-card::before{content:"";position:absolute;inset:0;z-index:3;pointer-events:none;border-radius:inherit;padding:1px;background:linear-gradient(135deg,#00e5ff 0%,#8b5cf6 48%,#2dd4bf 100%);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .32s ease}
+.pj-img>img,.pj-img .project-art{transition:transform .55s cubic-bezier(.2,.75,.25,1),filter .4s ease}
+.pj-go span,.pj-o span{display:inline-block;transition:transform .25s ease}
+@media(hover:hover) and (pointer:fine){
+ .pj-card:hover,.pj-card:focus-within{transform:translateY(-7px);border-color:transparent;box-shadow:0 16px 38px rgba(0,0,0,.28),0 0 0 1px rgba(0,229,255,.18),0 0 24px rgba(0,229,255,.13)}
+ .pj-card:hover::before,.pj-card:focus-within::before{opacity:1}
+ .pj-card:hover .pj-img>img,.pj-card:hover .pj-img .project-art,.pj-card:focus-within .pj-img>img,.pj-card:focus-within .pj-img .project-art{transform:scale(1.055);filter:saturate(1.12)}
+ .pj-card:hover .pj-go span,.pj-card:focus-within .pj-go span,.pj-card:hover .pj-o span,.pj-card:focus-within .pj-o span{transform:translateX(4px)}
+}
+.pj-card:focus-within{outline:2px solid rgba(0,229,255,.45);outline-offset:3px}
+.pj-go{transition:filter .22s ease,box-shadow .22s ease,transform .22s ease}
+.pj-go:hover,.pj-go:focus-visible{filter:brightness(1.08);box-shadow:0 5px 18px rgba(0,229,255,.2)}
+@media(hover:none),(pointer:coarse){
+ .pj-card:active{transform:scale(.99)}
+ .pj-card:active .pj-img>img,.pj-card:active .pj-img .project-art{transform:scale(1.025)}
+}
+@media(prefers-reduced-motion:reduce){
+ .pj-card,.pj-card::before,.pj-img>img,.pj-img .project-art,.pj-go,.pj-go span,.pj-o span{transition:none!important}
+ .pj-card:hover,.pj-card:focus-within{transform:none}
+ .pj-card:hover .pj-img>img,.pj-card:hover .pj-img .project-art{transform:none}
+}
+
