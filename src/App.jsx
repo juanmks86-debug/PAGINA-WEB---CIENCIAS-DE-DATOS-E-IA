@@ -431,7 +431,8 @@ function Noticias() {
                 <h4 className="nw-t"><a href={nw.enlace} target="_blank" rel="noopener noreferrer" tabIndex={vis ? 0 : -1}>{nw.titulo}</a></h4>
                 <p className="nw-date">{nw.fecha}</p>
                 <div className="nw-body">
-                  <div className="nw-thumb" style={{ background: `linear-gradient(135deg, ${nw.colores[0]}, ${nw.colores[1]})` }} aria-hidden="true">
+                  <div className={'nw-thumb' + (nw.imagen ? ' nw-thumb-photo' : '')} style={{ background: `linear-gradient(135deg, ${nw.colores[0]}, ${nw.colores[1]})` }} aria-hidden="true">
+                    {nw.imagen && <img src={nw.imagen} alt="" loading="lazy" referrerPolicy="no-referrer" onError={(e) => { e.currentTarget.style.display = 'none' }} />}
                     <b>{nw.cifra}</b><span>{nw.cifraTxt}</span>
                   </div>
                   <p className="nw-ex">{nw.texto}</p>
