@@ -13,9 +13,14 @@ function Status({ value, tone }) {
   return <span className={`status status-${tone}`}>{value}</span>
 }
 
-function NotesBank() {
+function NotesBank({ query = '' }) {
   const [selected, setSelected] = useState('all')
-  const groups = selected === 'all' ? materialsByYear : materialsByYear.filter((group) => group.year === selected)
+  const termino = query.trim().toLocaleLowerCase('es')
+  const gruposBase = selected === 'all' ? materialsByYear : materialsByYear.filter((group) => group.year === selected)
+  const groups = gruposBase.map((group) => ({
+    ...group,
+    items: group.items.filter((item) => `${group.year} ${item.title} ${item.description} ${item.type}`.toLocaleLowerCase('es').includes(termino)),
+  })).filter((group) => !termino || group.items.length > 0)
 
   return (
     <section className="materials-browser" aria-labelledby="materiales-titulo">
@@ -33,6 +38,7 @@ function NotesBank() {
           </select>
         </label>
       </div>
+      {query.trim() && !groups.length && <p className="materials-empty" role="status">No encontramos materiales que coincidan con “{query.trim()}”. Probá con otra materia o año.</p>}
       <div className="materials-groups">
         {groups.map((group) => (
           <article className="materials-group" key={group.year}>
@@ -46,7 +52,7 @@ function NotesBank() {
                   <li key={item.title}>
                     <span className="file-type" aria-hidden="true">{item.type}</span>
                     <span><b>{item.title}</b><small>{item.description}</small></span>
-                    <a href={item.href} target="_blank" rel="noopener noreferrer">Abrir <span aria-hidden="true">↗</span></a>
+                    <a href={item.href} target="_blank" rel="noopener noreferrer" aria-label={`Abrir ${item.title} en Google Drive`}>Abrir <span aria-hidden="true">↗</span></a>
                   </li>
                 ))}
               </ul>
@@ -104,16 +110,16 @@ export default function StudentsView({ standalone = false }) {
               <div className="year-icon">{icons[item.icon]}</div>
               <div className="year-top"><h3>{item.title}</h3><Status value={item.status} tone={item.statusKey} /></div>
               <p>{item.description}</p>
-              <div className="year-bottom"><small>{item.materials} materiales disponibles</small><a href={item.drive || '#materiales-titulo'} target={item.drive ? '_blank' : undefined} rel={item.drive ? 'noopener noreferrer' : undefined}>Abrir Drive <b aria-hidden="true">↗</b></a></div>
+              <div className="year-bottom"><small>{item.drive ? 'Carpeta disponible' : 'Material en preparación'}</small>{item.drive ? <a href={item.drive} target="_blank" rel="noopener noreferrer" aria-label={`Abrir carpeta de ${item.title} en Google Drive`}>Abrir Drive <b aria-hidden="true">↗</b></a> : <span className="year-coming">Próximamente</span>}</div>
             </article>
           ))}
         </div>
         <p className="temporary-note"><span aria-hidden="true">ⓘ</span> Los materiales se actualizan progresivamente. Consultá la fecha de actualización antes de descargar.</p>
-        <NotesBank />
+        <NotesBank query={query} />
         <ProjectsSection />
         <div className="students-columns">
           <div><div className="student-heading student-heading-block"><span className="student-kicker">ACCESOS RÁPIDOS</span><h2>Herramientas y recursos</h2></div><div className="resource-grid">{resources.map((resource) => <a className="resource-card" href={resource.href} key={resource.title}><span className="resource-icon" aria-hidden="true">{resource.icon}</span><span><b>{resource.title}</b><small>{resource.description}</small></span><strong aria-hidden="true">→</strong></a>)}</div></div>
-          <aside className="recent-panel" id="ultimos-apuntes"><div className="panel-title"><div><span className="student-kicker">ACTUALIZACIONES</span><h2>Últimos apuntes</h2></div><a href="#ultimos-apuntes">Ver todos</a></div><div className="notes-list">{filteredNotes.map((note) => <a href="#materiales-titulo" className="note-row" key={note.title}><span className="note-file" aria-hidden="true">▤</span><span><b>{note.title}</b><small>{note.year} · {note.subject}</small></span></a>)}{!filteredNotes.length && <p className="empty-state" role="status">No encontramos apuntes con ese término.</p>}</div></aside>
+          <aside className="recent-panel" id="ultimos-apuntes"><div className="panel-title"><div><span className="student-kicker">ACCESOS A DRIVE</span><h2>Carpetas de apuntes</h2></div><a href="#materiales-titulo">Ver por año</a></div><div className="notes-list">{filteredNotes.map((note) => <a href={note.href} target="_blank" rel="noopener noreferrer" className="note-row" key={note.title}><span className="note-file" aria-hidden="true">▤</span><span><b>{note.title}</b><small>{note.year} · {note.subject}</small></span></a>)}{!filteredNotes.length && <p className="empty-state" role="status">No encontramos apuntes con ese término.</p>}</div></aside>
         </div>
         <div className="students-quote"><span className="quote-mark" aria-hidden="true">“</span><p>La tecnología no reemplaza tu esfuerzo,<br /><strong>lo potencia.</strong></p><span className="quote-line" aria-hidden="true" /></div>
       </div>
