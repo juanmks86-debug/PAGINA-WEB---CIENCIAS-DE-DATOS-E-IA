@@ -181,7 +181,7 @@ export default async function handler(req, res) {
         signal: AbortSignal.timeout(9000)
       })
       if (!response.ok) throw new Error('Feed no disponible')
-      return parseFeed(await response.text())
+      return parseFeed(await response.text()).map(item => ({ ...item, directFeed: !url.includes('news.google.com/') }))
     }))
     const responses = results.filter(result => result.status === 'fulfilled').map(result => result.value)
     if (!responses.length) throw new Error('Todas las fuentes fallaron')
@@ -189,7 +189,12 @@ export default async function handler(req, res) {
     const seen = new Set()
     const selected = []
     const ordered = responses.flat().sort((a, b) => b.date - a.date)
-    for (const item of ordered) {
+    // Reservamos espacio para noticias de RSS directos, que conservan el enlace
+    // editorial y suelen incluir imágenes; Google News queda como fuente de respaldo.
+    const directPriority = ordered.filter(item => item.directFeed).slice(0, 6)
+    const prioritySet = new Set(directPriority)
+    const selectionOrder = [...directPriority, ...ordered.filter(item => !prioritySet.has(item))]
+    for (const item of selectionOrder) {
       const key = item.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ').trim()
       if (seen.has(key) || isNearDuplicate(item.title, selected.map(entry => entry.title))) continue
       seen.add(key)
@@ -227,7 +232,7 @@ export default async function handler(req, res) {
       colores: PALETTE[index % PALETTE.length],
       imagen: previewImages[index] || '',
       texto: item.description || 'Leé la publicación original para conocer todos los detalles.',
-      fuente: item.source || 'Medio de comunicación',
+      fuente: item.source || (item.directFeed ? new URL(item.link).hostname.replace(/^www\\./, '') : 'Medio de comunicación'),
       enlace: urls[index]
     }))
     res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400')
