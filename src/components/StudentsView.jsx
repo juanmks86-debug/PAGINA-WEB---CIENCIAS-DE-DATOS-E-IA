@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { studentYears, projects, resources, recentNotes, materialsByYear } from '../data.js'
+import ProjectsSection from './ProjectsSection.jsx'
+import { studentYears, resources, recentNotes, materialsByYear } from '../data.js'
 
 const icons = {
   rocket: <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M29 5c7 1 12 6 14 14l-9 9-10-4-4-10 9-9Z" /><path d="m20 28-7 7M13 35l-5 5M20 22l-8-1-5 5 10 4M27 29l1 9-5 5-4-10" /><circle cx="32" cy="16" r="3" /></svg>,
@@ -109,10 +110,7 @@ export default function StudentsView({ standalone = false }) {
         </div>
         <p className="temporary-note"><span aria-hidden="true">ⓘ</span> Los materiales se actualizan progresivamente. Consultá la fecha de actualización antes de descargar.</p>
         <NotesBank />
-        <div className="student-heading student-project-heading"><div><span className="student-kicker">TRABAJOS DE LA CARRERA</span><h2 id="proyectos">Proyectos destacados <small>(3.º año)</small></h2></div><a className="student-link" href="#proyectos">Ver todos <span aria-hidden="true">→</span></a></div>
-        <div className="projects-grid projects-carousel" aria-label="Carrusel de proyectos destacados">
-          {projects.map((project) => <article className="project-card" key={project.title}><div className={`project-art ${project.tone}`}><span className="project-code">{project.code}</span><span className="project-orb" aria-hidden="true">{project.symbol}</span></div><div className="project-content"><span className="project-tag">{project.category}</span><h3>{project.title}</h3><p>{project.description}</p><a href="#proyectos">Ver proyecto <b aria-hidden="true">→</b></a></div></article>)}
-        </div>
+        <ProjectsSection />
         <div className="students-columns">
           <div><div className="student-heading student-heading-block"><span className="student-kicker">ACCESOS RÁPIDOS</span><h2>Herramientas y recursos</h2></div><div className="resource-grid">{resources.map((resource) => <a className="resource-card" href={resource.href} key={resource.title}><span className="resource-icon" aria-hidden="true">{resource.icon}</span><span><b>{resource.title}</b><small>{resource.description}</small></span><strong aria-hidden="true">→</strong></a>)}</div></div>
           <aside className="recent-panel" id="ultimos-apuntes"><div className="panel-title"><div><span className="student-kicker">ACTUALIZACIONES</span><h2>Últimos apuntes</h2></div><a href="#ultimos-apuntes">Ver todos</a></div><div className="notes-list">{filteredNotes.map((note) => <a href="#materiales-titulo" className="note-row" key={note.title}><span className="note-file" aria-hidden="true">▤</span><span><b>{note.title}</b><small>{note.year} · {note.subject}</small></span></a>)}{!filteredNotes.length && <p className="empty-state" role="status">No encontramos apuntes con ese término.</p>}</div></aside>

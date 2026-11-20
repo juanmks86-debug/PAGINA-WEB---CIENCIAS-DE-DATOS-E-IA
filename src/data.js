@@ -65,6 +65,12 @@ export const studentYears = [
   { title: '3.º Año', description: 'Apuntes avanzados, proyectos integradores y material para evaluaciones finales.', materials: 1, icon: 'brain', status: 'En revisión', statusKey: 'review', slug: 'tercero', drive: 'https://drive.google.com/drive/folders/1jLCMk3oeBbqqVlEWeH4EBfIjTO1sIYHa?usp=sharing' },
 ]
 
+// Proyectos destacados. Campos opcionales por proyecto (si faltan, simplemente no se muestran):
+//   image    → foto principal (ruta en /public o URL)      gallery → lista de URLs con más capturas
+//   tags     → ['Python', 'Power BI']  herramientas       team    → ['Nombre Apellido', ...]
+//   year, date, subject → datos de contexto               long    → descripción ampliada
+//   goal     → objetivo                results → resultados
+//   url      → enlace al proyecto/demo repo → código en GitHub      report → enlace al informe (PDF)
 export const projects = [
   { title: 'Dashboard de análisis de datos', category: 'Datos', description: 'Visualización de información y generación de indicadores.', tone: 'dashboard-art', symbol: '▥', code: '01 / DATA', image: '/proyecto-dashboard.jpg' },
   { title: 'Asistente virtual educativo', category: 'Inteligencia artificial', description: 'Un chatbot para responder consultas y orientar a estudiantes.', tone: 'ai-art', symbol: '✦', code: '02 / IA', image: '/proyecto-asistente-ia.jpg' },
