@@ -86,7 +86,7 @@ function safeImageUrl(raw, base) {
     return url.protocol === 'https:' ? url.href : ''
   } catch { return '' }
 }
-function imageFrom(item) {
+function imageFrom(item, baseUrl) {
   // Normalizamos CDATA y entidades HTML antes de buscar imágenes: varios RSS
   // entregan el HTML de la descripción escapado (&lt;img ...&gt;).
   item = decode(item)
@@ -111,7 +111,7 @@ function imageFrom(item) {
       if (!embedded) continue
       raw = embedded[1]
     }
-    const url = safeImageUrl(raw)
+    const url = safeImageUrl(raw, baseUrl)
     if (url) return url
   }
   return ''
@@ -163,7 +163,6 @@ function parseFeed(xml) {
     const source = item.match(/<source(?:\s[^>]*)?>([\s\S]*?)<\/source>/i)
     const author = item.match(/<author(?:\s[^>]*)?>([\s\S]*?)<\/author>/i)
     const title = tag(item, 'title')
-    const image = imageFrom(item)
     let description = tag(item, 'description') || tag(item, 'summary') || tag(item, 'content')
     const sourceName = source ? cleanText(tag(source[1], 'title') || source[1]) :
       author ? cleanText(tag(author[1], 'name') || author[1]) : ''
@@ -201,6 +200,7 @@ function parseFeed(xml) {
       const enclosureLink = item.match(/<link\b[^>]*\brel=["']enclosure["'][^>]*\bhref=["']([^"']+)["']/i)
       if (enclosureLink) link = decode(enclosureLink[1])
     }
+    const image = imageFrom(item, link)
     return { title, link, description, image, source: sourceName, date }
   }).filter(item => {
     const text = item.title + ' ' + item.description
@@ -259,11 +259,13 @@ export default async function handler(req, res) {
     const seen = new Set()
     const selected = []
     const ordered = responses.flat().sort((a, b) => b.date - a.date)
-    // Reservamos espacio para noticias de RSS directos, que conservan el enlace
-    // editorial y suelen incluir imágenes; Google News queda como fuente de respaldo.
-    const directPriority = ordered.filter(item => item.directFeed).slice(0, 6)
-    const prioritySet = new Set(directPriority)
-    const selectionOrder = [...directPriority, ...ordered.filter(item => !prioritySet.has(item))]
+    // Primero mostramos noticias que ya traen una imagen editorial en el RSS.
+    // Después completamos con fuentes directas (para intentar extraer og:image) y
+    // dejamos Google News al final, porque con frecuencia no entrega imágenes.
+    const withFeedImage = ordered.filter(item => item.directFeed && item.image)
+    const directWithoutImage = ordered.filter(item => item.directFeed && !item.image)
+    const googleNews = ordered.filter(item => !item.directFeed)
+    const selectionOrder = [...withFeedImage, ...directWithoutImage, ...googleNews]
     for (const item of selectionOrder) {
       const key = item.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ').trim()
       if (seen.has(key) || isNearDuplicate(item.title, selected.map(entry => entry.title))) continue
