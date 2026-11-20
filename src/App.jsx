@@ -542,6 +542,18 @@ function useActive() {
     const calc = () => {
       raf = 0
       const barra = document.querySelector('.hd-bar')
+      // Si se llegó a una sección desde el menú, respetar ese destino.
+      const hash = window.location.hash.slice(1)
+      if (hash && ids.includes(hash) && document.getElementById(hash)) {
+        setAct(hash)
+        return
+      }
+      // Al llegar al final del documento, la última sección debe quedar activa.
+      const alFinal = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 12
+      if (alFinal) {
+        setAct('contacto')
+        return
+      }
       // La línea de activación queda dentro del contenido, debajo de la barra fija.
       const linea = Math.max(150, (barra?.getBoundingClientRect().height || 54) + 88)
       if (window.scrollY < 90) {
