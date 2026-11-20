@@ -39,6 +39,9 @@ function parseFeed(xml) {
     if (title && description.toLowerCase().startsWith(title.toLowerCase())) {
       description = description.slice(title.length).replace(/^[\s:–—-]+/, '').trim()
     }
+    if (!description || description.length < 80 || description.toLowerCase() === sourceName.toLowerCase()) {
+      description = 'Leé la publicación original para conocer todos los detalles.'
+    }
     const date = new Date(tag(item, 'pubDate'))
     const link = tag(item, 'link')
     return { title, link, description, source: sourceName, date }
