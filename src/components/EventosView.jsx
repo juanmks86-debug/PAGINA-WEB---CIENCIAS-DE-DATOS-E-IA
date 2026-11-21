@@ -142,6 +142,7 @@ export default function EventosView({ ui }) {
   const [album, setAlbum] = useState(null)
   const [fotosAlbum, setFotosAlbum] = useState(null)
   const [cuantas, setCuantas] = useState(PASO)
+  const [accionInfo, setAccionInfo] = useState(null)
   const albumRequestRef = useRef(0)
   const albumTriggerRef = useRef(null)
   const albumBackRef = useRef(null)
@@ -233,11 +234,20 @@ export default function EventosView({ ui }) {
             {e.lugar && <span><IcPin />{e.lugar}</span>}
           </div>
           {e.desc && <p>{e.desc}</p>}
-          <div className="evc-actions">
-            <a className="evc-share evc-whatsapp" href={enlaceWhatsApp(e)} target="_blank" rel="noopener noreferrer" aria-label={'Compartir ' + e.titulo + ' por WhatsApp'}> <span className="evc-share-icon" aria-hidden="true">☏</span> Compartir por WhatsApp</a>
-            <a className="evc-share evc-calendar" href={enlaceCalendar(e)} target="_blank" rel="noopener noreferrer"> <IcCal /> Guardar en Google Calendar</a>
-            <button type="button" className="evc-share evc-download" onClick={() => descargarICS(e)}><span className="evc-share-icon">↓</span> Descargar (.ics)</button>
+          <div className="evc-actions evc-icon-actions" aria-label="Opciones del evento">
+            <button type="button" className={`evc-icon-btn evc-icon-whatsapp ${accionInfo?.id === e.id && accionInfo.tipo === 'whatsapp' ? 'is-active' : ''}`} aria-label="Información sobre compartir por WhatsApp" aria-expanded={accionInfo?.id === e.id && accionInfo.tipo === 'whatsapp'} onClick={() => setAccionInfo(accionInfo?.id === e.id && accionInfo.tipo === 'whatsapp' ? null : { id: e.id, tipo: 'whatsapp' })}><Ico><path d="M20.2 11.7a8.2 8.2 0 0 1-12.1 7.1L3 20l1.3-4.8a8.2 8.2 0 1 1 15.9-3.5Z"/><path d="M8.5 8.2c.4 2.5 2.1 4.3 4.8 5.4l1.4-1.2 2 1c-.1 1.2-.9 2-2.1 2-3.7-.3-7.2-3.8-7.4-7.3 0-1.1.8-1.9 1.9-2l1 2-1.6 1.1"/></Ico></button>
+            <button type="button" className={`evc-icon-btn evc-icon-calendar ${accionInfo?.id === e.id && accionInfo.tipo === 'calendar' ? 'is-active' : ''}`} aria-label="Información sobre guardar en Google Calendar" aria-expanded={accionInfo?.id === e.id && accionInfo.tipo === 'calendar'} onClick={() => setAccionInfo(accionInfo?.id === e.id && accionInfo.tipo === 'calendar' ? null : { id: e.id, tipo: 'calendar' })}><IcCal /></button>
+            <button type="button" className={`evc-icon-btn evc-icon-download ${accionInfo?.id === e.id && accionInfo.tipo === 'download' ? 'is-active' : ''}`} aria-label="Información sobre descargar el evento" aria-expanded={accionInfo?.id === e.id && accionInfo.tipo === 'download'} onClick={() => setAccionInfo(accionInfo?.id === e.id && accionInfo.tipo === 'download' ? null : { id: e.id, tipo: 'download' })}><Ico><path d="M12 3v12m-5-5 5 5 5-5"/><path d="M5 17v3h14v-3"/></Ico></button>
           </div>
+          {accionInfo?.id === e.id && <div className="evc-action-info" role="region" aria-live="polite">
+            <div className="evc-action-info-copy">
+              <strong>{accionInfo.tipo === 'whatsapp' ? 'Compartir por WhatsApp' : accionInfo.tipo === 'calendar' ? 'Guardar en Google Calendar' : 'Descargar evento (.ics)'}</strong>
+              <p>{accionInfo.tipo === 'whatsapp' ? 'Envía la invitación con la fecha, el horario, el lugar y los detalles para compartirla con otras personas.' : accionInfo.tipo === 'calendar' ? 'Abre Google Calendar con los datos del evento para que puedas guardarlo en tu calendario y configurar recordatorios.' : 'Descarga un archivo compatible con calendarios de celulares y computadoras, como Apple Calendar y Outlook.'}</p>
+            </div>
+            {accionInfo.tipo === 'whatsapp' && <a className="evc-info-action" href={enlaceWhatsApp(e)} target="_blank" rel="noopener noreferrer">Abrir WhatsApp</a>}
+            {accionInfo.tipo === 'calendar' && <a className="evc-info-action" href={enlaceCalendar(e)} target="_blank" rel="noopener noreferrer">Continuar a Calendar</a>}
+            {accionInfo.tipo === 'download' && <button type="button" className="evc-info-action" onClick={() => descargarICS(e)}>Descargar archivo</button>}
+          </div>}
           <div className="evc-extra-actions">
             {e.enlace && <a className="evc-go" href={e.enlace} target="_blank" rel="noopener noreferrer">Más información <IcChev /></a>}
             {al && <button type="button" className="evc-go" onClick={() => abrirAlbum(al, true)}>Ver álbum <IcChev /></button>}
