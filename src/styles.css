@@ -2385,3 +2385,66 @@ footer .soc a{display:grid;place-items:center;transition:transform .2s ease,back
   .students-view .quick-link { transition: none; }
   .students-view .quick-link:hover { transform: none; }
 }
+
+
+/* Microinteracciones de acceso rápido y herramientas */
+@keyframes student-card-enter {
+  from { opacity: 0; transform: translateY(9px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes student-icon-pop {
+  0% { transform: scale(1); }
+  45% { transform: scale(1.09) rotate(-4deg); }
+  100% { transform: scale(1.04) rotate(0); }
+}
+@keyframes student-tool-float {
+  0% { transform: translateY(0) rotate(0); }
+  50% { transform: translateY(-2px) rotate(-2deg); }
+  100% { transform: translateY(0) rotate(0); }
+}
+.students-view .quick-link,
+.students-view .resource-card {
+  animation: student-card-enter .42s ease both;
+}
+.students-view .quick-link:nth-child(2),
+.students-view .resource-card:nth-child(2) { animation-delay: .055s; }
+.students-view .quick-link:nth-child(3),
+.students-view .resource-card:nth-child(3) { animation-delay: .11s; }
+.students-view .quick-link:nth-child(4),
+.students-view .resource-card:nth-child(4) { animation-delay: .165s; }
+.students-view .resource-card:nth-child(5) { animation-delay: .22s; }
+.students-view .resource-card:nth-child(6) { animation-delay: .275s; }
+.students-view .quick-link .quick-link-icon,
+.students-view .quick-link i,
+.students-view .resource-card .resource-icon {
+  transition: transform .24s ease, filter .24s ease, box-shadow .24s ease;
+}
+.students-view .quick-link:hover .quick-link-icon,
+.students-view .quick-link:focus-visible .quick-link-icon {
+  animation: student-icon-pop .34s ease both;
+  filter: drop-shadow(0 2px 5px color-mix(in srgb, var(--quick-accent) 32%, transparent));
+}
+.students-view .quick-link:hover i,
+.students-view .quick-link:focus-visible i { transform: translate(2px,-2px); }
+.students-view .resource-card:hover .resource-icon,
+.students-view .resource-card:focus-visible .resource-icon {
+  animation: student-tool-float .42s ease both;
+  filter: drop-shadow(0 3px 6px color-mix(in srgb, var(--resource-accent) 35%, transparent));
+}
+.students-view .resource-card:hover .resource-icon svg,
+.students-view .resource-card:focus-visible .resource-icon svg {
+  transform: scale(1.045);
+  transition: transform .24s ease;
+}
+@media (hover: none) {
+  .students-view .quick-link:active .quick-link-icon { transform: scale(1.06); }
+  .students-view .resource-card:active .resource-icon { transform: translateY(-2px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .students-view .quick-link,
+  .students-view .resource-card { animation: none; }
+  .students-view .quick-link .quick-link-icon,
+  .students-view .quick-link i,
+  .students-view .resource-card .resource-icon,
+  .students-view .resource-card .resource-icon svg { transition: none; animation: none; }
+}
