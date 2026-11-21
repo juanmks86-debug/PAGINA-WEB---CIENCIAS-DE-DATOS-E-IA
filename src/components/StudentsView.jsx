@@ -2,6 +2,15 @@ import React, { useState } from 'react'
 import ProjectsSection from './ProjectsSection.jsx'
 import { studentYears, resources, recentNotes, materialsByYear } from '../data.js'
 
+const studentToolLinks = [
+  { title: 'Python', icon: '🐍', href: 'https://www.python.org/' },
+  { title: 'Jupyter', icon: '🪐', href: 'https://jupyter.org/' },
+  { title: 'Colab', icon: '◉', href: 'https://colab.research.google.com/' },
+  { title: 'Docker', icon: '🐳', href: 'https://www.docker.com/' },
+  { title: 'GitHub', icon: '◉', href: 'https://github.com/' },
+  { title: 'VS Code', icon: '⟨⟩', href: 'https://code.visualstudio.com/' },
+]
+
 const yearIllustrations = {
   ingresantes: <svg viewBox="0 0 240 112" role="img" aria-label="Libros, lápiz y una bombilla que representa el comienzo de la carrera">
     <circle cx="190" cy="28" r="22" fill="#f5c96b" opacity=".16"/>
@@ -195,7 +204,7 @@ export default function StudentsView({ standalone = false }) {
         <NotesBank query={query} />
         <section className="student-tools" aria-labelledby="student-tools-title">
           <div className="student-section-heading"><span aria-hidden="true">⚒</span><div><h2 id="student-tools-title">Herramientas y recursos</h2><p>Recursos útiles para tu estudio y desarrollo.</p></div></div>
-          <div className="resource-grid">{resources.map((resource) => <a className="resource-card" href={resource.href} key={resource.title}><span className="resource-icon" aria-hidden="true">{resource.icon}</span><span><b>{resource.title}</b><small>{resource.description}</small></span><strong aria-hidden="true">→</strong></a>)}</div>
+          <div className="resource-grid">{studentToolLinks.map((resource) => <a className="resource-card" href={resource.href} target="_blank" rel="noopener noreferrer" key={resource.title}><span className="resource-icon" aria-hidden="true">{resource.icon}</span><span><b>{resource.title}</b></span></a>)}</div>
         </section>
         <ProjectsSection />
         <aside className="recent-panel" id="ultimos-apuntes">
