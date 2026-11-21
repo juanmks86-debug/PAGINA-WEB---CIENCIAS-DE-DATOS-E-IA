@@ -1625,3 +1625,85 @@ footer .soc a{display:grid;place-items:center;transition:transform .2s ease,back
     animation: none !important;
   }
 }
+
+
+/* PREVIEW: reveal progresivo consistente en todas las vistas y rutas */
+@media (prefers-reduced-motion: no-preference) {
+  .scroll-motion-ready #contenido-principal > .hero,
+  .scroll-motion-ready #contenido-principal > .wrap > .tabs,
+  .scroll-motion-ready #contenido-principal > .wrap > .stats,
+  .scroll-motion-ready #contenido-principal section:not(.reveal),
+  .scroll-motion-ready #contenido-principal .reveal > h3,
+  .scroll-motion-ready #contenido-principal .card,
+  .scroll-motion-ready #contenido-principal .pdf,
+  .scroll-motion-ready #contenido-principal .ev,
+  .scroll-motion-ready #contenido-principal .cc,
+  .scroll-motion-ready #contenido-principal .faq > *,
+  .scroll-motion-ready #contenido-principal .nw-card,
+  .scroll-motion-ready .students-hero,
+  .scroll-motion-ready .students-shell > .student-heading,
+  .scroll-motion-ready .year-card,
+  .scroll-motion-ready .project-card,
+  .scroll-motion-ready .resource-card,
+  .scroll-motion-ready .recent-panel,
+  .scroll-motion-ready .materials-browser,
+  .scroll-motion-ready .materials-group,
+  .scroll-motion-ready .ev-page-head,
+  .scroll-motion-ready .evc,
+  .scroll-motion-ready .album-view,
+  .scroll-motion-ready .alb-open-head,
+  .scroll-motion-ready .gal-item,
+  .scroll-motion-ready .alb,
+  .scroll-motion-ready .pj-card {
+    opacity: 0;
+    transform: translate3d(0, 20px, 0);
+    transition: opacity .62s cubic-bezier(.2,.7,.25,1), transform .62s cubic-bezier(.2,.7,.25,1);
+    will-change: opacity, transform;
+  }
+
+  .scroll-motion-ready #contenido-principal .scroll-visible,
+  .scroll-motion-ready .scroll-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  .scroll-motion-ready #contenido-principal .reveal,
+  .scroll-motion-ready #contenido-principal .reveal * {
+    /* La animación existente de .reveal mantiene su propio control */
+    will-change: auto;
+  }
+
+  .scroll-motion-ready .year-card:hover,
+  .scroll-motion-ready .project-card:hover,
+  .scroll-motion-ready .resource-card:hover,
+  .scroll-motion-ready .pj-card:hover,
+  .scroll-motion-ready .evc:hover,
+  .scroll-motion-ready .alb:hover {
+    transform: translate3d(0, -4px, 0);
+  }
+}
+
+@media (max-width: 700px) and (prefers-reduced-motion: no-preference) {
+  .scroll-motion-ready #contenido-principal > .hero,
+  .scroll-motion-ready #contenido-principal > .wrap > .tabs,
+  .scroll-motion-ready #contenido-principal > .wrap > .stats,
+  .scroll-motion-ready #contenido-principal section:not(.reveal),
+  .scroll-motion-ready .students-hero,
+  .scroll-motion-ready .materials-browser,
+  .scroll-motion-ready .ev-page-head,
+  .scroll-motion-ready .album-view {
+    transform: translate3d(0, 14px, 0);
+    transition-duration: .5s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-motion-ready #contenido-principal *,
+  .scroll-motion-ready .students-view *,
+  .scroll-motion-ready .ev-page * {
+    scroll-behavior: auto;
+    transition-duration: .01ms !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
