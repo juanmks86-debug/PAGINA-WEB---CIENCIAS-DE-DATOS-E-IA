@@ -1913,3 +1913,33 @@ footer .soc a{display:grid;place-items:center;transition:transform .2s ease,back
   .year-card { transition: none; }
   .year-card:hover { transform: none; }
 }
+
+
+/* Ilustraciones vectoriales individuales para las tarjetas del Banco de apuntes */
+.year-art {
+  height: 76px;
+  width: 100%;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  margin-bottom: 12px;
+  border-radius: 9px;
+  color: var(--year-accent);
+  background:
+    radial-gradient(circle at 78% 22%, color-mix(in srgb, var(--year-accent) 18%, transparent), transparent 34%),
+    linear-gradient(125deg, color-mix(in srgb, var(--year-accent) 13%, #082b3b), rgba(5, 31, 44, .72));
+  border: 1px solid color-mix(in srgb, var(--year-accent) 24%, transparent);
+}
+.year-art svg {
+  display: block;
+  width: min(100%, 220px);
+  height: 100%;
+  overflow: visible;
+}
+.year-card-ingresantes .year-art { background-color: #183747; }
+.year-card-primero .year-art { background-color: #173a36; }
+.year-card-segundo .year-art { background-color: #202f4b; }
+.year-card-tercero .year-art { background-color: #382f49; }
+@media (max-width: 520px) {
+  .year-art { height: 68px; margin-bottom: 10px; border-radius: 8px; }
+}
