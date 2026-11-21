@@ -1212,3 +1212,130 @@ footer .soc a{display:grid;place-items:center;transition:transform .2s ease,back
  .ev-page .evc-info-action{align-self:flex-start}
 }
 @media(prefers-reduced-motion:reduce){.ev-page .evc-icon-btn,.ev-page .evc-action-info{transition:none;animation:none}}
+
+/* =========================================================
+   RESPONSIVE GLOBAL — refuerzo para móviles y pantallas estrechas
+   Se mantienen los estilos e identidad visual de cada sección.
+   ========================================================= */
+@media (max-width: 760px) {
+  html, body, #root { max-width: 100%; }
+  body { overflow-x: hidden; }
+  img, video, iframe, svg { max-width: 100%; }
+  .wrap, .students-shell, .ev-page .wrap {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .hd-top-in { min-width: 0; gap: 7px; }
+  .hd-top-in .wm, .hd-top-in h1 { min-width: 0; }
+  .hd-top-in h1 {
+    font-size: clamp(.82rem, 3.1vw, 1rem);
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+  }
+  .hd-bar-in { min-width: 0; }
+  .hd-brand { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+  .hd-bar nav.open {
+    max-height: calc(100dvh - 116px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .hd-bar nav a { min-height: 42px; display: flex; align-items: center; }
+  .hero .wrap, .students-hero-inner { min-width: 0; }
+  .hero-txt, .students-hero-inner > div:last-child { min-width: 0; }
+  .hero h2, .students-hero h2, .students-hero h3,
+  .ev-page-head h2, .evc h4 { overflow-wrap: anywhere; }
+  .tabs, .grid3, .two, .year-grid, .projects-grid,
+  .students-columns, .materials-groups, .resource-grid,
+  .ev-layout, .albs, .gal, footer .ft-cols {
+    min-width: 0;
+  }
+  .tabs, .year-grid, .projects-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .card, .tab, .year-card, .project-card, .resource-card,
+  .materials-group, .recent-panel, .evc, .alb { min-width: 0; }
+  .materials-group li { min-width: 0; flex-wrap: wrap; }
+  .materials-group li > span:nth-child(2) { min-width: 0; flex: 1 1 150px; overflow-wrap: anywhere; }
+  .materials-group li a { flex: 0 0 auto; }
+  .student-heading, .materials-header, .panel-title,
+  .alb-open-head { min-width: 0; flex-wrap: wrap; }
+  .student-search { min-width: 0; max-width: 100%; }
+  .student-search input { min-width: 0; }
+  .student-actions { min-width: 0; flex-wrap: wrap; }
+  .ev-page .ev-layout { grid-template-columns: minmax(0, 1fr); }
+  .ev-page .evc { grid-template-columns: minmax(0, 1fr); }
+  .ev-page .evc-img { width: 100%; max-height: 190px; aspect-ratio: 16 / 7; }
+  .ev-page .evc-body { min-width: 0; overflow-wrap: anywhere; }
+  .ev-page .evc-meta { min-width: 0; }
+  .ev-page .evc-meta span { min-width: 0; overflow-wrap: anywhere; }
+  .ev-page .evc-actions { align-self: stretch; }
+  .ev-page .evc-action-info { min-width: 0; max-width: 100%; flex-wrap: wrap; }
+  .ev-page .evc-action-info p { overflow-wrap: anywhere; }
+  .modal-bg, .tm-bg, .pm-bg, .pj-modal {
+    padding: 12px;
+    align-items: center;
+  }
+  .modal, .tm, .pm, .pj-dialog {
+    width: 100%;
+    max-width: 100%;
+    max-height: calc(100dvh - 24px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    min-width: 0;
+  }
+  .lb-in { max-width: 100%; width: 100%; }
+  .lb-in img { max-width: 100%; max-height: calc(100dvh - 36px); object-fit: contain; }
+  footer .ft-bar { min-width: 0; }
+  footer .ft-bar > span { min-width: 0; overflow-wrap: anywhere; }
+}
+@media (max-width: 540px) {
+  .wrap { padding-inline: 16px; }
+  .hd-top-in { flex-wrap: nowrap; }
+  .hd-badge { flex: 0 0 auto; }
+  .hd-top h1 { max-width: 42vw; }
+  .hero .wrap { padding-top: 34px; padding-bottom: 42px; }
+  .hero h2 { font-size: clamp(1.85rem, 8vw, 2.5rem); }
+  .tabs, .year-grid, .projects-grid { grid-template-columns: minmax(0, 1fr); }
+  .tabs { gap: 10px; }
+  .tab { padding: 14px 10px; }
+  .stats { gap: 10px; }
+  .materials-browser { padding: 13px; }
+  .materials-header { align-items: stretch; }
+  .materials-filter { white-space: normal; }
+  .materials-group li { align-items: flex-start; }
+  .file-type { flex: 0 0 31px; }
+  .materials-group li a { margin-left: 40px; }
+  .students-hero-inner { gap: 12px; padding-inline: 16px; }
+  .graduation-mark { flex: 0 0 48px; }
+  .students-hero h2 { font-size: 2.2rem; }
+  .student-actions { flex-direction: column; align-items: stretch; }
+  .student-actions a { width: 100%; justify-content: center; }
+  .projects-carousel .project-card { flex-basis: 100%; }
+  .projects-carousel { mask-image: none; }
+  .pj-grid { grid-template-columns: minmax(0, 1fr); }
+  .pj-dialog .pj-cols, .pj-dialog .pj-two { grid-template-columns: minmax(0, 1fr); }
+  .ev-page .evc { padding: 11px; }
+  .ev-page .evc-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ev-page .evc-icon-actions { display: flex; flex-wrap: wrap; }
+  .ev-page .evc-icon-btn { flex: 0 0 42px; }
+  .ev-page .evc-action-info { align-items: flex-start; }
+  .alb-info { left: 12px; right: 12px; }
+  .alb-info b { font-size: 1.05rem; overflow-wrap: anywhere; }
+  .gal { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  footer .ft-cols { grid-template-columns: minmax(0, 1fr); }
+  footer .ft-bar { align-items: flex-start; flex-direction: column; }
+}
+@media (max-width: 380px) {
+  .wrap, .students-shell { padding-inline: 12px; }
+  .hd-top-in .wm-s { display: none; }
+  .hd-sep { margin-inline: 2px; }
+  .hd-top h1 { font-size: .78rem; max-width: 38vw; }
+  .hd-brand { font-size: .7rem; }
+  .theme { width: 34px; height: 34px; flex: 0 0 34px; }
+  .stats { grid-template-columns: minmax(0, 1fr); }
+  .gal { grid-template-columns: minmax(0, 1fr); }
+  .ev-page .evc-top { align-items: flex-start; }
+  .ev-page .evc-icon-actions { gap: 8px; }
+  .ev-page .evc-action-info { padding: 12px; }
+  .tm-bg, .pm-bg, .modal-bg, .pj-modal { padding: 8px; }
+  .tm, .pm, .modal, .pj-dialog { max-height: calc(100dvh - 16px); padding: 13px; }
+}
+
