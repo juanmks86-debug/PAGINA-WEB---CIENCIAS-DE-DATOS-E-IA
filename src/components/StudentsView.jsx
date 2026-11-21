@@ -95,7 +95,18 @@ export default function StudentsView({ standalone = false }) {
   const [query, setQuery] = useState('')
   const termino = query.trim().toLocaleLowerCase('es')
   const filteredNotes = recentNotes.filter((note) => `${note.title} ${note.year} ${note.subject}`.toLocaleLowerCase('es').includes(termino))
-  const filteredYears = studentYears.filter((year) => {
+  const yearCards = [
+    { title: 'Ingresantes', description: 'Primeros pasos en programación, matemática y herramientas para comenzar la carrera.', icon: 'rocket', status: 'Próximamente', statusKey: 'review', slug: 'ingresantes', drive: '' },
+    ...studentYears.map((year) => ({
+      ...year,
+      description: ({
+        '1.º Año': 'Programación, Álgebra, Bases de Datos, Redes y Matemática.',
+        '2.º Año': 'Estadística, Machine Learning, Programación II e Inteligencia Artificial.',
+        '3.º Año': 'Minería de Datos, Ciberseguridad, Analítica Web y proyectos integradores.',
+      })[year.title] || year.description,
+    })),
+  ]
+  const filteredYears = yearCards.filter((year) => {
     if (!termino) return true
     const materiales = materialsByYear.find((group) => group.year === year.title)
     const contenido = `${year.title} ${year.description} ${materiales?.items.map((item) => `${item.title} ${item.description} ${item.type}`).join(' ') || ''}`
@@ -113,7 +124,7 @@ export default function StudentsView({ standalone = false }) {
         </div>
         <div className="year-grid" aria-live="polite">
           {filteredYears.map((item) => (
-            <article className="year-card" key={item.title}>
+            <article className={`year-card year-card-${item.slug}`} key={item.title}>
               <div className="year-icon">{icons[item.icon]}</div>
               <div className="year-top"><h3>{item.title}</h3><Status value={item.status} tone={item.statusKey} /></div>
               <p>{item.description}</p>
