@@ -1579,47 +1579,94 @@ footer .soc a{display:grid;place-items:center;transition:transform .2s ease,back
 }
 
 
-/* Perfil: tarjetas visuales con contenido ampliado en modal */
+/* Perfil: tarjetas compactas con identidad visual propia y detalle en modal */
 .career-panels {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
-  margin-top: 24px;
+  gap: 13px;
+  margin-top: 20px;
 }
 .career-panel {
   appearance: none;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   width: 100%;
   min-width: 0;
-  min-height: 190px;
-  padding: 18px;
+  min-height: 158px;
+  padding: 13px 15px 12px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  gap: 10px;
-  border-radius: 12px;
-  background: var(--surface);
+  justify-content: center;
+  gap: 7px;
+  border-radius: 17px;
+  background: linear-gradient(145deg, var(--surface) 15%, var(--bg) 100%);
   border: 1px solid var(--line);
-  box-shadow: var(--shadow);
+  box-shadow: 0 5px 16px rgba(20, 35, 50, .07);
   color: var(--ink);
   font: inherit;
   text-align: center;
   cursor: pointer;
-  transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+  transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
 }
-.career-panel:hover { transform: translateY(-3px); border-color: var(--teal); }
+.career-panel::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0 22% auto;
+  height: 3px;
+  border-radius: 0 0 8px 8px;
+  background: var(--teal);
+  opacity: .75;
+}
+.career-panel::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: 100px;
+  height: 100px;
+  right: -54px;
+  bottom: -58px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  opacity: .7;
+}
+.career-panel:hover {
+  transform: translateY(-3px);
+  border-color: var(--teal);
+  box-shadow: 0 10px 22px rgba(20, 35, 50, .12);
+}
 .career-panel:focus-visible { outline: 3px solid var(--teal); outline-offset: 3px; }
 .career-panel-heading-icon {
-  width: 42px;
-  height: 42px;
+  width: 36px;
+  height: 36px;
   display: grid;
   place-items: center;
-  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--bg);
+  color: var(--teal);
 }
-.career-panel-title { font-size: 1rem; font-weight: 750; line-height: 1.25; }
-.career-panel-icons { display: flex; align-items: center; justify-content: center; gap: 20px; margin: 2px 0 3px; }
-.career-panel-mini-icon { display: grid; place-items: center; color: var(--muted); }
-.career-panel-more { margin-top: auto; color: var(--teal); font-size: .78rem; font-weight: 750; }
+.career-panel-title { font-size: .94rem; font-weight: 750; line-height: 1.2; }
+.career-panel-icons { display: flex; align-items: center; justify-content: center; gap: 15px; margin: 1px 0 2px; }
+.career-panel-mini-icon {
+  width: 29px;
+  height: 29px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--muted);
+}
+.career-panel-more {
+  margin-top: 1px;
+  color: var(--teal);
+  font-size: .72rem;
+  font-weight: 750;
+  letter-spacing: .01em;
+}
 .career-modal-bg {
   position: fixed;
   inset: 0;
@@ -1661,17 +1708,19 @@ footer .soc a{display:grid;place-items:center;transition:transform .2s ease,back
 .career-modal ul { margin: 20px 0 0; padding-left: 20px; color: var(--muted); line-height: 1.65; }
 .career-modal li + li { margin-top: 9px; }
 @media (max-width: 700px) {
-  .career-panels { gap: 10px; margin-top: 18px; }
-  .career-panel { min-height: 166px; padding: 13px 9px; gap: 8px; }
-  .career-panel-heading-icon { width: 34px; height: 34px; }
-  .career-panel-title { font-size: .86rem; }
-  .career-panel-icons { gap: 14px; }
-  .career-panel-mini-icon svg { width: 17px; height: 17px; }
-  .career-panel-more { font-size: .72rem; }
+  .career-panels { gap: 9px; margin-top: 16px; }
+  .career-panel { min-height: 136px; padding: 10px 8px; gap: 6px; border-radius: 15px; }
+  .career-panel-heading-icon { width: 31px; height: 31px; border-radius: 10px; }
+  .career-panel-heading-icon svg { width: 23px; height: 23px; }
+  .career-panel-title { font-size: .82rem; }
+  .career-panel-icons { gap: 11px; }
+  .career-panel-mini-icon { width: 26px; height: 26px; border-radius: 9px; }
+  .career-panel-mini-icon svg { width: 16px; height: 16px; }
+  .career-panel-more { font-size: .68rem; }
   .career-modal { padding: 23px 19px; }
 }
 @media (max-width: 360px) {
-  .career-panel { min-height: 158px; padding-inline: 7px; }
+  .career-panel { min-height: 130px; padding-inline: 6px; }
   .career-panel-title { font-size: .8rem; }
   .career-panel-icons { gap: 10px; }
 }
