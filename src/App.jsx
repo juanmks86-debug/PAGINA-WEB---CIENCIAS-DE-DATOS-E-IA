@@ -194,7 +194,7 @@ function useScrollMotion() {
 
     const observar = (scope = document) => {
       scope.querySelectorAll(selector).forEach((el) => {
-        if (vistos.has(el) || el.closest('.reveal')) return
+        if (vistos.has(el)) return
         vistos.add(el)
         observer.observe(el)
       })
@@ -204,7 +204,7 @@ function useScrollMotion() {
     const mutations = new MutationObserver((records) => {
       records.forEach((record) => record.addedNodes.forEach((node) => {
         if (node.nodeType !== 1) return
-        if (node.matches?.(selector) && !node.closest('.reveal') && !vistos.has(node)) {
+        if (node.matches?.(selector) && !vistos.has(node)) {
           vistos.add(node)
           observer.observe(node)
         }
