@@ -1455,3 +1455,110 @@ footer .soc a{display:grid;place-items:center;transition:transform .2s ease,back
 .privacy-detail-links{display:flex;flex-wrap:wrap;gap:14px;margin-top:10px}
 .privacy-detail-links a{font-size:.78rem}
 :root[data-theme="dark"] .privacy-detail-section strong{color:#c4e9e8}
+
+
+/* PREVIEW: animaciones de desplazamiento para la vista principal */
+@media (prefers-reduced-motion: no-preference) {
+  /* Entradas más suaves y con profundidad, activadas por el IntersectionObserver existente */
+  #contenido-principal > .hero,
+  #contenido-principal .reveal {
+    will-change: opacity, transform;
+  }
+  #contenido-principal .reveal {
+    opacity: 0;
+    transform: translate3d(0, 30px, 0) scale(.992);
+    transition:
+      opacity .72s cubic-bezier(.2,.7,.25,1),
+      transform .82s cubic-bezier(.2,.7,.25,1);
+  }
+  #contenido-principal .reveal.in {
+    opacity: 1;
+    transform: translate3d(0,0,0) scale(1);
+  }
+
+  /* Aparición escalonada de los elementos de cada bloque */
+  #contenido-principal .reveal.in > h3,
+  #contenido-principal .reveal.in > .nw-head {
+    animation: scroll-heading-in .58s .06s both cubic-bezier(.2,.7,.25,1);
+  }
+  #contenido-principal .reveal.in .card,
+  #contenido-principal .reveal.in .stat,
+  #contenido-principal .reveal.in .pdf,
+  #contenido-principal .reveal.in .ev,
+  #contenido-principal .reveal.in .cc,
+  #contenido-principal .reveal.in .faq > *,
+  #contenido-principal .reveal.in .nw-card {
+    animation: scroll-item-in .62s both cubic-bezier(.2,.7,.25,1);
+  }
+  #contenido-principal .reveal.in .card:nth-child(2),
+  #contenido-principal .reveal.in .stat:nth-child(2),
+  #contenido-principal .reveal.in .cc:nth-child(2),
+  #contenido-principal .reveal.in .faq > :nth-child(2),
+  #contenido-principal .reveal.in .nw-card:nth-child(2) { animation-delay: .08s; }
+  #contenido-principal .reveal.in .card:nth-child(3),
+  #contenido-principal .reveal.in .stat:nth-child(3),
+  #contenido-principal .reveal.in .cc:nth-child(3),
+  #contenido-principal .reveal.in .faq > :nth-child(3),
+  #contenido-principal .reveal.in .nw-card:nth-child(3) { animation-delay: .16s; }
+  #contenido-principal .reveal.in .card:nth-child(4),
+  #contenido-principal .reveal.in .stat:nth-child(4),
+  #contenido-principal .reveal.in .cc:nth-child(4),
+  #contenido-principal .reveal.in .faq > :nth-child(4) { animation-delay: .24s; }
+
+  /* El Hero acompaña el scroll sin fijar ni bloquear la navegación */
+  .hero {
+    background-size: 140% 140%;
+    transition: background-position .18s linear;
+  }
+  .hero-badge {
+    transform: translate3d(calc(var(--px, 0) * -5px), calc(var(--py, 0) * -5px), 0);
+    transition: transform .35s ease-out;
+  }
+}
+
+@keyframes scroll-heading-in {
+  from { opacity: 0; transform: translate3d(0, 12px, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+@keyframes scroll-item-in {
+  from { opacity: 0; transform: translate3d(0, 16px, 0) scale(.985); }
+  to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+}
+
+@media (max-width: 700px) {
+  #contenido-principal .reveal {
+    transform: translate3d(0, 18px, 0);
+    transition-duration: .58s;
+  }
+  #contenido-principal .reveal.in .card,
+  #contenido-principal .reveal.in .stat,
+  #contenido-principal .reveal.in .pdf,
+  #contenido-principal .reveal.in .ev,
+  #contenido-principal .reveal.in .cc,
+  #contenido-principal .reveal.in .faq > *,
+  #contenido-principal .reveal.in .nw-card {
+    animation-duration: .48s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #contenido-principal .reveal,
+  #contenido-principal .reveal.in {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    animation: none;
+  }
+  #contenido-principal .reveal.in > h3,
+  #contenido-principal .reveal.in > .nw-head,
+  #contenido-principal .reveal.in .card,
+  #contenido-principal .reveal.in .stat,
+  #contenido-principal .reveal.in .pdf,
+  #contenido-principal .reveal.in .ev,
+  #contenido-principal .reveal.in .cc,
+  #contenido-principal .reveal.in .faq > *,
+  #contenido-principal .reveal.in .nw-card {
+    animation: none;
+  }
+  .hero-badge { transform: none; }
+}
