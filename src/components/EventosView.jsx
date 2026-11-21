@@ -11,7 +11,7 @@ const nFotos = (n) => `${n} ${n === 1 ? 'foto' : 'fotos'}`
 
 const fechaCompacta = (fecha, hora = '') => {
   const [y, m, d] = String(fecha).slice(0, 10).split('-')
-  const hhmm = String(hora).match(/(\\d{1,2}):(\\d{2})/)
+  const hhmm = String(hora).match(/(\d{1,2}):(\d{2})/)
   const inicio = `${y}${m}${d}${hhmm ? 'T' + hhmm[1].padStart(2, '0') + hhmm[2] + '00' : ''}`
   if (!hhmm) return { inicio, fin: inicio, todoElDia: true }
   const finDate = new Date(Number(y), Number(m) - 1, Number(d), Number(hhmm[1]), Number(hhmm[2]) + 60)
@@ -19,19 +19,19 @@ const fechaCompacta = (fecha, hora = '') => {
   return { inicio, fin, todoElDia: false }
 }
 const enlaceWhatsApp = (e) => {
-  const mensaje = [e.titulo, larga(aFecha(e.fecha)), e.hora && 'Horario: ' + e.hora, e.lugar && 'Lugar: ' + e.lugar, e.desc, e.enlace].filter(Boolean).join('\\n')
+  const mensaje = [e.titulo, larga(aFecha(e.fecha)), e.hora && 'Horario: ' + e.hora, e.lugar && 'Lugar: ' + e.lugar, e.desc, e.enlace].filter(Boolean).join('\n')
   return 'https://wa.me/?text=' + encodeURIComponent(mensaje)
 }
 const enlaceCalendar = (e) => {
   const fechas = fechaCompacta(e.fecha, e.hora)
-  const params = new URLSearchParams({ action: 'TEMPLATE', text: e.titulo, dates: fechas.inicio + '/' + fechas.fin, details: [e.desc, e.enlace].filter(Boolean).join('\\n'), location: e.lugar || '' })
+  const params = new URLSearchParams({ action: 'TEMPLATE', text: e.titulo, dates: fechas.inicio + '/' + fechas.fin, details: [e.desc, e.enlace].filter(Boolean).join('\n'), location: e.lugar || '' })
   return 'https://calendar.google.com/calendar/render?' + params.toString()
 }
 const descargarICS = (e) => {
   const fechas = fechaCompacta(e.fecha, e.hora)
   const escapar = (v) => String(v || '').replace(/\\\\/g, '\\\\\\\\').replace(/,/g, '\\\\,').replace(/;/g, '\\\\;').replace(/\\n/g, '\\\\n')
   const lineaFecha = fechas.todoElDia ? `DTSTART;VALUE=DATE:${fechas.inicio}\\nDTEND;VALUE=DATE:${fechas.inicio}\\n` : `DTSTART:${fechas.inicio}\\nDTEND:${fechas.fin}\\n`
-  const contenido = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//IES N6//Eventos//ES', 'BEGIN:VEVENT', lineaFecha.trim(), `SUMMARY:${escapar(e.titulo)}`, `LOCATION:${escapar(e.lugar)}`, `DESCRIPTION:${escapar([e.desc, e.enlace].filter(Boolean).join('\\n'))}`, 'END:VEVENT', 'END:VCALENDAR'].join('\\r\\n')
+  const contenido = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//IES N6//Eventos//ES', 'BEGIN:VEVENT', lineaFecha.trim(), `SUMMARY:${escapar(e.titulo)}`, `LOCATION:${escapar(e.lugar)}`, `DESCRIPTION:${escapar([e.desc, e.enlace].filter(Boolean).join('\n'))}`, 'END:VEVENT', 'END:VCALENDAR'].join('\r\n')
   const blob = new Blob([contenido], { type: 'text/calendar;charset=utf-8' })
   const url = URL.createObjectURL(blob)
   const a = document.createElement('a')
