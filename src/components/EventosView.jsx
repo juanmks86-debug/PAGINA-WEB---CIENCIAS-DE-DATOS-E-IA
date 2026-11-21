@@ -13,7 +13,11 @@ const fechaCompacta = (fecha, hora = '') => {
   const [y, m, d] = String(fecha).slice(0, 10).split('-')
   const hhmm = String(hora).match(/(\d{1,2}):(\d{2})/)
   const inicio = `${y}${m}${d}${hhmm ? 'T' + hhmm[1].padStart(2, '0') + hhmm[2] + '00' : ''}`
-  if (!hhmm) return { inicio, fin: inicio, todoElDia: true }
+  if (!hhmm) {
+    const siguiente = new Date(Number(y), Number(m) - 1, Number(d) + 1)
+    const fin = [siguiente.getFullYear(), String(siguiente.getMonth() + 1).padStart(2, '0'), String(siguiente.getDate()).padStart(2, '0')].join('')
+    return { inicio, fin, todoElDia: true }
+  }
   const finDate = new Date(Number(y), Number(m) - 1, Number(d), Number(hhmm[1]), Number(hhmm[2]) + 60)
   const fin = [finDate.getFullYear(), String(finDate.getMonth() + 1).padStart(2, '0'), String(finDate.getDate()).padStart(2, '0')].join('') + 'T' + String(finDate.getHours()).padStart(2, '0') + String(finDate.getMinutes()).padStart(2, '0') + '00'
   return { inicio, fin, todoElDia: false }
@@ -230,7 +234,7 @@ export default function EventosView({ ui }) {
           </div>
           {e.desc && <p>{e.desc}</p>}
           <div className="evc-actions">
-            <a className="evc-share evc-whatsapp" href={enlaceWhatsApp(e)} target="_blank" rel="noopener noreferrer" aria-label={'Compartir ' + e.titulo + ' por WhatsApp'}> <span className="evc-share-icon">◉</span> Compartir por WhatsApp</a>
+            <a className="evc-share evc-whatsapp" href={enlaceWhatsApp(e)} target="_blank" rel="noopener noreferrer" aria-label={'Compartir ' + e.titulo + ' por WhatsApp'}> <span className="evc-share-icon" aria-hidden="true">☏</span> Compartir por WhatsApp</a>
             <a className="evc-share evc-calendar" href={enlaceCalendar(e)} target="_blank" rel="noopener noreferrer"> <IcCal /> Guardar en Google Calendar</a>
             <button type="button" className="evc-share evc-download" onClick={() => descargarICS(e)}><span className="evc-share-icon">↓</span> Descargar (.ics)</button>
           </div>
