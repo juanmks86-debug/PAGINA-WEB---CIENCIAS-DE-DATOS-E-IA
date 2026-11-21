@@ -623,7 +623,11 @@ function Noticias() {
 function Calendar({ extra = {} }) {
   const hoy = new Date()
   const [m, setM] = useState({ y: hoy.getFullYear(), mo: hoy.getMonth() })
-  // fechas fijas (data.js) + eventos de Supabase; si son el mismo evento se muestra solo el de Supabase
+  const [direccion, setDireccion] = useState(1)
+  const [seleccion, setSeleccion] = useState(null)
+  const hoyKey = `${hoy.getFullYear()}-${String(hoy.getMonth() + 1).padStart(2, '0')}-${String(hoy.getDate()).padStart(2, '0')}`
+
+  // Fechas fijas (data.js) + eventos publicados desde Supabase.
   const ev = (k) => {
     const a = events[k], b = extra[k]
     if (!a || !b) return a || b || ''
@@ -632,28 +636,78 @@ function Calendar({ extra = {} }) {
   }
   const first = (new Date(m.y, m.mo, 1).getDay() + 6) % 7
   const days = new Date(m.y, m.mo + 1, 0).getDate()
-  const list = []
-  const cells = Array.from({ length: first }, (_, i) => <div key={'b' + i} className="c x" />)
+  const eventosMes = []
+  const cells = Array.from({ length: first }, (_, i) => <div key={'b' + i} className="c x" aria-hidden="true" />)
+
   for (let d = 1; d <= days; d++) {
     const k = `${m.y}-${String(m.mo + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`
-    const t = ev(k)
-    if (t) list.push(`${d}: ${t}`)
-    cells.push(<div key={d} className={'c' + (t ? ' e' : '')} title={t} aria-label={t ? `${d} de ${meses[m.mo]}: ${t}` : `${d} de ${meses[m.mo]}`}>{d}</div>)
+    const titulo = ev(k)
+    if (titulo) eventosMes.push({ fecha: k, dia: d, titulo })
+    cells.push(
+      <button
+        key={d}
+        type="button"
+        className={'c cal-day' + (titulo ? ' e' : '') + (k === hoyKey ? ' is-today' : '') + (seleccion === k ? ' is-selected' : '')}
+        style={{ '--cal-i': d }}
+        title={titulo || `${d} de ${meses[m.mo]}`}
+        aria-label={titulo ? `${d} de ${meses[m.mo]}: ${titulo}` : `${d} de ${meses[m.mo]}`}
+        aria-pressed={seleccion === k}
+        onClick={() => setSeleccion(k)}
+      >
+        {d}
+        {titulo && <span className="cal-day-dot" aria-hidden="true" />}
+      </button>
+    )
   }
-  const go = (n) => setM((p) => { const t = new Date(p.y, p.mo + n, 1); return { y: t.getFullYear(), mo: t.getMonth() } })
+
+  const go = (n) => {
+    setDireccion(n)
+    setSeleccion(null)
+    setM((p) => {
+      const t = new Date(p.y, p.mo + n, 1)
+      return { y: t.getFullYear(), mo: t.getMonth() }
+    })
+  }
+  const detalleSeleccion = seleccion ? ev(seleccion) : ''
+  const fechaElegida = seleccion ? new Date(Number(seleccion.slice(0, 4)), Number(seleccion.slice(5, 7)) - 1, Number(seleccion.slice(8, 10))) : null
+  const fechaTexto = fechaElegida ? fechaElegida.toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) : ''
+  const titulosElegidos = detalleSeleccion ? detalleSeleccion.split(' / ') : []
 
   return (
     <div className="cal">
       <div className="cal-h">
         <button type="button" onClick={() => go(-1)} aria-label="Mes anterior">‹</button>
-        <span aria-live="polite" aria-atomic="true">{meses[m.mo]} {m.y}</span>
+        <span key={`${m.y}-${m.mo}`} aria-live="polite" aria-atomic="true" className="cal-month-title">{meses[m.mo]} {m.y}</span>
         <button type="button" onClick={() => go(1)} aria-label="Mes siguiente">›</button>
       </div>
-      <div className="cal-g" role="group" aria-label={`Calendario de ${meses[m.mo]} de ${m.y}`}>
+      <div className="cal-weekdays" aria-hidden="true">
         {['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'].map((d) => <div key={d} className="d">{d}</div>)}
+      </div>
+      <div key={`${m.y}-${m.mo}`} className={'cal-g cal-month-enter ' + (direccion < 0 ? 'cal-prev' : 'cal-next')} role="group" aria-label={`Calendario de ${meses[m.mo]} de ${m.y}`}>
         {cells}
       </div>
-      <div className="legend">{list.length ? list.join(' · ') : 'Sin fechas importantes este mes.'}</div>
+      <div className="cal-legend">
+        <span><i className="cal-legend-dot" /> Fechas con actividades</span>
+        {eventosMes.length > 0 && <span>{eventosMes.length} {eventosMes.length === 1 ? 'fecha destacada' : 'fechas destacadas'}</span>}
+      </div>
+      <div className={'cal-agenda' + (seleccion ? ' has-selection' : '')} aria-live="polite">
+        {seleccion ? (
+          <>
+            <div className="cal-agenda-heading">
+              <div>
+                <span className="cal-agenda-eyebrow">AGENDA DEL DÍA</span>
+                <h4>{fechaTexto.charAt(0).toUpperCase() + fechaTexto.slice(1)}</h4>
+              </div>
+              <button type="button" className="cal-clear" onClick={() => setSeleccion(null)} aria-label="Cerrar detalle de la fecha">×</button>
+            </div>
+            {titulosElegidos.length ? (
+              <ul className="cal-agenda-list">{titulosElegidos.map((t, i) => <li key={i}><span className="cal-agenda-mark" />{t}</li>)}</ul>
+            ) : <p className="cal-agenda-empty">No hay actividades programadas para esta fecha.</p>}
+          </>
+        ) : (
+          <p className="cal-agenda-hint">Seleccioná una fecha para consultar sus actividades.</p>
+        )}
+      </div>
     </div>
   )
 }
