@@ -1339,3 +1339,59 @@ footer .soc a{display:grid;place-items:center;transition:transform .2s ease,back
   .tm, .pm, .modal, .pj-dialog { max-height: calc(100dvh - 16px); padding: 13px; }
 }
 
+/* Segunda pasada móvil: componentes con contenido variable o títulos extensos */
+@media (max-width: 760px) {
+  .pj-dialog { min-width: 0; }
+  .pj-dialog > *, .pj-dialog .pj-cols > *, .pj-dialog .pj-two > * { min-width: 0; }
+  .pj-dialog h2, .pj-dialog p, .pj-dialog .pj-team > div,
+  .pj-dialog .pj-cnt, .pj-dialog .pj-nav button {
+    overflow-wrap: anywhere;
+  }
+  .pj-dialog .pj-chips .pj-tech {
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+  .pj-dialog .pj-main { height: clamp(170px, 58vw, 260px); }
+  .pj-dialog .pj-thumbs { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .pj-dialog .pj-nav { align-items: stretch; }
+  .pj-dialog .pj-nav button { min-width: 0; max-width: 48%; }
+  .pj-dialog .pj-act > a { max-width: 100%; overflow-wrap: anywhere; }
+  .pj-card, .pj-body, .pj-actions, .pj-by { min-width: 0; }
+  .pj-body h3, .pj-body p, .pj-by { overflow-wrap: anywhere; }
+  .pj-filters { max-width: 100%; }
+  .pj-chip { max-width: 100%; white-space: normal; }
+  .ev-page section, .ev-page .evc, .ev-page .evc-body,
+  .ev-page .evc-action-info-copy { min-width: 0; }
+  .ev-page .evc h4, .ev-page .evc p,
+  .ev-page .evc-meta span, .ev-page .evc-extra-actions a {
+    overflow-wrap: anywhere;
+  }
+  .ev-page .evc-top .pill { white-space: normal; }
+  .ev-page .evc-icon-actions { align-self: flex-start; }
+  .ev-page .evc-icon-btn { flex: 0 0 40px; }
+  .ev-page .evc-action-info-copy { width: 100%; }
+  .album-view, .album-view .alb-open-head, .album-view .gal,
+  .album-view .gal figure { min-width: 0; }
+  .album-view .alb-open-head h4,
+  .album-view .alb-open-head p,
+  .album-view .gal figcaption { overflow-wrap: anywhere; }
+  .materials-group-title { min-width: 0; flex-wrap: wrap; }
+  .materials-group-title h3 { min-width: 0; overflow-wrap: anywhere; }
+  .status { max-width: 100%; white-space: normal; }
+}
+@media (max-width: 380px) {
+  .pj-dialog { padding: 14px 12px; border-radius: 14px; }
+  .pj-dialog h2 { font-size: 1.35rem; }
+  .pj-dialog .pj-top { align-items: flex-start; }
+  .pj-dialog .pj-cnt { flex-wrap: wrap; gap: 6px; }
+  .pj-dialog .pj-nav { flex-direction: column; gap: 4px; }
+  .pj-dialog .pj-nav button { max-width: 100%; width: 100%; text-align: left; }
+  .pj-dialog .pj-act { flex-direction: column; align-items: stretch; }
+  .pj-dialog .pj-act > a { width: 100%; justify-content: center; }
+  .ev-page .evc-meta { flex-direction: column; align-items: flex-start; }
+  .ev-page .evc-actions { grid-template-columns: minmax(0, 1fr); }
+  .ev-page .evc-whatsapp { grid-column: auto; }
+  .materials-group li a { margin-left: 0; }
+}
+
