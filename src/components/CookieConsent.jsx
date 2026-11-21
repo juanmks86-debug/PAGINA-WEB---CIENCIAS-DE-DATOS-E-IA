@@ -63,19 +63,67 @@ export default function CookieConsent() {
             </p>
             {details && (
               <div className="privacy-details">
-                <strong>¿Qué información puede recopilarse?</strong>
-                <p>
-                  Datos de interacción y navegación, páginas visitadas, duración de la visita,
-                  información del dispositivo y datos técnicos asociados a la conexión. Google puede
-                  tratar identificadores en línea conforme a sus propias políticas.
-                </p>
-                <p>
-                  Podés rechazar la analítica sin perder acceso a ninguna sección del sitio.
-                  Tu elección se guarda en este navegador y podés revisarla desde el acceso «Privacidad».
-                </p>
-                <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">
-                  Política de privacidad de Google ↗
-                </a>
+                <div className="privacy-detail-section">
+                  <strong>1. ¿Qué información se recopila?</strong>
+                  <p>
+                    Si aceptás la analítica, Google Analytics puede recopilar páginas visitadas,
+                    interacciones, duración de la visita, tipo de dispositivo, navegador, idioma,
+                    datos técnicos de conexión y una ubicación aproximada. También puede utilizar
+                    cookies e identificadores en línea.
+                  </p>
+                </div>
+                <div className="privacy-detail-section">
+                  <strong>2. ¿Para qué se utiliza?</strong>
+                  <p>
+                    Los datos se utilizan con fines exclusivamente académicos para conocer el uso
+                    de las secciones, evaluar la navegación y realizar el trabajo práctico de
+                    Analítica Web. No se solicitan datos personales para aceptar la medición.
+                  </p>
+                </div>
+                <div className="privacy-detail-section">
+                  <strong>3. Cookies y elección</strong>
+                  <p>
+                    La analítica es opcional. Si la rechazás, Google Analytics no se activa desde
+                    este aviso y podés seguir utilizando el sitio. La decisión se guarda en este
+                    navegador; podés cambiarla en cualquier momento desde el acceso «Privacidad».
+                  </p>
+                </div>
+                <div className="privacy-detail-section">
+                  <strong>4. Servicios externos</strong>
+                  <p>
+                    El sitio utiliza Google Analytics para medición y Supabase para alojar
+                    determinados contenidos e imágenes. Algunas secciones pueden ofrecer enlaces
+                    o funciones de terceros, como Google Drive, WhatsApp o el asistente virtual.
+                    Al abrir esos servicios o interactuar con ellos, se aplican sus propias
+                    políticas de privacidad y cookies.
+                  </p>
+                </div>
+                <div className="privacy-detail-section">
+                  <strong>5. Conservación de la información</strong>
+                  <p>
+                    Este sitio es una demostración temporal con fines educativos. Los datos de
+                    analítica se conservarán durante el desarrollo y la evaluación de la actividad
+                    académica; al finalizar y aprobarse la materia, se prevé eliminar los datos
+                    recopilados y cerrar o eliminar la propiedad de medición utilizada para esta
+                    práctica.
+                  </p>
+                </div>
+                <div className="privacy-detail-section">
+                  <strong>6. Consultas y derechos</strong>
+                  <p>
+                    Podés rechazar o retirar tu consentimiento desde este mismo sitio. Para
+                    consultas sobre el uso de la información, utilizá los canales de contacto
+                    institucional publicados en la sección Contacto.
+                  </p>
+                </div>
+                <div className="privacy-detail-links">
+                  <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">
+                    Privacidad de Google ↗
+                  </a>
+                  <a href="https://supabase.com/privacy" target="_blank" rel="noopener noreferrer">
+                    Privacidad de Supabase ↗
+                  </a>
+                </div>
               </div>
             )}
             <div className="privacy-actions">
