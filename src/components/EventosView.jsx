@@ -9,6 +9,38 @@ const corta = (f) => f.toLocaleDateString('es-AR', { day: 'numeric', month: 'sho
 const media = (f) => f.toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' })
 const nFotos = (n) => `${n} ${n === 1 ? 'foto' : 'fotos'}`
 
+const fechaCompacta = (fecha, hora = '') => {
+  const [y, m, d] = String(fecha).slice(0, 10).split('-')
+  const hhmm = String(hora).match(/(\\d{1,2}):(\\d{2})/)
+  const inicio = `${y}${m}${d}${hhmm ? 'T' + hhmm[1].padStart(2, '0') + hhmm[2] + '00' : ''}`
+  if (!hhmm) return { inicio, fin: inicio, todoElDia: true }
+  const finDate = new Date(Number(y), Number(m) - 1, Number(d), Number(hhmm[1]), Number(hhmm[2]) + 60)
+  const fin = [finDate.getFullYear(), String(finDate.getMonth() + 1).padStart(2, '0'), String(finDate.getDate()).padStart(2, '0')].join('') + 'T' + String(finDate.getHours()).padStart(2, '0') + String(finDate.getMinutes()).padStart(2, '0') + '00'
+  return { inicio, fin, todoElDia: false }
+}
+const enlaceWhatsApp = (e) => {
+  const mensaje = [e.titulo, larga(aFecha(e.fecha)), e.hora && 'Horario: ' + e.hora, e.lugar && 'Lugar: ' + e.lugar, e.desc, e.enlace].filter(Boolean).join('\\n')
+  return 'https://wa.me/?text=' + encodeURIComponent(mensaje)
+}
+const enlaceCalendar = (e) => {
+  const fechas = fechaCompacta(e.fecha, e.hora)
+  const params = new URLSearchParams({ action: 'TEMPLATE', text: e.titulo, dates: fechas.inicio + '/' + fechas.fin, details: [e.desc, e.enlace].filter(Boolean).join('\\n'), location: e.lugar || '' })
+  return 'https://calendar.google.com/calendar/render?' + params.toString()
+}
+const descargarICS = (e) => {
+  const fechas = fechaCompacta(e.fecha, e.hora)
+  const escapar = (v) => String(v || '').replace(/\\\\/g, '\\\\\\\\').replace(/,/g, '\\\\,').replace(/;/g, '\\\\;').replace(/\\n/g, '\\\\n')
+  const lineaFecha = fechas.todoElDia ? `DTSTART;VALUE=DATE:${fechas.inicio}\\nDTEND;VALUE=DATE:${fechas.inicio}\\n` : `DTSTART:${fechas.inicio}\\nDTEND:${fechas.fin}\\n`
+  const contenido = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//IES N6//Eventos//ES', 'BEGIN:VEVENT', lineaFecha.trim(), `SUMMARY:${escapar(e.titulo)}`, `LOCATION:${escapar(e.lugar)}`, `DESCRIPTION:${escapar([e.desc, e.enlace].filter(Boolean).join('\\n'))}`, 'END:VEVENT', 'END:VCALENDAR'].join('\\r\\n')
+  const blob = new Blob([contenido], { type: 'text/calendar;charset=utf-8' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = (String(e.titulo || 'evento').toLowerCase().replace(/[^a-z0-9]+/g, '-') || 'evento') + '.ics'
+  document.body.appendChild(a); a.click(); a.remove()
+  URL.revokeObjectURL(url)
+}
+
 const COLORES = { eventos: '#6d3fd1', visitas: '#15803d', talleres: '#1d6fd6', proyectos: '#c2570c', 'vida estudiantil': '#c2185b' }
 const colorDe = (c) => COLORES[String(c || '').toLowerCase()] || '#2f6f7e'
 
@@ -185,23 +217,27 @@ export default function EventosView({ ui }) {
         )}
         <div className="evc-body">
           <div className="evc-top">
-            <span className="pill"><IcCal />Eventos</span>
+            <span className="pill"><IcCal />Actividad institucional</span>
             {esProximo && <span className="ev-badge">{badge}</span>}
           </div>
           <h4>{e.titulo}</h4>
           <div className="evc-meta">
-            <span><IcCal />{corta(e.f)}</span>
+            <span className="evc-date"><IcCal />{corta(e.f)}</span>
             {e.hora && <span><IcClock />{e.hora}</span>}
             {al && <span><IcImg />{nFotos(al.fotos)}</span>}
             {e.lugar && <span><IcPin />{e.lugar}</span>}
           </div>
           {e.desc && <p>{e.desc}</p>}
           <div className="evc-actions">
+            <a className="evc-share evc-whatsapp" href={enlaceWhatsApp(e)} target="_blank" rel="noopener noreferrer" aria-label={'Compartir ' + e.titulo + ' por WhatsApp'}> <span className="evc-share-icon">◉</span> Compartir por WhatsApp</a>
+            <a className="evc-share evc-calendar" href={enlaceCalendar(e)} target="_blank" rel="noopener noreferrer"> <IcCal /> Guardar en Google Calendar</a>
+            <button type="button" className="evc-share evc-download" onClick={() => descargarICS(e)}><span className="evc-share-icon">↓</span> Descargar (.ics)</button>
+          </div>
+          <div className="evc-extra-actions">
             {e.enlace && <a className="evc-go" href={e.enlace} target="_blank" rel="noopener noreferrer">Más información <IcChev /></a>}
             {al && <button type="button" className="evc-go" onClick={() => abrirAlbum(al, true)}>Ver álbum <IcChev /></button>}
           </div>
         </div>
-        <span className="evc-chev"><IcChev /></span>
       </article>
     )
   }
