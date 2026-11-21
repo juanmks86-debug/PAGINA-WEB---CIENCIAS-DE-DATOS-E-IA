@@ -1021,16 +1021,20 @@ export default function App() {
 
       <div className="wrap">
         <Tabs />
-        <Stats />
+
+        <section className="career-data reveal" aria-labelledby="career-data-title">
+          <h3 id="career-data-title">Datos de la carrera</h3>
+          <Stats />
+        </section>
 
         <section id="pasantias" className="reveal">
           <h3>Pasantías</h3>
-          <div className="grid3">
+          <div className="internships-track">
             {internships.map(([title, text, bg, icon]) => (
-              <div className="card" key={title}>
+              <article className="card internship-card" key={title}>
                 <div className="art" style={{ background: bg }}>{icons[icon]}</div>
                 <div className="t"><h4>{title}</h4><p>{text}</p></div>
-              </div>
+              </article>
             ))}
           </div>
         </section>
