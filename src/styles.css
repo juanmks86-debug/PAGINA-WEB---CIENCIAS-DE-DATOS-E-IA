@@ -1769,3 +1769,49 @@ footer .soc a{display:grid;place-items:center;transition:transform .2s ease,back
     font-size: .86rem;
   }
 }
+
+
+/* Encabezado móvil: conservar visible el logo de la carrera */
+@media (max-width: 540px) {
+  .hd-top-in {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 6px;
+  }
+  .hd-top-in .wm {
+    flex: 0 1 auto;
+    min-width: 0;
+    gap: 5px;
+  }
+  .hd-top-in .wm svg {
+    width: 36px;
+    height: 34px;
+    flex: 0 0 36px;
+  }
+  .hd-top-in .wm-t {
+    min-width: 0;
+  }
+  .hd-top-in .wm-s {
+    display: none;
+  }
+  .hd-top-in .hd-sep {
+    flex: 0 0 1px;
+  }
+  .hd-top-in .hd-badge {
+    display: block;
+    flex: 0 0 46px;
+    width: 46px;
+    height: 46px;
+    max-width: 46px;
+    object-fit: contain;
+  }
+  .hd-top-in h1 {
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: none;
+    font-size: clamp(.76rem, 3.2vw, .94rem);
+    line-height: 1.15;
+    overflow-wrap: normal;
+  }
+}
