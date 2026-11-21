@@ -1197,7 +1197,7 @@ footer .soc a{display:grid;place-items:center;transition:transform .2s ease,back
  border-radius:8px;
  background:var(--teal);
  color:#fff;
- font:600 .72rem/1.2 inherit;
+ font-family:inherit;font-size:.72rem;font-weight:600;line-height:1.2;
  text-decoration:none;
  cursor:pointer;
 }
