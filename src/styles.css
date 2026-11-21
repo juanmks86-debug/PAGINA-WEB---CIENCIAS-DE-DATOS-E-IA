@@ -1395,3 +1395,30 @@ footer .soc a{display:grid;place-items:center;transition:transform .2s ease,back
   .materials-group li a { margin-left: 0; }
 }
 
+
+
+/* Aviso de privacidad y consentimiento de analítica */
+.privacy-backdrop{position:fixed;z-index:1200;inset:auto 0 0;display:flex;justify-content:center;padding:18px;background:linear-gradient(transparent,rgba(12,25,34,.28))}
+.privacy-banner{width:min(760px,100%);max-height:min(82vh,720px);overflow-y:auto;padding:22px 24px 16px;color:#263746;background:#fff;border:1px solid #d8e2e8;border-radius:18px;box-shadow:0 16px 55px rgba(15,35,48,.24);font-size:.94rem;line-height:1.55}
+.privacy-heading{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.privacy-symbol{display:grid;place-items:center;width:42px;height:42px;flex:0 0 42px;border-radius:13px;color:#247f7c;background:#e6f4f2;font-size:1.5rem}
+.privacy-eyebrow{margin:0 0 2px;color:#56807f;font-size:.67rem;font-weight:800;letter-spacing:.11em}
+.privacy-heading h2{margin:0;color:#203744;font-size:1.2rem}
+.privacy-banner>p{margin:9px 0}
+.privacy-details{margin:12px 0;padding:13px 15px;border-left:3px solid #4aaaa4;border-radius:7px;background:#f2f8f8}
+.privacy-details p{margin:6px 0}
+.privacy-details a{color:#176d79;font-weight:700}
+.privacy-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:center;gap:9px;margin-top:16px}
+.privacy-actions button,.privacy-settings{min-height:40px;padding:9px 14px;border:1px solid #cbd8df;border-radius:9px;font:inherit;font-size:.86rem;font-weight:700;cursor:pointer}
+.privacy-reject,.privacy-more{color:#304653;background:#fff}
+.privacy-accept{color:#fff;background:#287f7b;border-color:#287f7b!important}
+.privacy-actions button:hover{filter:brightness(.96)}
+.privacy-footnote{margin:12px 0 0!important;color:#647784;font-size:.78rem}
+.privacy-settings{position:fixed;z-index:1100;left:16px;bottom:16px;min-height:36px;padding:7px 12px;color:#294451;background:#fff;box-shadow:0 3px 14px rgba(15,35,48,.16)}
+:root[data-theme="dark"] .privacy-banner{color:#dce7ed;background:#1d2a34;border-color:#3c505d}
+:root[data-theme="dark"] .privacy-heading h2{color:#f0f6f8}
+:root[data-theme="dark"] .privacy-eyebrow,:root[data-theme="dark"] .privacy-footnote{color:#a9bec8}
+:root[data-theme="dark"] .privacy-details{color:#dce7ed;background:#263943}
+:root[data-theme="dark"] .privacy-details a{color:#8bd8d2}
+:root[data-theme="dark"] .privacy-reject,:root[data-theme="dark"] .privacy-more,:root[data-theme="dark"] .privacy-settings{color:#e4eef2;background:#263943;border-color:#526773}
+@media(max-width:600px){.privacy-backdrop{padding:10px}.privacy-banner{padding:17px 16px 13px;border-radius:15px}.privacy-actions{display:grid;grid-template-columns:1fr 1fr}.privacy-accept{grid-column:1/-1;grid-row:1}.privacy-reject{grid-column:1;grid-row:2}.privacy-more{grid-column:2;grid-row:2}}
