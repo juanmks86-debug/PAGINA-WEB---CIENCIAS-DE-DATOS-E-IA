@@ -147,6 +147,80 @@ function useReveal() {
   }, [])
 }
 
+function useScrollMotion() {
+  useEffect(() => {
+    const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+    if (reduce || !('IntersectionObserver' in window)) return undefined
+
+    const selector = [
+      '#contenido-principal > .hero',
+      '#contenido-principal > .wrap > .tabs',
+      '#contenido-principal > .wrap > .stats',
+      '#contenido-principal section:not(.reveal)',
+      '#contenido-principal .reveal > h3',
+      '#contenido-principal .card',
+      '#contenido-principal .pdf',
+      '#contenido-principal .ev',
+      '#contenido-principal .cc',
+      '#contenido-principal .faq > *',
+      '#contenido-principal .nw-card',
+      '.students-hero',
+      '.students-shell > .student-heading',
+      '.year-card',
+      '.project-card',
+      '.resource-card',
+      '.recent-panel',
+      '.materials-browser',
+      '.materials-group',
+      '.ev-page-head',
+      '.evc',
+      '.album-view',
+      '.alb-open-head',
+      '.gal-item',
+      '.alb',
+      '.pj-card'
+    ].join(',')
+
+    const root = document.documentElement
+    root.classList.add('scroll-motion-ready')
+    const vistos = new WeakSet()
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return
+        entry.target.classList.add('scroll-visible')
+        observer.unobserve(entry.target)
+      })
+    }, { threshold: 0.08, rootMargin: '0px 0px -35px 0px' })
+
+    const observar = (scope = document) => {
+      scope.querySelectorAll(selector).forEach((el) => {
+        if (vistos.has(el) || el.closest('.reveal')) return
+        vistos.add(el)
+        observer.observe(el)
+      })
+    }
+
+    observar()
+    const mutations = new MutationObserver((records) => {
+      records.forEach((record) => record.addedNodes.forEach((node) => {
+        if (node.nodeType !== 1) return
+        if (node.matches?.(selector) && !node.closest('.reveal') && !vistos.has(node)) {
+          vistos.add(node)
+          observer.observe(node)
+        }
+        observar(node)
+      }))
+    })
+    mutations.observe(document.getElementById('contenido-principal') || document.body, { childList: true, subtree: true })
+
+    return () => {
+      observer.disconnect()
+      mutations.disconnect()
+      root.classList.remove('scroll-motion-ready')
+    }
+  }, [])
+}
+
 function Counter({ to, suffix = '' }) {
   const ref = useRef(null)
   const [n, setN] = useState(0)
@@ -833,6 +907,7 @@ export default function App() {
     try { localStorage.setItem('tema', theme) } catch (e) { /* sin almacenamiento */ }
   }, [theme])
   useReveal()
+  useScrollMotion()
 
   const act = useActive()
   useHeroFx()
