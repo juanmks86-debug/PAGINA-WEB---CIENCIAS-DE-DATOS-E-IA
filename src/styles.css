@@ -1536,3 +1536,44 @@ footer .soc a{display:grid;place-items:center;transition:transform .2s ease,back
   .cal-h button,.cal-g .cal-day { transition:none!important; }
   .cal-g .cal-day:hover { transform:none; }
 }
+
+
+/* Perfil: datos de carrera y pasantías con composición compacta */
+.career-data { margin-top: 28px; }
+.career-data > h3 { margin-bottom: 14px; }
+.career-data .stats { margin-top: 0; }
+.internships-track {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+.internship-card { min-width: 0; }
+@media (max-width: 700px) {
+  .career-data .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .career-data .stat { min-height: 104px; padding: 14px 8px; display: flex; flex-direction: column; justify-content: center; }
+  .career-data .stat b { font-size: clamp(1.65rem, 7vw, 2rem); }
+  .career-data .stat .l { font-size: .76rem; line-height: 1.25; }
+  .internships-track {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding: 2px 2px 12px;
+    margin-right: -2px;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
+  }
+  .internship-card {
+    flex: 0 0 min(82%, 290px);
+    scroll-snap-align: start;
+  }
+  .internship-card .art { height: 108px; }
+}
+@media (max-width: 380px) {
+  .career-data .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .career-data .stat { min-height: 96px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .internships-track { scroll-behavior: auto; }
+}
