@@ -1457,246 +1457,29 @@ footer .soc a{display:grid;place-items:center;transition:transform .2s ease,back
 :root[data-theme="dark"] .privacy-detail-section strong{color:#c4e9e8}
 
 
-/* PREVIEW: animaciones de desplazamiento para la vista principal */
+/* PREVIEW: reveal progresivo seguro. Los elementos solo se ocultan después de que JS los registra. */
 @media (prefers-reduced-motion: no-preference) {
-  /* Entradas más suaves y con profundidad, activadas por el IntersectionObserver existente */
-  #contenido-principal > .hero,
-  #contenido-principal .reveal {
-    will-change: opacity, transform;
-  }
-  #contenido-principal .reveal {
+  .scroll-reveal {
     opacity: 0;
-    transform: translate3d(0, 30px, 0) scale(.992);
-    transition:
-      opacity .72s cubic-bezier(.2,.7,.25,1),
-      transform .82s cubic-bezier(.2,.7,.25,1);
-  }
-  #contenido-principal .reveal.in {
-    opacity: 1;
-    transform: translate3d(0,0,0) scale(1);
-  }
-
-  /* Aparición escalonada de los elementos de cada bloque */
-  #contenido-principal .reveal.in > h3,
-  #contenido-principal .reveal.in > .nw-head {
-    animation: scroll-heading-in .58s .06s both cubic-bezier(.2,.7,.25,1);
-  }
-  #contenido-principal .reveal.in .card,
-  #contenido-principal .reveal.in .stat,
-  #contenido-principal .reveal.in .pdf,
-  #contenido-principal .reveal.in .ev,
-  #contenido-principal .reveal.in .cc,
-  #contenido-principal .reveal.in .faq > *,
-  #contenido-principal .reveal.in .nw-card {
-    animation: scroll-item-in .62s both cubic-bezier(.2,.7,.25,1);
-  }
-  #contenido-principal .reveal.in .card:nth-child(2),
-  #contenido-principal .reveal.in .stat:nth-child(2),
-  #contenido-principal .reveal.in .cc:nth-child(2),
-  #contenido-principal .reveal.in .faq > :nth-child(2),
-  #contenido-principal .reveal.in .nw-card:nth-child(2) { animation-delay: .08s; }
-  #contenido-principal .reveal.in .card:nth-child(3),
-  #contenido-principal .reveal.in .stat:nth-child(3),
-  #contenido-principal .reveal.in .cc:nth-child(3),
-  #contenido-principal .reveal.in .faq > :nth-child(3),
-  #contenido-principal .reveal.in .nw-card:nth-child(3) { animation-delay: .16s; }
-  #contenido-principal .reveal.in .card:nth-child(4),
-  #contenido-principal .reveal.in .stat:nth-child(4),
-  #contenido-principal .reveal.in .cc:nth-child(4),
-  #contenido-principal .reveal.in .faq > :nth-child(4) { animation-delay: .24s; }
-
-  /* El Hero acompaña el scroll sin fijar ni bloquear la navegación */
-  .hero {
-    background-size: 140% 140%;
-    transition: background-position .18s linear;
-  }
-  .hero-badge {
-    transform: translate3d(calc(var(--px, 0) * -5px), calc(var(--py, 0) * -5px), 0);
-    transition: transform .35s ease-out;
-  }
-}
-
-@keyframes scroll-heading-in {
-  from { opacity: 0; transform: translate3d(0, 12px, 0); }
-  to { opacity: 1; transform: translate3d(0, 0, 0); }
-}
-@keyframes scroll-item-in {
-  from { opacity: 0; transform: translate3d(0, 16px, 0) scale(.985); }
-  to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
-}
-
-@media (max-width: 700px) {
-  #contenido-principal .reveal {
     transform: translate3d(0, 18px, 0);
-    transition-duration: .58s;
+    transition: opacity .65s cubic-bezier(.2,.7,.25,1), transform .65s cubic-bezier(.2,.7,.25,1);
   }
-  #contenido-principal .reveal.in .card,
-  #contenido-principal .reveal.in .stat,
-  #contenido-principal .reveal.in .pdf,
-  #contenido-principal .reveal.in .ev,
-  #contenido-principal .reveal.in .cc,
-  #contenido-principal .reveal.in .faq > *,
-  #contenido-principal .reveal.in .nw-card {
-    animation-duration: .48s;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  #contenido-principal .reveal,
-  #contenido-principal .reveal.in {
+  .scroll-reveal.scroll-visible {
     opacity: 1;
-    transform: none;
-    transition: none;
-    animation: none;
+    transform: translate3d(0,0,0);
   }
-  #contenido-principal .reveal.in > h3,
-  #contenido-principal .reveal.in > .nw-head,
-  #contenido-principal .reveal.in .card,
-  #contenido-principal .reveal.in .stat,
-  #contenido-principal .reveal.in .pdf,
-  #contenido-principal .reveal.in .ev,
-  #contenido-principal .reveal.in .cc,
-  #contenido-principal .reveal.in .faq > *,
-  #contenido-principal .reveal.in .nw-card {
-    animation: none;
-  }
-  .hero-badge { transform: none; }
-}
-
-
-/* PREVIEW GLOBAL: movimiento al recorrer las vistas y secciones del sitio */
-@media (prefers-reduced-motion: no-preference) {
-  /* Las vistas independientes también reciben una entrada coherente */
-  .students-shell,
-  .materials-browser,
-  .ev-page,
-  .album-view,
-  .projects-section,
-  .pj-section {
-    animation: route-view-enter .65s cubic-bezier(.2,.7,.25,1) both;
-  }
-
-  /* Contenido de las vistas secundarias: reveal ligado al scroll cuando está soportado */
-  @supports (animation-timeline: view()) {
-    .year-card,
-    .resource-card,
-    .note-row,
-    .evc,
-    .gal-item,
-    .alb,
-    .pj-card {
-      animation: content-scroll-enter linear both;
-      animation-timeline: view();
-      animation-range: entry 0% entry 32%;
+  .scroll-reveal:nth-child(2) { transition-delay: .05s; }
+  .scroll-reveal:nth-child(3) { transition-delay: .1s; }
+  .scroll-reveal:nth-child(4) { transition-delay: .15s; }
+  @media (hover:hover) and (pointer:fine) {
+    .year-card,.resource-card,.pj-card,.evc,.alb {
+      transition-property: opacity, transform, box-shadow;
+    }
+    .year-card:hover,.resource-card:hover,.pj-card:hover,.evc:hover,.alb:hover {
+      transform: translate3d(0,-4px,0);
     }
   }
-
-  /* Movimiento sutil al interactuar con los elementos */
-  .year-card,
-  .resource-card,
-  .note-row,
-  .evc,
-  .gal-item,
-  .alb,
-  .pj-card {
-    transition: transform .28s ease, box-shadow .28s ease;
-  }
-  .year-card:hover,
-  .resource-card:hover,
-  .pj-card:hover {
-    transform: translateY(-4px);
-  }
-}
-@keyframes route-view-enter {
-  from { opacity: 0; transform: translate3d(0, 14px, 0); }
-  to { opacity: 1; transform: translate3d(0, 0, 0); }
-}
-@keyframes content-scroll-enter {
-  from { opacity: .35; transform: translate3d(0, 22px, 0) scale(.99); }
-  to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .students-shell,
-  .materials-browser,
-  .ev-page,
-  .album-view,
-  .projects-section,
-  .pj-section {
-    animation: none !important;
-  }
-}
-
-
-/* PREVIEW: reveal progresivo consistente en todas las vistas y rutas */
-@media (prefers-reduced-motion: no-preference) {
-  .scroll-motion-ready #contenido-principal > .hero,
-  .scroll-motion-ready #contenido-principal > .wrap > .tabs,
-  .scroll-motion-ready #contenido-principal > .wrap > .stats,
-  .scroll-motion-ready #contenido-principal section:not(.reveal),
-  .scroll-motion-ready .students-hero,
-  .scroll-motion-ready .students-shell > .student-heading,
-  .scroll-motion-ready .year-card,
-  .scroll-motion-ready .project-card,
-  .scroll-motion-ready .resource-card,
-  .scroll-motion-ready .recent-panel,
-  .scroll-motion-ready .materials-browser,
-  .scroll-motion-ready .materials-group,
-  .scroll-motion-ready .ev-page-head,
-  .scroll-motion-ready .evc,
-  .scroll-motion-ready .album-view,
-  .scroll-motion-ready .alb-open-head,
-  .scroll-motion-ready .gal-item,
-  .scroll-motion-ready .alb,
-  .scroll-motion-ready .pj-card {
-    opacity: 0;
-    transform: translate3d(0, 20px, 0);
-    transition: opacity .62s cubic-bezier(.2,.7,.25,1), transform .62s cubic-bezier(.2,.7,.25,1);
-    will-change: opacity, transform;
-  }
-
-  .scroll-motion-ready #contenido-principal .scroll-visible,
-  .scroll-motion-ready .scroll-visible {
-    opacity: 1;
-    transform: none;
-  }
-
-  .scroll-motion-ready #contenido-principal .reveal,
-  .scroll-motion-ready #contenido-principal .reveal * {
-    /* La animación existente de .reveal mantiene su propio control */
-    will-change: auto;
-  }
-
-  .scroll-motion-ready .year-card:hover,
-  .scroll-motion-ready .project-card:hover,
-  .scroll-motion-ready .resource-card:hover,
-  .scroll-motion-ready .pj-card:hover,
-  .scroll-motion-ready .evc:hover,
-  .scroll-motion-ready .alb:hover {
-    transform: translate3d(0, -4px, 0);
-  }
-}
-
-@media (max-width: 700px) and (prefers-reduced-motion: no-preference) {
-  .scroll-motion-ready #contenido-principal > .hero,
-  .scroll-motion-ready #contenido-principal > .wrap > .tabs,
-  .scroll-motion-ready #contenido-principal > .wrap > .stats,
-  .scroll-motion-ready #contenido-principal section:not(.reveal),
-  .scroll-motion-ready .students-hero,
-  .scroll-motion-ready .materials-browser,
-  .scroll-motion-ready .ev-page-head,
-  .scroll-motion-ready .album-view {
-    transform: translate3d(0, 14px, 0);
-    transition-duration: .5s;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .scroll-motion-ready #contenido-principal *,
-  .scroll-motion-ready .students-view *,
-  .scroll-motion-ready .ev-page * {
-    scroll-behavior: auto;
-    transition-duration: .01ms !important;
-    animation-duration: .01ms !important;
-    animation-iteration-count: 1 !important;
-  }
+  .scroll-reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
 }
