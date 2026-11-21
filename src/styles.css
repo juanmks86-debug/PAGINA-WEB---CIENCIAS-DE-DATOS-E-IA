@@ -909,3 +909,116 @@ footer .soc a{display:grid;place-items:center;transition:transform .2s ease,back
 :root[data-theme="light"] .students-view .student-search:focus-within{
  border-color:#00a9c2;box-shadow:0 0 0 3px rgba(0,169,194,.15)
 }
+
+
+/* Tema global claro: completar componentes incorporados en Alumnos y asegurar consistencia en Eventos */
+:root[data-theme="light"]{
+  color-scheme:light;
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+}
+
+/* Alumnos: el hero conserva su fotografía, pero deja de usar una capa oscura */
+:root[data-theme="light"] .students-view .students-hero-photo:after{
+  background:linear-gradient(90deg,rgba(239,248,250,.97) 0%,rgba(239,248,250,.88) 34%,rgba(239,248,250,.56) 68%,rgba(239,248,250,.76) 100%),linear-gradient(0deg,rgba(0,169,194,.08),transparent 55%);
+}
+:root[data-theme="light"] .students-view .student-project-heading h2,
+:root[data-theme="light"] .students-view .student-project-heading h2 small{
+  color:#203744;
+}
+:root[data-theme="light"] .students-view .pj-chip{
+  color:#176b7d;
+  border-color:#b9d3dc;
+  background:#fff;
+}
+:root[data-theme="light"] .students-view .pj-chip[aria-pressed="true"]{
+  color:#062b35;
+  background:#00c5df;
+  border-color:#00a9c2;
+}
+:root[data-theme="light"] .students-view .pj-card{
+  background:linear-gradient(145deg,#fff,#f4f9fa);
+  border-color:#c9dce3;
+  box-shadow:0 5px 18px rgba(29,66,78,.07);
+}
+:root[data-theme="light"] .students-view .pj-body h3{color:#203744}
+:root[data-theme="light"] .students-view .pj-body p,
+:root[data-theme="light"] .students-view .pj-by{color:#607985}
+:root[data-theme="light"] .students-view .pj-chips span{
+  color:#496775;
+  border-color:#c9dce3;
+  background:#f3f8fa;
+}
+:root[data-theme="light"] .students-view .pj-o{
+  color:#087f96;
+  border-color:#9fc7d2;
+  background:#fff;
+}
+:root[data-theme="light"] .students-view .pj-dialog{
+  color:#203744;
+  background:#f7fbfc;
+  border-color:#b9d3dc;
+  box-shadow:0 22px 70px rgba(20,50,60,.24);
+}
+:root[data-theme="light"] .students-view .pj-dialog h2{color:#173544}
+:root[data-theme="light"] .students-view .pj-cnt,
+:root[data-theme="light"] .students-view .pj-meta,
+:root[data-theme="light"] .students-view .pj-lead,
+:root[data-theme="light"] .students-view .pj-two p,
+:root[data-theme="light"] .students-view .pj-team div,
+:root[data-theme="light"] .students-view .pj-nav button{color:#496775}
+:root[data-theme="light"] .students-view .pj-thumbs button{
+  background:#eaf2f5;
+  border-color:#c5d9e0;
+}
+:root[data-theme="light"] .students-view .pj-x{
+  color:#176b7d;
+  border-color:#b9d3dc;
+}
+:root[data-theme="light"] .students-view .pj-team i{
+  color:#176b7d;
+  background:#e0f3f6;
+}
+:root[data-theme="light"] .students-view .pj-soon{
+  color:#607985;
+  border-color:#b9d3dc;
+}
+:root[data-theme="light"] .students-view .pj-nav{
+  border-top-color:#d8e5e9;
+}
+
+/* Eventos: superficies y controles siguen las variables del tema global */
+:root[data-theme="light"] .ev-page .evc,
+:root[data-theme="light"] .ev-page .et,
+:root[data-theme="light"] .ev-page .ev-vacio,
+:root[data-theme="light"] .ev-page .chip{
+  background-color:#fff;
+  color:#203744;
+  border-color:#d5e1e6;
+}
+:root[data-theme="light"] .ev-page .evc h4,
+:root[data-theme="light"] .ev-page .alb-open-head h4,
+:root[data-theme="light"] .ev-page .ev-page-head h2,
+:root[data-theme="light"] .ev-page section h3{
+  color:#203744;
+}
+:root[data-theme="light"] .ev-page .evc-meta,
+:root[data-theme="light"] .ev-page .evc p,
+:root[data-theme="light"] .ev-page .ev-page-head p,
+:root[data-theme="light"] .ev-page .gal-sub,
+:root[data-theme="light"] .ev-page .alb-open-head p,
+:root[data-theme="light"] .ev-page .ev-vacio{
+  color:#607985;
+}
+:root[data-theme="light"] .ev-page .chip.on{
+  background:#2a9d9a;
+  border-color:#2a9d9a;
+  color:#082b2a;
+}
+:root[data-theme="light"] .ev-page .evc-go{color:#176b7d}
+:root[data-theme="light"] .ev-page .alb-open-head .chip{
+  background:#fff;
+  color:#176b7d;
+  border-color:#b9d3dc;
+}
