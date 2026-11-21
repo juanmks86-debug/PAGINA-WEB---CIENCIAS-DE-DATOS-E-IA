@@ -1943,3 +1943,44 @@ footer .soc a{display:grid;place-items:center;transition:transform .2s ease,back
 @media (max-width: 520px) {
   .year-art { height: 68px; margin-bottom: 10px; border-radius: 8px; }
 }
+
+
+/* Banco de apuntes: acabado ilustrado con capas y contraste */
+.year-art {
+  position: relative;
+  height: 88px;
+  margin-bottom: 13px;
+  border-radius: 11px;
+  background:
+    radial-gradient(ellipse at 50% 110%, color-mix(in srgb, var(--year-accent) 24%, transparent), transparent 65%),
+    linear-gradient(135deg, color-mix(in srgb, var(--year-accent) 17%, #102d3b), #092331 82%);
+  border-color: color-mix(in srgb, var(--year-accent) 34%, transparent);
+}
+.year-art::after {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border: 1px solid color-mix(in srgb, var(--year-accent) 13%, transparent);
+  border-radius: 8px;
+  pointer-events: none;
+}
+.year-art svg {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 240px);
+  height: 100%;
+  filter: drop-shadow(0 4px 5px rgba(0,0,0,.16));
+  transition: transform .3s ease;
+}
+.year-card:hover .year-art svg { transform: translateY(-2px) scale(1.025); }
+.year-card-ingresantes .year-art { background-color: #183747; }
+.year-card-primero .year-art { background-color: #173a36; }
+.year-card-segundo .year-art { background-color: #202f4b; }
+.year-card-tercero .year-art { background-color: #382f49; }
+@media (max-width: 520px) {
+  .year-art { height: 74px; margin-bottom: 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .year-art svg { transition: none; }
+  .year-card:hover .year-art svg { transform: none; }
+}
