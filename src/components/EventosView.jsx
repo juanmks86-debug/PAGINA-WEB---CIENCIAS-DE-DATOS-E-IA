@@ -29,9 +29,11 @@ const enlaceCalendar = (e) => {
 }
 const descargarICS = (e) => {
   const fechas = fechaCompacta(e.fecha, e.hora)
-  const escapar = (v) => String(v || '').replace(/\\\\/g, '\\\\\\\\').replace(/,/g, '\\\\,').replace(/;/g, '\\\\;').replace(/\\n/g, '\\\\n')
-  const lineaFecha = fechas.todoElDia ? `DTSTART;VALUE=DATE:${fechas.inicio}\\nDTEND;VALUE=DATE:${fechas.inicio}\\n` : `DTSTART:${fechas.inicio}\\nDTEND:${fechas.fin}\\n`
-  const contenido = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//IES N6//Eventos//ES', 'BEGIN:VEVENT', lineaFecha.trim(), `SUMMARY:${escapar(e.titulo)}`, `LOCATION:${escapar(e.lugar)}`, `DESCRIPTION:${escapar([e.desc, e.enlace].filter(Boolean).join('\n'))}`, 'END:VEVENT', 'END:VCALENDAR'].join('\r\n')
+  const escapar = (v) => String(v || '').replace(/\\/g, '\\\\').replace(/,/g, '\\,').replace(/;/g, '\\;').replace(/\n/g, '\\n')
+  const lineaFecha = fechas.todoElDia
+    ? \`DTSTART;VALUE=DATE:\${fechas.inicio}\nDTEND;VALUE=DATE:\${fechas.inicio}\n\`
+    : \`DTSTART:\${fechas.inicio}\nDTEND:\${fechas.fin}\n\`
+  const contenido = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//IES N6//Eventos//ES', 'BEGIN:VEVENT', lineaFecha.trim(), \`SUMMARY:\${escapar(e.titulo)}\`, \`LOCATION:\${escapar(e.lugar)}\`, \`DESCRIPTION:\${escapar([e.desc, e.enlace].filter(Boolean).join('\n'))}\`, 'END:VEVENT', 'END:VCALENDAR'].join('\r\n')
   const blob = new Blob([contenido], { type: 'text/calendar;charset=utf-8' })
   const url = URL.createObjectURL(blob)
   const a = document.createElement('a')
@@ -40,7 +42,6 @@ const descargarICS = (e) => {
   document.body.appendChild(a); a.click(); a.remove()
   URL.revokeObjectURL(url)
 }
-
 const COLORES = { eventos: '#6d3fd1', visitas: '#15803d', talleres: '#1d6fd6', proyectos: '#c2570c', 'vida estudiantil': '#c2185b' }
 const colorDe = (c) => COLORES[String(c || '').toLowerCase()] || '#2f6f7e'
 
