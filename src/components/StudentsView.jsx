@@ -167,6 +167,15 @@ export default function StudentsView({ standalone = false }) {
       {standalone && <a className="students-route-back" href="/">← Volver al inicio</a>}
       <StudentsHero />
       <div className="students-shell">
+        <section className="quick-access" aria-labelledby="quick-access-title">
+          <div className="quick-access-heading"><span className="quick-access-symbol" aria-hidden="true">ϟ</span><div><h2 id="quick-access-title">Acceso rápido</h2><p>Enlaces directos a las herramientas más utilizadas.</p></div></div>
+          <div className="quick-access-grid">
+            <a className="quick-link quick-drive" href={studentYears[0].drive} target="_blank" rel="noopener noreferrer"><span className="quick-link-icon" aria-hidden="true">▲</span><span><b>Google Drive</b><small>Tus archivos en la nube</small></span><i aria-hidden="true">↗</i></a>
+            <a className="quick-link quick-calendar" href="/eventos#calendario"><span className="quick-link-icon" aria-hidden="true">▦</span><span><b>Calendario Académico</b><small>Fechas importantes</small></span><i aria-hidden="true">↗</i></a>
+            <a className="quick-link quick-classroom" href="#materiales-titulo"><span className="quick-link-icon" aria-hidden="true">✓</span><span><b>Aula Virtual</b><small>Material y actividades</small></span><i aria-hidden="true">↗</i></a>
+            <a className="quick-link quick-contact" href="/#contacto"><span className="quick-link-icon" aria-hidden="true">✉</span><span><b>Contacto</b><small>Consultas y soporte</small></span><i aria-hidden="true">↗</i></a>
+          </div>
+        </section>
         <div className="student-heading">
           <div><span className="student-kicker">RECURSOS ACADÉMICOS</span><h2 id="banco-apuntes">Banco de apuntes</h2></div>
           <label className="student-search"><span aria-hidden="true">⌕</span><input type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Buscar por año o material..." aria-label="Buscar carpetas por año o material" /></label>
@@ -177,19 +186,23 @@ export default function StudentsView({ standalone = false }) {
               <div className={`year-art year-art-${item.slug}`}>{yearIllustrations[item.slug]}</div>
               <div className="year-top"><h3>{item.title}</h3><Status value={item.status} tone={item.statusKey} /></div>
               <p>{item.description}</p>
-              <div className="year-bottom"><small>{item.drive ? 'Carpeta disponible' : 'Material en preparación'}</small>{item.drive ? <a href={item.drive} target="_blank" rel="noopener noreferrer" aria-label={`Abrir carpeta de ${item.title} en Google Drive`}>Abrir Drive <b aria-hidden="true">↗</b></a> : <span className="year-coming">Próximamente</span>}</div>
+              <div className="year-bottom"><small>{item.drive ? 'Carpeta disponible' : 'Material en preparación'}</small>{item.drive ? <a href={item.drive} target="_blank" rel="noopener noreferrer" aria-label={`Abrir carpeta de ${item.title} en Google Drive`}>Explorar materiales <b aria-hidden="true">→</b></a> : <span className="year-coming">Próximamente</span>}</div>
             </article>
           ))}
         </div>
         {query.trim() && !filteredYears.length && <p className="materials-empty" role="status">No hay carpetas de años que coincidan con “{query.trim()}”.</p>}
         <p className="temporary-note"><span aria-hidden="true">ⓘ</span> Los materiales se actualizan progresivamente. Consultá la fecha de actualización antes de descargar.</p>
         <NotesBank query={query} />
+        <section className="student-tools" aria-labelledby="student-tools-title">
+          <div className="student-section-heading"><span aria-hidden="true">⚒</span><div><h2 id="student-tools-title">Herramientas y recursos</h2><p>Recursos útiles para tu estudio y desarrollo.</p></div></div>
+          <div className="resource-grid">{resources.map((resource) => <a className="resource-card" href={resource.href} key={resource.title}><span className="resource-icon" aria-hidden="true">{resource.icon}</span><span><b>{resource.title}</b><small>{resource.description}</small></span><strong aria-hidden="true">→</strong></a>)}</div>
+        </section>
         <ProjectsSection />
-        <div className="students-columns">
-          <div><div className="student-heading student-heading-block"><span className="student-kicker">ACCESOS RÁPIDOS</span><h2>Herramientas y recursos</h2></div><div className="resource-grid">{resources.map((resource) => <a className="resource-card" href={resource.href} key={resource.title}><span className="resource-icon" aria-hidden="true">{resource.icon}</span><span><b>{resource.title}</b><small>{resource.description}</small></span><strong aria-hidden="true">→</strong></a>)}</div></div>
-          <aside className="recent-panel" id="ultimos-apuntes"><div className="panel-title"><div><span className="student-kicker">ACCESOS A DRIVE</span><h2>Carpetas de apuntes</h2></div><a href="#materiales-titulo">Ver por año</a></div><div className="notes-list">{filteredNotes.map((note) => <a href={note.href} target="_blank" rel="noopener noreferrer" className="note-row" key={note.title}><span className="note-file" aria-hidden="true">▤</span><span><b>{note.title}</b><small>{note.year} · {note.subject}</small></span></a>)}{!filteredNotes.length && <p className="empty-state" role="status">No encontramos apuntes con ese término.</p>}</div></aside>
-        </div>
-        <div className="students-quote"><span className="quote-mark" aria-hidden="true">“</span><p>La tecnología no reemplaza tu esfuerzo,<br /><strong>lo potencia.</strong></p><span className="quote-line" aria-hidden="true" /></div>
+        <aside className="recent-panel" id="ultimos-apuntes">
+          <div className="panel-title"><div><span className="student-kicker">ACCESOS A DRIVE</span><h2>Carpetas recientes</h2><p>Accedé rápidamente a los últimos materiales.</p></div><a href="#materiales-titulo">Ver todas →</a></div>
+          <div className="notes-list">{filteredNotes.map((note) => <a href={note.href} target="_blank" rel="noopener noreferrer" className="note-row" key={note.title}><span className="note-file" aria-hidden="true">▰</span><span><b>{note.title}</b><small>{note.year} · {note.subject}</small></span></a>)}{!filteredNotes.length && <p className="empty-state" role="status">No encontramos apuntes con ese término.</p>}</div>
+        </aside>
+        <div className="students-quote"><span className="quote-mark" aria-hidden="true">↗</span><p>Tu esfuerzo de hoy,<br /><strong>construye el profesional del mañana.</strong><small>¡Seguimos aprendiendo juntos!</small></p></div>
       </div>
     </section>
   )
