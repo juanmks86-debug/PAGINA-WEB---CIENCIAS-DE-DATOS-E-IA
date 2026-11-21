@@ -3,6 +3,7 @@ import { tabs, internships, events, meses, faqs, social, MAPS_LINK, MAP_EMBED, c
 import StudentsViewExternal from './components/StudentsView.jsx'
 import EventosView, { EventosTeaser } from './components/EventosView.jsx'
 import { esNavidad } from './navidad.js'
+import CookieConsent from './components/CookieConsent.jsx'
 
 const icons = {
   chart: (
@@ -997,6 +998,7 @@ export default function App() {
           </div>
         </div>
       </footer>
+      <CookieConsent />
     </>
   )
 }
