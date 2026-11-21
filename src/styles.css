@@ -1103,3 +1103,42 @@ footer .soc a{display:grid;place-items:center;transition:transform .2s ease,back
  .ev-page .evc,.ev-page .evc-share{transition:none}
  .ev-page .evc:hover,.ev-page .evc-share:hover{transform:none}
 }
+
+
+/* Ajuste compacto: reducir volumen de las tarjetas de eventos */
+.ev-page .evc{
+ grid-template-columns:minmax(145px,23%) minmax(0,1fr);
+ gap:14px;
+ padding:10px;
+ border-radius:16px;
+}
+.ev-page .evc-img{
+ aspect-ratio:4/3;
+ max-height:142px;
+ border-radius:11px;
+}
+.ev-page .evc-body{gap:7px;padding:1px 2px 1px 0}
+.ev-page .evc-top .pill{font-size:.68rem;padding:4px 8px}
+.ev-page .evc h4{font-size:1.08rem;line-height:1.2;margin:0}
+.ev-page .evc-meta{gap:5px 12px;font-size:.77rem}
+.ev-page .evc p{font-size:.82rem;line-height:1.38;margin:0}
+.ev-page .evc-actions{gap:6px;margin-top:2px}
+.ev-page .evc-share{min-height:34px;padding:7px 10px;border-radius:9px;font-size:.73rem;gap:5px}
+.ev-page .evc-share svg{width:14px;height:14px}
+.ev-page .evc-share-icon{font-size:1rem}
+.ev-page .evc-extra-actions{gap:6px 14px;margin-top:-2px}
+.ev-page .evc-extra-actions .evc-go{min-height:26px;font-size:.78rem}
+@media(max-width:760px){
+ .ev-page .evc{grid-template-columns:124px minmax(0,1fr);gap:11px;padding:9px}
+ .ev-page .evc-img{aspect-ratio:1/1;max-height:124px}
+ .ev-page .evc-actions{display:flex;flex-wrap:wrap}
+ .ev-page .evc-whatsapp{grid-column:auto}
+ .ev-page .evc-share{width:auto;min-height:32px;padding:6px 8px;font-size:.7rem}
+}
+@media(max-width:480px){
+ .ev-page .evc{grid-template-columns:1fr;gap:9px}
+ .ev-page .evc-img{aspect-ratio:16/7;max-height:116px}
+ .ev-page .evc-actions{display:grid;grid-template-columns:1fr 1fr}
+ .ev-page .evc-whatsapp{grid-column:1/-1}
+ .ev-page .evc-share{width:100%}
+}
