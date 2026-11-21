@@ -1815,3 +1815,24 @@ footer .soc a{display:grid;place-items:center;transition:transform .2s ease,back
     overflow-wrap: normal;
   }
 }
+
+
+/* Refuerzo del escudo circular: nunca colapsar ni ocultar en móvil */
+@media (max-width: 700px) {
+  .hd-top-in > img.hd-badge {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: relative;
+    z-index: 2;
+    flex: 0 0 48px !important;
+    width: 48px !important;
+    min-width: 48px !important;
+    max-width: 48px !important;
+    height: 48px !important;
+    min-height: 48px !important;
+    object-fit: contain !important;
+    border-radius: 50%;
+    margin: 0 2px 0 0 !important;
+  }
+}
