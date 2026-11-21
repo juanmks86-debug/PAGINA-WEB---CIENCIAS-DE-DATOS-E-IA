@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import ProjectsSection from './ProjectsSection.jsx'
-import { studentYears, resources, recentNotes, materialsByYear } from '../data.js'
+import { studentYears, recentNotes, materialsByYear } from '../data.js'
 
 const studentToolLinks = [
   { title: 'Python', icon: '🐍', href: 'https://www.python.org/' },
