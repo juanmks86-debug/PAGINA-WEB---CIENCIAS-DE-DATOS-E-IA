@@ -29,6 +29,17 @@ const tabIcons = {
   target: <><circle cx="12" cy="12" r="9" /><circle cx="12" cy="12" r="5" /><circle cx="12" cy="12" r="1.5" /></>,
   briefcase: <><rect x="3" y="7" width="18" height="13" rx="2" /><path d="M9 7V5a2 2 0 012-2h2a2 2 0 012 2v2M3 13h18" /></>,
   bolt: <path d="M13 2L4 14h7l-1 8 9-12h-7z" />,
+  cap: <><path d="m2 10 10-5 10 5-10 5-10-5Z" /><path d="M6 12v5c3.5 2.5 8.5 2.5 12 0v-5M22 10v6" /></>,
+  database: <><ellipse cx="12" cy="5" rx="8" ry="3" /><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6" /></>,
+  brain: <><path d="M12 4a3 3 0 0 0-5.8 1.1A3.5 3.5 0 0 0 4 11a3.5 3.5 0 0 0 2 6.1A3 3 0 0 0 12 19V4Z" /><path d="M12 4a3 3 0 0 1 5.8 1.1A3.5 3.5 0 0 1 20 11a3.5 3.5 0 0 1-2 6.1A3 3 0 0 1 12 19M8 9h2M14 13h2M12 8v3" /></>,
+  laptop: <><rect x="4" y="4" width="16" height="12" rx="1.5" /><path d="M2 20h20l-2-4H4l-2 4Z" /></>,
+  lightbulb: <><path d="M9 18h6M10 22h4M8.5 14.5a7 7 0 1 1 7 0c-.8.6-1.2 1.5-1.3 2.5H9.8c-.1-1-.5-1.9-1.3-2.5Z" /></>,
+  rocket: <><path d="M5 15c-2 0-3 2-3 4 2 0 4-1 4-3M9 15l-2 5 5-2M8 13C10 7 15 3 21 3c0 6-4 11-10 13l-3-3Z" /><circle cx="15.5" cy="8.5" r="1.5" /></>,
+  building: <><rect x="3" y="3" width="18" height="18" rx="1" /><path d="M8 21v-4h8v4M7 7h2M15 7h2M7 11h2M15 11h2" /></>,
+  landmark: <><path d="m3 9 9-6 9 6M4 10h16M5 10v9M9 10v9M15 10v9M19 10v9M3 21h18" /></>,
+  chart: <><path d="M4 19V5M4 19h17M8 15l4-4 3 2 5-7" /></>,
+  code: <><path d="m8 8-4 4 4 4M16 8l4 4-4 4M14 5l-4 14" /></>,
+  messages: <><path d="M21 11.5a7.5 7.5 0 0 1-8 7.5 8.5 8.5 0 0 1-4-.9L3 20l1.9-4A7.1 7.1 0 0 1 3 11.5 7.5 7.5 0 0 1 11 4h2a7.5 7.5 0 0 1 8 7.5Z" /><path d="M8 11h8M8 14h5" /></>,
 }
 
 function TabIcon({ name, size = 40 }) {
@@ -39,21 +50,106 @@ function TabIcon({ name, size = 40 }) {
   )
 }
 
+const careerVisuals = [
+  { heading: 'cap', icons: ['database', 'brain', 'laptop'] },
+  { heading: 'target', icons: ['cap', 'lightbulb', 'rocket'] },
+  { heading: 'briefcase', icons: ['building', 'landmark', 'laptop'] },
+  { heading: 'bolt', icons: ['chart', 'code', 'messages'] },
+]
+
 function Tabs() {
+  const [selected, setSelected] = useState(null)
+  const triggerRef = useRef(null)
+  const dialogRef = useRef(null)
+
+  const closeDetails = () => {
+    setSelected(null)
+    requestAnimationFrame(() => triggerRef.current?.focus())
+  }
+
+  useEffect(() => {
+    if (selected === null) return undefined
+    const previousOverflow = document.body.style.overflow
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') closeDetails()
+    }
+    document.body.style.overflow = 'hidden'
+    window.addEventListener('keydown', onKeyDown)
+    requestAnimationFrame(() => dialogRef.current?.querySelector('button')?.focus())
+    return () => {
+      document.body.style.overflow = previousOverflow
+      window.removeEventListener('keydown', onKeyDown)
+    }
+  }, [selected])
+
+  const trapFocus = (event) => {
+    if (event.key !== 'Tab') return
+    const focusable = Array.from(event.currentTarget.querySelectorAll('button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])'))
+    if (!focusable.length) return
+    const first = focusable[0]
+    const last = focusable[focusable.length - 1]
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault()
+      last.focus()
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault()
+      first.focus()
+    }
+  }
+
+  const current = selected === null ? null : tabs[selected]
+  const visual = selected === null ? null : careerVisuals[selected]
+
   return (
-    <section className="career-panels reveal" id="perfil" aria-label="Información de la carrera">
-      {tabs.map(([title, icon, items]) => (
-        <article className="career-panel" key={title}>
-          <div className="career-panel-heading">
-            <span className="career-panel-icon"><TabIcon name={icon} /></span>
-            <h3>{title}</h3>
+    <>
+      <section className="career-panels reveal" id="perfil" aria-label="Información de la carrera">
+        {tabs.map(([title], index) => {
+          const cardVisual = careerVisuals[index]
+          return (
+            <button
+              type="button"
+              className="career-panel"
+              key={title}
+              onClick={(event) => {
+                triggerRef.current = event.currentTarget
+                setSelected(index)
+              }}
+              aria-haspopup="dialog"
+              aria-expanded={selected === index}
+              aria-label={title + '. Ver detalles'}
+            >
+              <span className="career-panel-heading-icon"><TabIcon name={cardVisual.heading} size={29} /></span>
+              <span className="career-panel-title">{title}</span>
+              <span className="career-panel-icons" aria-hidden="true">
+                {cardVisual.icons.map((icon) => <span className="career-panel-mini-icon" key={icon}><TabIcon name={icon} size={19} /></span>)}
+              </span>
+              <span className="career-panel-more">Ver detalles <span aria-hidden="true">→</span></span>
+            </button>
+          )
+        })}
+      </section>
+
+      {current && (
+        <div className="career-modal-bg" onClick={closeDetails}>
+          <div
+            ref={dialogRef}
+            className="career-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="career-modal-title"
+            onClick={(event) => event.stopPropagation()}
+            onKeyDown={trapFocus}
+          >
+            <button type="button" className="career-modal-close" aria-label="Cerrar" onClick={closeDetails}>×</button>
+            <div className="career-modal-heading">
+              <TabIcon name={visual.heading} size={25} />
+              <h4 id="career-modal-title">{current[0]}</h4>
+            </div>
+            <ul>{current[2].map((item) => <li key={item}>{item}</li>)}</ul>
           </div>
-          <ul>
-            {items.map((item) => <li key={item}>{item}</li>)}
-          </ul>
-        </article>
-      ))}
-    </section>
+        </div>
+      )}
+    </>
   )
 }
 
