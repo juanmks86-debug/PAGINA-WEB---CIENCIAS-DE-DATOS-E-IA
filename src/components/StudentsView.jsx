@@ -9,6 +9,13 @@ const icons = {
   brain: <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M20 10a7 7 0 0 0-7 7 7 7 0 0 0-2 13 7 7 0 0 0 8 9h5V10a7 7 0 0 0-4 0ZM28 10a7 7 0 0 1 7 7 7 7 0 0 1 2 13 7 7 0 0 1-8 9h-5V10a7 7 0 0 1 4 0Z" /><path d="M16 20h8M14 28h10M32 20h-8M34 28H24" /></svg>,
 }
 
+const yearIllustrations = {
+  ingresantes: <svg viewBox="0 0 220 92" role="img" aria-label="Ilustración de libros y aprendizaje inicial"><circle cx="172" cy="24" r="17" fill="currentColor" opacity=".12"/><path d="M55 63c16-7 30-7 43 1v13c-13-8-27-8-43-1V63Zm43 1c13-8 27-8 43-1v13c-16-7-30-7-43 1V64Z" fill="currentColor" opacity=".22"/><path d="M98 64v13M55 63c16-7 30-7 43 1 13-8 27-8 43-1v13c-16-7-30-7-43 1-13-8-27-8-43-1V63Z" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinejoin="round"/><path d="m163 57 5-10 5 10 10 5-10 5-5 10-5-10-10-5 10-5Z" fill="currentColor" opacity=".75"/><path d="m67 49 4-7 4 7 7 4-7 4-4 7-4-7-7-4 7-4Z" fill="currentColor" opacity=".55"/><path d="M30 76h160" stroke="currentColor" strokeWidth="2" opacity=".22" strokeLinecap="round"/></svg>,
+  primero: <svg viewBox="0 0 220 92" role="img" aria-label="Ilustración de computadora y programación"><rect x="54" y="13" width="108" height="62" rx="8" fill="currentColor" opacity=".16"/><rect x="61" y="19" width="94" height="48" rx="4" fill="none" stroke="currentColor" strokeWidth="2.5"/><path d="m91 34-10 9 10 9M125 34l10 9-10 9M116 31l-10 25" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/><path d="M43 78h130l-10-8H53l-10 8Z" fill="currentColor" opacity=".45"/><circle cx="178" cy="24" r="12" fill="currentColor" opacity=".13"/><path d="M179 18v12m-6-6h12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><circle cx="35" cy="30" r="5" fill="currentColor" opacity=".55"/></svg>,
+  segundo: <svg viewBox="0 0 220 92" role="img" aria-label="Ilustración de inteligencia artificial y redes neuronales"><g stroke="currentColor" strokeWidth="2" opacity=".55"><path d="m72 27 38 18 39-20M72 27l9 42 29-24 27 31 12-49M81 69l58 7 10-51"/></g><g fill="currentColor"><circle cx="72" cy="27" r="7"/><circle cx="110" cy="45" r="9"/><circle cx="149" cy="25" r="7"/><circle cx="81" cy="69" r="6"/><circle cx="139" cy="76" r="6"/></g><circle cx="110" cy="45" r="20" fill="none" stroke="currentColor" strokeWidth="2" opacity=".35"/><path d="M110 34c-6-8-17-1-12 8-7 7 1 16 9 11 4 7 14 2 11-5 8-7-1-16-8-12Z" fill="currentColor" opacity=".22"/><path d="M110 35v19m-8-12h8m0 7h8" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>,
+  tercero: <svg viewBox="0 0 220 92" role="img" aria-label="Ilustración de análisis y visualización de datos"><rect x="51" y="12" width="118" height="68" rx="8" fill="currentColor" opacity=".13"/><rect x="58" y="19" width="104" height="54" rx="4" fill="none" stroke="currentColor" strokeWidth="2"/><path d="M72 60V48h12v12m8 0V36h12v24m8 0V43h12v17m8 0V28h12v32" fill="currentColor" opacity=".7"/><path d="M70 29h20M70 35h11M138 24h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" opacity=".7"/><path d="m176 63 8-10 8 5 9-17" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/><circle cx="201" cy="41" r="4" fill="currentColor"/><circle cx="35" cy="26" r="10" fill="currentColor" opacity=".16"/></svg>,
+}
+
 function Status({ value, tone }) {
   return <span className={`status status-${tone}`}>{value}</span>
 }
@@ -125,7 +132,7 @@ export default function StudentsView({ standalone = false }) {
         <div className="year-grid" aria-live="polite">
           {filteredYears.map((item) => (
             <article className={`year-card year-card-${item.slug}`} key={item.title}>
-              <div className="year-icon">{icons[item.icon]}</div>
+              <div className={`year-art year-art-${item.slug}`}>{yearIllustrations[item.slug]}</div>
               <div className="year-top"><h3>{item.title}</h3><Status value={item.status} tone={item.statusKey} /></div>
               <p>{item.description}</p>
               <div className="year-bottom"><small>{item.drive ? 'Carpeta disponible' : 'Material en preparación'}</small>{item.drive ? <a href={item.drive} target="_blank" rel="noopener noreferrer" aria-label={`Abrir carpeta de ${item.title} en Google Drive`}>Abrir Drive <b aria-hidden="true">↗</b></a> : <span className="year-coming">Próximamente</span>}</div>
