@@ -1142,3 +1142,73 @@ footer .soc a{display:grid;place-items:center;transition:transform .2s ease,back
  .ev-page .evc-whatsapp{grid-column:1/-1}
  .ev-page .evc-share{width:100%}
 }
+
+
+/* Acciones de eventos en iconos con panel explicativo desplegable */
+.ev-page .evc-icon-actions{
+ display:flex;
+ align-items:center;
+ gap:8px;
+ margin-top:2px;
+}
+.ev-page .evc-icon-btn{
+ width:36px;
+ height:36px;
+ display:inline-flex;
+ align-items:center;
+ justify-content:center;
+ border:1px solid var(--line);
+ border-radius:11px;
+ background:var(--surface);
+ color:var(--ink);
+ cursor:pointer;
+ transition:transform .18s ease,border-color .18s ease,background .18s ease;
+}
+.ev-page .evc-icon-btn svg{width:18px;height:18px}
+.ev-page .evc-icon-btn:hover{transform:translateY(-2px);border-color:var(--teal)}
+.ev-page .evc-icon-btn:focus-visible{outline:3px solid var(--teal);outline-offset:3px}
+.ev-page .evc-icon-whatsapp{color:#159b4b;background:#eaf8ef;border-color:#c7ead3}
+.ev-page .evc-icon-calendar{color:#17647a;background:#eaf5f8;border-color:#cce4eb}
+.ev-page .evc-icon-download{color:var(--ink)}
+.ev-page .evc-icon-btn.is-active{box-shadow:0 0 0 2px var(--teal);border-color:var(--teal)}
+.ev-page .evc-action-info{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:12px;
+ padding:10px 12px;
+ border:1px solid var(--line);
+ border-left:3px solid var(--teal);
+ border-radius:11px;
+ background:var(--surface);
+ animation:evInfoIn .18s ease-out;
+}
+.ev-page .evc-action-info-copy{min-width:0}
+.ev-page .evc-action-info strong{display:block;font-size:.8rem;color:var(--ink);margin-bottom:3px}
+.ev-page .evc-action-info p{font-size:.75rem;line-height:1.4;color:var(--muted);margin:0}
+.ev-page .evc-info-action{
+ flex:0 0 auto;
+ display:inline-flex;
+ align-items:center;
+ justify-content:center;
+ min-height:32px;
+ padding:7px 10px;
+ border:0;
+ border-radius:8px;
+ background:var(--teal);
+ color:#fff;
+ font:600 .72rem/1.2 inherit;
+ text-decoration:none;
+ cursor:pointer;
+}
+.ev-page .evc-info-action:hover{filter:brightness(1.06)}
+:root[data-theme="dark"] .ev-page .evc-icon-whatsapp{background:#173d2a;color:#72e49b;border-color:#285b40}
+:root[data-theme="dark"] .ev-page .evc-icon-calendar{background:#173743;color:#a6e5f0;border-color:#285b68}
+:root[data-theme="dark"] .ev-page .evc-action-info{background:#202d36;border-color:#3b4b56;border-left-color:var(--teal)}
+:root[data-theme="dark"] .ev-page .evc-action-info strong{color:#edf4f7}
+@keyframes evInfoIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:480px){
+ .ev-page .evc-action-info{align-items:flex-start;flex-direction:column}
+ .ev-page .evc-info-action{align-self:flex-start}
+}
+@media(prefers-reduced-motion:reduce){.ev-page .evc-icon-btn,.ev-page .evc-action-info{transition:none;animation:none}}
