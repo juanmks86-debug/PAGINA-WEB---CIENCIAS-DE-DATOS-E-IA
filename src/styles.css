@@ -2105,3 +2105,22 @@ footer .soc a{display:grid;place-items:center;transition:transform .2s ease,back
 @media (prefers-reduced-motion: reduce) {
   .year-grid, .pj-grid { scroll-behavior: auto; }
 }
+
+
+/* La maqueta muestra los accesos rápidos en una cuadrícula compacta 2×2. */
+@media (max-width: 700px) {
+  .students-view .resource-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+  }
+  .students-view .resource-card {
+    min-height: 70px;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    text-align: left;
+    padding: 9px 10px;
+  }
+  .students-view .resource-card b { font-size: .72rem; }
+  .students-view .resource-icon { flex: 0 0 30px; width: 30px; height: 30px; font-size: 1.2rem; }
+}
