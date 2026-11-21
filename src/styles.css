@@ -2124,3 +2124,85 @@ footer .soc a{display:grid;place-items:center;transition:transform .2s ease,back
   .students-view .resource-card b { font-size: .72rem; }
   .students-view .resource-icon { flex: 0 0 30px; width: 30px; height: 30px; font-size: 1.2rem; }
 }
+
+
+/* Ajuste fiel a la maqueta Alumnos: acceso rápido y jerarquía visual */
+.students-view .quick-access { margin: 0 0 28px; }
+.students-view .quick-access-heading,
+.students-view .student-section-heading { display:flex; align-items:center; gap:12px; margin-bottom:13px; }
+.students-view .quick-access-heading h2,
+.students-view .student-section-heading h2 { margin:0; font-size:1.12rem; color:var(--text); }
+.students-view .quick-access-heading p,
+.students-view .student-section-heading p { margin:3px 0 0; font-size:.78rem; color:var(--muted); }
+.students-view .quick-access-symbol { color:#3d9bea; font-size:2rem; line-height:1; }
+.students-view .quick-access-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; }
+.students-view .quick-link { min-width:0; min-height:70px; display:flex; align-items:center; gap:10px; padding:11px 13px; border:1px solid var(--line); border-radius:13px; text-decoration:none; color:var(--text); box-shadow:0 3px 10px rgba(15,35,65,.05); }
+.students-view .quick-link > span:nth-child(2) { min-width:0; display:grid; gap:3px; }
+.students-view .quick-link b { font-size:.8rem; line-height:1.2; }
+.students-view .quick-link small { color:var(--muted); font-size:.68rem; }
+.students-view .quick-link-icon { flex:0 0 34px; width:34px; height:34px; display:grid; place-items:center; border-radius:10px; font-size:1.4rem; font-weight:800; }
+.students-view .quick-link i { margin-left:auto; flex:0 0 20px; width:20px; height:20px; display:grid; place-items:center; border-radius:50%; background:rgba(35,100,190,.12); font-style:normal; }
+.students-view .quick-drive { background:#edf4ff; border-color:#c9ddff; color:#172d54; }
+.students-view .quick-drive .quick-link-icon { color:#168b59; background:#d8f4e6; }
+.students-view .quick-calendar { background:#f2efff; border-color:#ded5ff; color:#30265b; }
+.students-view .quick-calendar .quick-link-icon { color:#6954d7; background:#e4ddff; }
+.students-view .quick-classroom { background:#e9f8f3; border-color:#c9eee1; color:#164c3c; }
+.students-view .quick-classroom .quick-link-icon { color:#15966a; background:#d1f1e4; }
+.students-view .quick-contact { background:#fff1e8; border-color:#ffdac5; color:#73391f; }
+.students-view .quick-contact .quick-link-icon { color:#e46b24; background:#ffe0ce; }
+.students-view .student-tools { margin:28px 0; }
+.students-view .student-section-heading > span { color:#477be0; font-size:1.5rem; }
+.students-view .resource-grid { display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:9px; }
+.students-view .resource-card { min-width:0; min-height:76px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; padding:9px 5px; border:1px solid var(--line); border-radius:12px; background:var(--surface); text-align:center; text-decoration:none; color:var(--text); }
+.students-view .resource-card b { font-size:.72rem; }
+.students-view .resource-card small, .students-view .resource-card > strong { display:none; }
+.students-view .resource-icon { font-size:1.5rem; line-height:1; }
+.students-view .year-card { overflow:hidden; }
+.students-view .year-art { height:104px; }
+.students-view .recent-panel { margin-top:24px; }
+.students-view .panel-title p { margin:3px 0 0; color:var(--muted); font-size:.75rem; }
+.students-view .students-quote { display:flex; align-items:center; gap:14px; padding:17px 20px; border-radius:15px; background:linear-gradient(105deg,#e5efff,#d9e8ff); color:#17355f; }
+.students-view .students-quote p { margin:0; font-size:.9rem; font-weight:650; line-height:1.35; }
+.students-view .students-quote p small { display:block; margin-top:4px; font-size:.72rem; font-weight:400; }
+.students-view .students-quote .quote-mark { font-size:2rem; color:#397fe1; }
+@media (max-width:700px) {
+  .students-view .students-shell { padding-top:22px; }
+  .students-view .quick-access { margin-bottom:24px; }
+  .students-view .quick-access-heading { justify-content:space-between; }
+  .students-view .quick-access-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px; }
+  .students-view .quick-link { min-height:88px; padding:10px; gap:8px; border-radius:13px; flex-wrap:wrap; }
+  .students-view .quick-link-icon { flex-basis:30px; width:30px; height:30px; font-size:1.25rem; }
+  .students-view .quick-link b { font-size:.74rem; }
+  .students-view .quick-link small { font-size:.64rem; }
+  .students-view .student-heading { align-items:flex-start; gap:8px; flex-wrap:wrap; }
+  .students-view .student-search { width:100%; }
+  .students-view .year-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; overflow:visible; padding:0; margin:0; }
+  .students-view .year-card { min-width:0; width:auto; flex:initial; min-height:0; padding:9px; border-radius:13px; }
+  .students-view .year-art { height:88px; margin-bottom:8px; }
+  .students-view .year-top { display:flex; align-items:flex-start; flex-direction:column; gap:5px; }
+  .students-view .year-top h3 { font-size:.82rem; }
+  .students-view .year-top .status { font-size:.58rem; padding:3px 6px; }
+  .students-view .year-card p { margin:7px 0 9px; font-size:.68rem; line-height:1.4; }
+  .students-view .year-bottom { display:flex; flex-direction:column; align-items:flex-start; gap:5px; padding-top:8px; }
+  .students-view .year-bottom small { font-size:.6rem; }
+  .students-view .year-bottom a, .students-view .year-coming { font-size:.67rem; }
+  .students-view .temporary-note { font-size:.68rem; margin:12px 0 18px; }
+  .students-view .materials-browser { margin-top:16px; }
+  .students-view .student-tools { margin:24px 0; }
+  .students-view .resource-grid { display:flex; overflow-x:auto; gap:9px; padding:2px 1px 10px; scroll-snap-type:x mandatory; }
+  .students-view .resource-card { flex:0 0 70px; min-height:70px; scroll-snap-align:start; border-radius:12px; }
+  .students-view .resource-icon { font-size:1.55rem; }
+  .students-view .resource-card b { font-size:.62rem; }
+  .students-view .pj-grid { display:flex; overflow-x:auto; }
+  .students-view .pj-card { flex:0 0 78vw; }
+  .students-view .recent-panel { margin-top:20px; }
+  .students-view .notes-list { display:grid; grid-template-columns:1fr; gap:0; }
+  .students-view .note-row { min-width:0; }
+  .students-view .students-quote { margin-top:24px; padding:14px; border-radius:13px; }
+  .students-view .students-quote p { font-size:.78rem; }
+}
+@media (max-width:370px) {
+  .students-view .year-art { height:72px; }
+  .students-view .year-card { padding:8px; }
+  .students-view .quick-link { padding:8px; }
+}
