@@ -1728,3 +1728,28 @@ footer .soc a{display:grid;place-items:center;transition:transform .2s ease,back
   .career-panel { transition: none; }
   .career-panel:hover { transform: none; }
 }
+
+
+/* Perfil: acentos cromáticos suaves por tarjeta, sin teñir el texto */
+.career-panel {
+  --panel-accent: #478b83;
+  background: linear-gradient(145deg,
+    color-mix(in srgb, var(--panel-accent) 8%, var(--surface)) 0%,
+    var(--surface) 72%);
+  border-color: color-mix(in srgb, var(--panel-accent) 22%, var(--line));
+}
+.career-panel::before { background: var(--panel-accent); opacity: .9; }
+.career-panel:hover {
+  border-color: color-mix(in srgb, var(--panel-accent) 48%, var(--line));
+}
+.career-panel-heading-icon,
+.career-panel-mini-icon {
+  color: var(--panel-accent);
+  border-color: color-mix(in srgb, var(--panel-accent) 23%, var(--line));
+  background: color-mix(in srgb, var(--panel-accent) 11%, var(--surface));
+}
+.career-panel-more { color: var(--panel-accent); }
+.career-panel:nth-child(1) { --panel-accent: #3f8b82; }
+.career-panel:nth-child(2) { --panel-accent: #6684b5; }
+.career-panel:nth-child(3) { --panel-accent: #b17b48; }
+.career-panel:nth-child(4) { --panel-accent: #8b72ad; }
