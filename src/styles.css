@@ -1829,3 +1829,438 @@ footer .soc a{display:grid;place-items:center;transition:transform .2s ease,back
   }
   .pj-main { height: 150px; }
 }
+
+
+/* Banco de apuntes: tarjetas compactas con acentos suaves por año */
+.year-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 13px;
+}
+.year-card {
+  --year-accent: #6ca7a0;
+  min-width: 0;
+  min-height: 205px;
+  padding: 15px;
+  gap: 0;
+  background: linear-gradient(150deg,
+    color-mix(in srgb, var(--year-accent) 10%, #082b3b) 0%,
+    #062331 78%);
+  border-color: color-mix(in srgb, var(--year-accent) 30%, #12617a);
+  box-shadow: 0 7px 20px rgba(0, 12, 20, .14);
+  transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+.year-card-ingresantes { --year-accent: #77a9bd; }
+.year-card-primero { --year-accent: #78b69b; }
+.year-card-segundo { --year-accent: #829bd0; }
+.year-card-tercero { --year-accent: #b59acb; }
+.year-card:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--year-accent) 65%, #12617a);
+  box-shadow: 0 12px 25px rgba(0, 12, 20, .22);
+}
+.year-icon {
+  width: 42px;
+  height: 42px;
+  padding: 9px;
+  margin-bottom: 12px;
+  color: var(--year-accent);
+  background: color-mix(in srgb, var(--year-accent) 16%, #082b3b);
+  border: 1px solid color-mix(in srgb, var(--year-accent) 32%, transparent);
+}
+.year-top { align-items: flex-start; }
+.year-top h3 { font-size: 1rem; line-height: 1.25; }
+.year-card p {
+  flex: 1;
+  margin: 9px 0 13px;
+  color: #bdd0d8;
+  font-size: .77rem;
+  line-height: 1.5;
+}
+.year-bottom {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 7px;
+  padding-top: 10px;
+  border-top: 1px solid color-mix(in srgb, var(--year-accent) 23%, transparent);
+}
+.year-bottom small { color: #a9c0ca; font-size: .67rem; }
+.year-bottom a, .year-coming {
+  color: var(--year-accent);
+  font-size: .75rem;
+  font-weight: 750;
+}
+.year-bottom a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.year-card:focus-within { outline: 2px solid var(--year-accent); outline-offset: 3px; }
+@media (max-width: 980px) {
+  .year-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 520px) {
+  .year-grid { gap: 10px; }
+  .year-card { min-height: 198px; padding: 12px; border-radius: 11px; }
+  .year-icon { width: 37px; height: 37px; padding: 8px; margin-bottom: 10px; }
+  .year-top { flex-wrap: wrap; gap: 5px; }
+  .year-top h3 { font-size: .9rem; }
+  .year-card p { font-size: .72rem; line-height: 1.42; margin: 8px 0 10px; }
+  .year-bottom { align-items: flex-start; flex-direction: column; gap: 5px; padding-top: 8px; }
+}
+@media (max-width: 350px) {
+  .year-grid { grid-template-columns: minmax(0, 1fr); }
+  .year-card { min-height: 175px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .year-card { transition: none; }
+  .year-card:hover { transform: none; }
+}
+
+
+/* Ilustraciones vectoriales individuales para las tarjetas del Banco de apuntes */
+.year-art {
+  height: 76px;
+  width: 100%;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  margin-bottom: 12px;
+  border-radius: 9px;
+  color: var(--year-accent);
+  background:
+    radial-gradient(circle at 78% 22%, color-mix(in srgb, var(--year-accent) 18%, transparent), transparent 34%),
+    linear-gradient(125deg, color-mix(in srgb, var(--year-accent) 13%, #082b3b), rgba(5, 31, 44, .72));
+  border: 1px solid color-mix(in srgb, var(--year-accent) 24%, transparent);
+}
+.year-art svg {
+  display: block;
+  width: min(100%, 220px);
+  height: 100%;
+  overflow: visible;
+}
+.year-card-ingresantes .year-art { background-color: #183747; }
+.year-card-primero .year-art { background-color: #173a36; }
+.year-card-segundo .year-art { background-color: #202f4b; }
+.year-card-tercero .year-art { background-color: #382f49; }
+@media (max-width: 520px) {
+  .year-art { height: 68px; margin-bottom: 10px; border-radius: 8px; }
+}
+
+
+/* Banco de apuntes: acabado ilustrado con capas y contraste */
+.year-art {
+  position: relative;
+  height: 88px;
+  margin-bottom: 13px;
+  border-radius: 11px;
+  background:
+    radial-gradient(ellipse at 50% 110%, color-mix(in srgb, var(--year-accent) 24%, transparent), transparent 65%),
+    linear-gradient(135deg, color-mix(in srgb, var(--year-accent) 17%, #102d3b), #092331 82%);
+  border-color: color-mix(in srgb, var(--year-accent) 34%, transparent);
+}
+.year-art::after {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border: 1px solid color-mix(in srgb, var(--year-accent) 13%, transparent);
+  border-radius: 8px;
+  pointer-events: none;
+}
+.year-art svg {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 240px);
+  height: 100%;
+  filter: drop-shadow(0 4px 5px rgba(0,0,0,.16));
+  transition: transform .3s ease;
+}
+.year-card:hover .year-art svg { transform: translateY(-2px) scale(1.025); }
+.year-card-ingresantes .year-art { background-color: #183747; }
+.year-card-primero .year-art { background-color: #173a36; }
+.year-card-segundo .year-art { background-color: #202f4b; }
+.year-card-tercero .year-art { background-color: #382f49; }
+@media (max-width: 520px) {
+  .year-art { height: 74px; margin-bottom: 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .year-art svg { transition: none; }
+  .year-card:hover .year-art svg { transform: none; }
+}
+
+
+/* Vista móvil de Alumnos: composición más ligera debajo del hero.
+   El hero institucional queda deliberadamente sin modificaciones. */
+@media (max-width: 700px) {
+  .students-shell { padding-top: 28px; padding-bottom: 48px; }
+  .student-heading { margin-bottom: 14px; }
+  .student-heading h2 { font-size: 1.28rem; }
+  .student-search { margin-top: 10px; }
+
+  /* Banco de apuntes: carrusel horizontal, no una pila de tarjetas. */
+  .year-grid {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    padding: 2px 2px 12px;
+    margin-inline: -2px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(92, 174, 187, .55) transparent;
+  }
+  .year-card {
+    flex: 0 0 min(78vw, 285px);
+    min-height: 0;
+    scroll-snap-align: start;
+    padding: 12px;
+  }
+  .year-art { height: 66px; margin-bottom: 9px; }
+  .year-card p { min-height: 0; margin: 7px 0 9px; }
+  .year-bottom { flex-direction: row; align-items: center; }
+
+  /* Materiales: grupos limpios y archivos en filas compactas. */
+  .materials-browser {
+    margin-top: 20px;
+    padding: 14px 0;
+    border: 0;
+    border-top: 1px solid rgba(62, 139, 155, .42);
+    border-bottom: 1px solid rgba(62, 139, 155, .42);
+    border-radius: 0;
+    background: transparent;
+  }
+  .materials-header { margin-bottom: 12px; }
+  .materials-header p { font-size: .74rem; }
+  .materials-groups { display: grid; grid-template-columns: 1fr; gap: 8px; }
+  .materials-group {
+    padding: 10px 0;
+    border: 0;
+    border-bottom: 1px solid rgba(62, 139, 155, .28);
+    border-radius: 0;
+    background: transparent;
+  }
+  .materials-group-title { margin-bottom: 5px; }
+  .materials-group li { gap: 8px; padding: 9px 0; }
+  .materials-group li small { display: none; }
+  .materials-group li a { margin-left: auto; }
+
+  /* Proyectos: tarjetas deslizables con una vista parcial de la siguiente. */
+  .pj-grid {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    padding: 2px 2px 12px;
+    margin-inline: -2px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(92, 174, 187, .55) transparent;
+  }
+  .pj-card {
+    flex: 0 0 min(84vw, 310px);
+    min-width: 0;
+    scroll-snap-align: start;
+  }
+  .pj-img { height: 124px; }
+  .pj-body { padding: 12px; gap: 7px; }
+  .pj-body p { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+  /* Recursos: accesos con iconografía, no más tarjetas grandes. */
+  .students-columns { display: grid; grid-template-columns: 1fr; gap: 24px; }
+  .resource-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+  .resource-card {
+    min-width: 0;
+    min-height: 82px;
+    padding: 9px 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    text-align: center;
+    border: 1px solid rgba(62, 139, 155, .28);
+    border-radius: 11px;
+    background: rgba(8, 43, 59, .48);
+  }
+  .resource-card > span:nth-child(2) { min-width: 0; }
+  .resource-card b { display: block; font-size: .68rem; line-height: 1.25; }
+  .resource-card small, .resource-card > strong { display: none; }
+  .resource-icon { font-size: 1.35rem; line-height: 1; }
+
+  /* Carpetas recientes: listado sencillo con separadores. */
+  .recent-panel {
+    padding: 0;
+    border: 0;
+    border-top: 1px solid rgba(62, 139, 155, .42);
+    border-radius: 0;
+    background: transparent;
+  }
+  .panel-title { padding: 14px 0 9px; }
+  .notes-list { display: flex; flex-direction: column; }
+  .note-row { padding: 10px 2px; border-bottom: 1px solid rgba(62, 139, 155, .25); }
+  .students-quote { margin-top: 28px; }
+}
+@media (max-width: 380px) {
+  .resource-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .resource-card { min-height: 68px; flex-direction: row; justify-content: flex-start; text-align: left; padding: 9px; }
+  .resource-card b { font-size: .72rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .year-grid, .pj-grid { scroll-behavior: auto; }
+}
+
+
+/* La maqueta muestra los accesos rápidos en una cuadrícula compacta 2×2. */
+@media (max-width: 700px) {
+  .students-view .resource-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+  }
+  .students-view .resource-card {
+    min-height: 70px;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    text-align: left;
+    padding: 9px 10px;
+  }
+  .students-view .resource-card b { font-size: .72rem; }
+  .students-view .resource-icon { flex: 0 0 30px; width: 30px; height: 30px; font-size: 1.2rem; }
+}
+
+
+/* Ajuste fiel a la maqueta Alumnos: acceso rápido y jerarquía visual */
+.students-view .quick-access { margin: 0 0 28px; }
+.students-view .quick-access-heading,
+.students-view .student-section-heading { display:flex; align-items:center; gap:12px; margin-bottom:13px; }
+.students-view .quick-access-heading h2,
+.students-view .student-section-heading h2 { margin:0; font-size:1.12rem; color:var(--text); }
+.students-view .quick-access-heading p,
+.students-view .student-section-heading p { margin:3px 0 0; font-size:.78rem; color:var(--muted); }
+.students-view .quick-access-symbol { color:#3d9bea; font-size:2rem; line-height:1; }
+.students-view .quick-access-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; }
+.students-view .quick-link { min-width:0; min-height:70px; display:flex; align-items:center; gap:10px; padding:11px 13px; border:1px solid var(--line); border-radius:13px; text-decoration:none; color:var(--text); box-shadow:0 3px 10px rgba(15,35,65,.05); }
+.students-view .quick-link > span:nth-child(2) { min-width:0; display:grid; gap:3px; }
+.students-view .quick-link b { font-size:.8rem; line-height:1.2; }
+.students-view .quick-link small { color:var(--muted); font-size:.68rem; }
+.students-view .quick-link-icon { flex:0 0 34px; width:34px; height:34px; display:grid; place-items:center; border-radius:10px; font-size:1.4rem; font-weight:800; }
+.students-view .quick-link i { margin-left:auto; flex:0 0 20px; width:20px; height:20px; display:grid; place-items:center; border-radius:50%; background:rgba(35,100,190,.12); font-style:normal; }
+.students-view .quick-drive { background:#edf4ff; border-color:#c9ddff; color:#172d54; }
+.students-view .quick-drive .quick-link-icon { color:#168b59; background:#d8f4e6; }
+.students-view .quick-calendar { background:#f2efff; border-color:#ded5ff; color:#30265b; }
+.students-view .quick-calendar .quick-link-icon { color:#6954d7; background:#e4ddff; }
+.students-view .quick-classroom { background:#e9f8f3; border-color:#c9eee1; color:#164c3c; }
+.students-view .quick-classroom .quick-link-icon { color:#15966a; background:#d1f1e4; }
+.students-view .quick-contact { background:#fff1e8; border-color:#ffdac5; color:#73391f; }
+.students-view .quick-contact .quick-link-icon { color:#e46b24; background:#ffe0ce; }
+.students-view .student-tools { margin:28px 0; }
+.students-view .student-section-heading > span { color:#477be0; font-size:1.5rem; }
+.students-view .resource-grid { display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:9px; }
+.students-view .resource-card { min-width:0; min-height:76px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; padding:9px 5px; border:1px solid var(--line); border-radius:12px; background:var(--surface); text-align:center; text-decoration:none; color:var(--text); }
+.students-view .resource-card b { font-size:.72rem; }
+.students-view .resource-card small, .students-view .resource-card > strong { display:none; }
+.students-view .resource-icon { font-size:1.5rem; line-height:1; }
+.students-view .year-card { overflow:hidden; }
+.students-view .year-art { height:104px; }
+.students-view .recent-panel { margin-top:24px; }
+.students-view .panel-title p { margin:3px 0 0; color:var(--muted); font-size:.75rem; }
+.students-view .students-quote { display:flex; align-items:center; gap:14px; padding:17px 20px; border-radius:15px; background:linear-gradient(105deg,#e5efff,#d9e8ff); color:#17355f; }
+.students-view .students-quote p { margin:0; font-size:.9rem; font-weight:650; line-height:1.35; }
+.students-view .students-quote p small { display:block; margin-top:4px; font-size:.72rem; font-weight:400; }
+.students-view .students-quote .quote-mark { font-size:2rem; color:#397fe1; }
+@media (max-width:700px) {
+  .students-view .students-shell { padding-top:22px; }
+  .students-view .quick-access { margin-bottom:24px; }
+  .students-view .quick-access-heading { justify-content:space-between; }
+  .students-view .quick-access-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px; }
+  .students-view .quick-link { min-height:88px; padding:10px; gap:8px; border-radius:13px; flex-wrap:wrap; }
+  .students-view .quick-link-icon { flex-basis:30px; width:30px; height:30px; font-size:1.25rem; }
+  .students-view .quick-link b { font-size:.74rem; }
+  .students-view .quick-link small { font-size:.64rem; }
+  .students-view .student-heading { align-items:flex-start; gap:8px; flex-wrap:wrap; }
+  .students-view .student-search { width:100%; }
+  .students-view .year-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; overflow:visible; padding:0; margin:0; }
+  .students-view .year-card { min-width:0; width:auto; flex:initial; min-height:0; padding:9px; border-radius:13px; }
+  .students-view .year-art { height:88px; margin-bottom:8px; }
+  .students-view .year-top { display:flex; align-items:flex-start; flex-direction:column; gap:5px; }
+  .students-view .year-top h3 { font-size:.82rem; }
+  .students-view .year-top .status { font-size:.58rem; padding:3px 6px; }
+  .students-view .year-card p { margin:7px 0 9px; font-size:.68rem; line-height:1.4; }
+  .students-view .year-bottom { display:flex; flex-direction:column; align-items:flex-start; gap:5px; padding-top:8px; }
+  .students-view .year-bottom small { font-size:.6rem; }
+  .students-view .year-bottom a, .students-view .year-coming { font-size:.67rem; }
+  .students-view .temporary-note { font-size:.68rem; margin:12px 0 18px; }
+  .students-view .materials-browser { margin-top:16px; }
+  .students-view .student-tools { margin:24px 0; }
+  .students-view .resource-grid { display:flex; overflow-x:auto; gap:9px; padding:2px 1px 10px; scroll-snap-type:x mandatory; }
+  .students-view .resource-card { flex:0 0 70px; min-height:70px; scroll-snap-align:start; border-radius:12px; }
+  .students-view .resource-icon { font-size:1.55rem; }
+  .students-view .resource-card b { font-size:.62rem; }
+  .students-view .pj-grid { display:flex; overflow-x:auto; }
+  .students-view .pj-card { flex:0 0 78vw; }
+  .students-view .recent-panel { margin-top:20px; }
+  .students-view .notes-list { display:grid; grid-template-columns:1fr; gap:0; }
+  .students-view .note-row { min-width:0; }
+  .students-view .students-quote { margin-top:24px; padding:14px; border-radius:13px; }
+  .students-view .students-quote p { font-size:.78rem; }
+}
+@media (max-width:370px) {
+  .students-view .year-art { height:72px; }
+  .students-view .year-card { padding:8px; }
+  .students-view .quick-link { padding:8px; }
+}
+
+
+/* Pulido de la cinta de herramientas y del banner final ilustrado */
+.students-view .resource-grid { gap:11px; }
+.students-view .resource-card {
+  position:relative; min-height:88px; overflow:hidden;
+  border:1px solid #dce6f5; border-radius:15px;
+  background:linear-gradient(145deg,#fff 0%,#f4f7ff 100%);
+  box-shadow:0 4px 13px rgba(37,66,112,.07);
+  transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.students-view .resource-card::before {
+  content:""; position:absolute; inset:0 auto 0 0; width:3px;
+  background:var(--tool-color,#6c91d9); opacity:.8;
+}
+.students-view .resource-card:hover {
+  transform:translateY(-3px); border-color:#b9cbed;
+  box-shadow:0 9px 20px rgba(37,66,112,.12);
+}
+.students-view .resource-icon {
+  width:42px; height:42px; display:grid; place-items:center;
+  border-radius:13px; color:var(--tool-color,#527ac1);
+  background:color-mix(in srgb,var(--tool-color,#527ac1) 12%,white);
+  font-size:1rem; font-weight:850; letter-spacing:-.06em;
+}
+.students-view .resource-icon span {
+  display:grid; place-items:center; width:100%; height:100%;
+  border-radius:inherit; text-shadow:0 1px 0 rgba(255,255,255,.6);
+}
+.students-view .resource-card b { font-size:.76rem; letter-spacing:.01em; }
+.students-view .students-quote {
+  position:relative; min-height:112px; overflow:hidden;
+  padding:19px 190px 18px 22px;
+  background:linear-gradient(105deg,#e9f1ff 0%,#dce9ff 60%,#cddfff 100%);
+  border:1px solid #d2e1fa;
+}
+.students-view .students-quote .quote-illustration {
+  position:absolute; right:0; bottom:0; width:205px; height:100%;
+  object-fit:contain; object-position:right bottom;
+}
+@media (max-width:700px) {
+  .students-view .resource-grid { gap:10px; padding:4px 2px 12px; }
+  .students-view .resource-card {
+    flex:0 0 78px; min-height:82px; gap:7px;
+    padding:9px 5px; border-radius:14px;
+  }
+  .students-view .resource-icon { width:39px; height:39px; font-size:.95rem; border-radius:12px; }
+  .students-view .resource-card b { font-size:.65rem; white-space:nowrap; }
+  .students-view .students-quote {
+    min-height:104px; padding:14px 105px 14px 14px;
+  }
+  .students-view .students-quote .quote-illustration { width:126px; opacity:.96; }
+  .students-view .students-quote .quote-mark { font-size:1.55rem; }
+}
+@media (max-width:370px) {
+  .students-view .students-quote { padding-right:92px; }
+  .students-view .students-quote .quote-illustration { width:112px; }
+}
