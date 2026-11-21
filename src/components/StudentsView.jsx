@@ -3,10 +3,59 @@ import ProjectsSection from './ProjectsSection.jsx'
 import { studentYears, resources, recentNotes, materialsByYear } from '../data.js'
 
 const yearIllustrations = {
-  ingresantes: <svg viewBox="0 0 220 92" role="img" aria-label="Ilustración de libros y aprendizaje inicial"><circle cx="172" cy="24" r="17" fill="currentColor" opacity=".12"/><path d="M55 63c16-7 30-7 43 1v13c-13-8-27-8-43-1V63Zm43 1c13-8 27-8 43-1v13c-16-7-30-7-43 1V64Z" fill="currentColor" opacity=".22"/><path d="M98 64v13M55 63c16-7 30-7 43 1 13-8 27-8 43-1v13c-16-7-30-7-43 1-13-8-27-8-43-1V63Z" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinejoin="round"/><path d="m163 57 5-10 5 10 10 5-10 5-5 10-5-10-10-5 10-5Z" fill="currentColor" opacity=".75"/><path d="m67 49 4-7 4 7 7 4-7 4-4 7-4-7-7-4 7-4Z" fill="currentColor" opacity=".55"/><path d="M30 76h160" stroke="currentColor" strokeWidth="2" opacity=".22" strokeLinecap="round"/></svg>,
-  primero: <svg viewBox="0 0 220 92" role="img" aria-label="Ilustración de computadora y programación"><rect x="54" y="13" width="108" height="62" rx="8" fill="currentColor" opacity=".16"/><rect x="61" y="19" width="94" height="48" rx="4" fill="none" stroke="currentColor" strokeWidth="2.5"/><path d="m91 34-10 9 10 9M125 34l10 9-10 9M116 31l-10 25" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/><path d="M43 78h130l-10-8H53l-10 8Z" fill="currentColor" opacity=".45"/><circle cx="178" cy="24" r="12" fill="currentColor" opacity=".13"/><path d="M179 18v12m-6-6h12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><circle cx="35" cy="30" r="5" fill="currentColor" opacity=".55"/></svg>,
-  segundo: <svg viewBox="0 0 220 92" role="img" aria-label="Ilustración de inteligencia artificial y redes neuronales"><g stroke="currentColor" strokeWidth="2" opacity=".55"><path d="m72 27 38 18 39-20M72 27l9 42 29-24 27 31 12-49M81 69l58 7 10-51"/></g><g fill="currentColor"><circle cx="72" cy="27" r="7"/><circle cx="110" cy="45" r="9"/><circle cx="149" cy="25" r="7"/><circle cx="81" cy="69" r="6"/><circle cx="139" cy="76" r="6"/></g><circle cx="110" cy="45" r="20" fill="none" stroke="currentColor" strokeWidth="2" opacity=".35"/><path d="M110 34c-6-8-17-1-12 8-7 7 1 16 9 11 4 7 14 2 11-5 8-7-1-16-8-12Z" fill="currentColor" opacity=".22"/><path d="M110 35v19m-8-12h8m0 7h8" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>,
-  tercero: <svg viewBox="0 0 220 92" role="img" aria-label="Ilustración de análisis y visualización de datos"><rect x="51" y="12" width="118" height="68" rx="8" fill="currentColor" opacity=".13"/><rect x="58" y="19" width="104" height="54" rx="4" fill="none" stroke="currentColor" strokeWidth="2"/><path d="M72 60V48h12v12m8 0V36h12v24m8 0V43h12v17m8 0V28h12v32" fill="currentColor" opacity=".7"/><path d="M70 29h20M70 35h11M138 24h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" opacity=".7"/><path d="m176 63 8-10 8 5 9-17" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/><circle cx="201" cy="41" r="4" fill="currentColor"/><circle cx="35" cy="26" r="10" fill="currentColor" opacity=".16"/></svg>,
+  ingresantes: <svg viewBox="0 0 240 112" role="img" aria-label="Libros, lápiz y una bombilla que representa el comienzo de la carrera">
+    <circle cx="190" cy="28" r="22" fill="#f5c96b" opacity=".16"/>
+    <path d="M31 83c18-10 37-10 56 0v13c-19-10-38-10-56 0V83Zm56 0c19-10 38-10 57 0v13c-19-10-38-10-57 0V83Z" fill="#78b9b0"/>
+    <path d="M31 83c18-10 37-10 56 0 19-10 38-10 57 0v13c-19-10-38-10-57 0-19-10-38-10-56 0V83Z" fill="none" stroke="#c6e9df" strokeWidth="2.5" strokeLinejoin="round"/>
+    <path d="M87 83v13" stroke="#c6e9df" strokeWidth="2"/>
+    <path d="M43 76c13-6 25-6 37 0" stroke="#e6f4ee" strokeWidth="2" strokeLinecap="round" opacity=".8"/>
+    <path d="m55 70 8-22 8 22" fill="#e6a95f" stroke="#f7d9a6" strokeWidth="2" strokeLinejoin="round"/>
+    <path d="m59 59 8 3" stroke="#fff0d5" strokeWidth="2"/>
+    <rect x="145" y="56" width="48" height="37" rx="7" fill="#e7a95e" transform="rotate(-8 145 56)"/>
+    <rect x="150" y="52" width="48" height="37" rx="7" fill="#f3d18b" transform="rotate(7 150 52)"/>
+    <path d="M160 64h25m-24 7h20" stroke="#9b7043" strokeWidth="2.5" strokeLinecap="round" transform="rotate(7 160 64)"/>
+    <path d="M199 17c0-8-6-13-13-13s-13 5-13 13c0 5 3 8 7 11 2 2 3 4 3 7h7c0-3 1-5 3-7 4-3 6-6 6-11Z" fill="#f4c65e" stroke="#ffe6a6" strokeWidth="2"/>
+    <path d="M183 52h7m-6 5h5" stroke="#f4c65e" strokeWidth="3" strokeLinecap="round"/>
+    <path d="M186 0v-5m-20 10-4-4m43 4 4-4" stroke="#f4c65e" strokeWidth="2.5" strokeLinecap="round"/>
+    <circle cx="28" cy="35" r="4" fill="#8fc8bd"/><path d="M28 25v-5m-9 15-4-3" stroke="#8fc8bd" strokeWidth="2" strokeLinecap="round"/>
+  </svg>,
+  primero: <svg viewBox="0 0 240 112" role="img" aria-label="Computadora con código y herramientas de programación">
+    <circle cx="43" cy="25" r="17" fill="#7fc5a2" opacity=".14"/>
+    <rect x="48" y="13" width="133" height="75" rx="10" fill="#213d3a" stroke="#8ed1b1" strokeWidth="2.5"/>
+    <rect x="56" y="21" width="117" height="58" rx="5" fill="#102b2d"/>
+    <circle cx="66" cy="29" r="2.5" fill="#e9a96b"/><circle cx="74" cy="29" r="2.5" fill="#e7d27a"/><circle cx="82" cy="29" r="2.5" fill="#8bc7a9"/>
+    <path d="m82 43-8 7 8 7m28-14 8 7-8 7m-5-17-7 20" fill="none" stroke="#8ed1b1" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M96 67h43m-43 5h26" stroke="#5b9b86" strokeWidth="2.5" strokeLinecap="round"/>
+    <path d="M37 91h155l-14 10H51L37 91Z" fill="#78b69b"/>
+    <path d="M94 91h40l-4 5h-32l-4-5Z" fill="#315f53"/>
+    <rect x="190" y="45" width="29" height="29" rx="8" fill="#e6b66d"/>
+    <path d="M204 51v17m-7-9h14" stroke="#654d34" strokeWidth="2.5" strokeLinecap="round"/>
+    <path d="m30 61 5-9 5 9 9 5-9 5-5 9-5-9-9-5 9-5Z" fill="#8ed1b1" opacity=".8"/>
+    <circle cx="205" cy="20" r="5" fill="#8ed1b1"/><path d="M205 10v-5m10 15h5" stroke="#8ed1b1" strokeWidth="2" strokeLinecap="round"/>
+  </svg>,
+  segundo: <svg viewBox="0 0 240 112" role="img" aria-label="Cerebro digital conectado por una red neuronal">
+    <path d="M44 27 91 48 121 18 161 45 201 24M44 27l14 56 33-35 37 43 33-46 40 36M58 83l70 29 66-41" fill="none" stroke="#8fa9e2" strokeWidth="2" opacity=".55"/>
+    <circle cx="44" cy="27" r="6" fill="#e5b76e"/><circle cx="201" cy="24" r="6" fill="#8ec9bc"/><circle cx="58" cy="83" r="5" fill="#8ec9bc"/><circle cx="198" cy="77" r="5" fill="#e5b76e"/>
+    <path d="M123 22c-9-13-28-7-28 8-13 5-12 23-1 28-4 15 11 25 23 17 11 10 27 2 26-11 14-8 8-27-4-30-1-12-9-17-16-12Z" fill="#819bd2" stroke="#c5d3f3" strokeWidth="2.5"/>
+    <path d="M121 27v44m-18-25h18m0 13h17m-17-22h14" stroke="#253b68" strokeWidth="3" strokeLinecap="round"/>
+    <circle cx="121" cy="49" r="5" fill="#f0c875"/><circle cx="103" cy="49" r="3" fill="#e8f0ff"/><circle cx="139" cy="62" r="3" fill="#e8f0ff"/>
+    <circle cx="121" cy="49" r="28" fill="none" stroke="#a9b9e5" strokeWidth="1.5" strokeDasharray="3 5" opacity=".8"/>
+    <path d="m30 76 4-8 4 8 8 4-8 4-4 8-4-8-8-4 8-4Z" fill="#e5b76e"/>
+    <circle cx="184" cy="91" r="10" fill="#8ec9bc" opacity=".85"/><path d="M180 91h8m-4-4v8" stroke="#214a52" strokeWidth="2" strokeLinecap="round"/>
+  </svg>,
+  tercero: <svg viewBox="0 0 240 112" role="img" aria-label="Panel de análisis de datos con gráficos y tendencias">
+    <rect x="39" y="11" width="151" height="91" rx="10" fill="#39334c" stroke="#bda6d8" strokeWidth="2.5"/>
+    <rect x="48" y="20" width="133" height="74" rx="5" fill="#211f35"/>
+    <path d="M60 34h39m-39 6h24" stroke="#bda6d8" strokeWidth="2.5" strokeLinecap="round" opacity=".8"/>
+    <path d="M62 81V65h13v16m8 0V54h13v27m8 0V61h13v20m8 0V44h13v37" fill="#8f80bc"/>
+    <path d="m64 59 23-9 20 7 25-21 23 6" fill="none" stroke="#e8bd78" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+    <circle cx="155" cy="42" r="4" fill="#e8bd78"/>
+    <path d="M199 68 212 53l12 6" fill="none" stroke="#8ec9bc" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+    <circle cx="212" cy="53" r="4" fill="#8ec9bc"/>
+    <path d="M28 42h14m-7-7v14" stroke="#e8bd78" strokeWidth="2.5" strokeLinecap="round"/>
+    <circle cx="207" cy="91" r="9" fill="#bda6d8" opacity=".8"/>
+    <path d="M203 91h8m-4-4v8" stroke="#39334c" strokeWidth="2" strokeLinecap="round"/>
+  </svg>,
 }
 
 function Status({ value, tone }) {
