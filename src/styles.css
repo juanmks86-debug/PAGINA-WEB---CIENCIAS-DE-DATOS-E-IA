@@ -1829,3 +1829,298 @@ footer .soc a{display:grid;place-items:center;transition:transform .2s ease,back
   }
   .pj-main { height: 150px; }
 }
+
+
+/* Banco de apuntes: tarjetas compactas con acentos suaves por año */
+.year-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 13px;
+}
+.year-card {
+  --year-accent: #6ca7a0;
+  min-width: 0;
+  min-height: 205px;
+  padding: 15px;
+  gap: 0;
+  background: linear-gradient(150deg,
+    color-mix(in srgb, var(--year-accent) 10%, #082b3b) 0%,
+    #062331 78%);
+  border-color: color-mix(in srgb, var(--year-accent) 30%, #12617a);
+  box-shadow: 0 7px 20px rgba(0, 12, 20, .14);
+  transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+.year-card-ingresantes { --year-accent: #77a9bd; }
+.year-card-primero { --year-accent: #78b69b; }
+.year-card-segundo { --year-accent: #829bd0; }
+.year-card-tercero { --year-accent: #b59acb; }
+.year-card:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--year-accent) 65%, #12617a);
+  box-shadow: 0 12px 25px rgba(0, 12, 20, .22);
+}
+.year-icon {
+  width: 42px;
+  height: 42px;
+  padding: 9px;
+  margin-bottom: 12px;
+  color: var(--year-accent);
+  background: color-mix(in srgb, var(--year-accent) 16%, #082b3b);
+  border: 1px solid color-mix(in srgb, var(--year-accent) 32%, transparent);
+}
+.year-top { align-items: flex-start; }
+.year-top h3 { font-size: 1rem; line-height: 1.25; }
+.year-card p {
+  flex: 1;
+  margin: 9px 0 13px;
+  color: #bdd0d8;
+  font-size: .77rem;
+  line-height: 1.5;
+}
+.year-bottom {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 7px;
+  padding-top: 10px;
+  border-top: 1px solid color-mix(in srgb, var(--year-accent) 23%, transparent);
+}
+.year-bottom small { color: #a9c0ca; font-size: .67rem; }
+.year-bottom a, .year-coming {
+  color: var(--year-accent);
+  font-size: .75rem;
+  font-weight: 750;
+}
+.year-bottom a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.year-card:focus-within { outline: 2px solid var(--year-accent); outline-offset: 3px; }
+@media (max-width: 980px) {
+  .year-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 520px) {
+  .year-grid { gap: 10px; }
+  .year-card { min-height: 198px; padding: 12px; border-radius: 11px; }
+  .year-icon { width: 37px; height: 37px; padding: 8px; margin-bottom: 10px; }
+  .year-top { flex-wrap: wrap; gap: 5px; }
+  .year-top h3 { font-size: .9rem; }
+  .year-card p { font-size: .72rem; line-height: 1.42; margin: 8px 0 10px; }
+  .year-bottom { align-items: flex-start; flex-direction: column; gap: 5px; padding-top: 8px; }
+}
+@media (max-width: 350px) {
+  .year-grid { grid-template-columns: minmax(0, 1fr); }
+  .year-card { min-height: 175px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .year-card { transition: none; }
+  .year-card:hover { transform: none; }
+}
+
+
+/* Ilustraciones vectoriales individuales para las tarjetas del Banco de apuntes */
+.year-art {
+  height: 76px;
+  width: 100%;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  margin-bottom: 12px;
+  border-radius: 9px;
+  color: var(--year-accent);
+  background:
+    radial-gradient(circle at 78% 22%, color-mix(in srgb, var(--year-accent) 18%, transparent), transparent 34%),
+    linear-gradient(125deg, color-mix(in srgb, var(--year-accent) 13%, #082b3b), rgba(5, 31, 44, .72));
+  border: 1px solid color-mix(in srgb, var(--year-accent) 24%, transparent);
+}
+.year-art svg {
+  display: block;
+  width: min(100%, 220px);
+  height: 100%;
+  overflow: visible;
+}
+.year-card-ingresantes .year-art { background-color: #183747; }
+.year-card-primero .year-art { background-color: #173a36; }
+.year-card-segundo .year-art { background-color: #202f4b; }
+.year-card-tercero .year-art { background-color: #382f49; }
+@media (max-width: 520px) {
+  .year-art { height: 68px; margin-bottom: 10px; border-radius: 8px; }
+}
+
+
+/* Banco de apuntes: acabado ilustrado con capas y contraste */
+.year-art {
+  position: relative;
+  height: 88px;
+  margin-bottom: 13px;
+  border-radius: 11px;
+  background:
+    radial-gradient(ellipse at 50% 110%, color-mix(in srgb, var(--year-accent) 24%, transparent), transparent 65%),
+    linear-gradient(135deg, color-mix(in srgb, var(--year-accent) 17%, #102d3b), #092331 82%);
+  border-color: color-mix(in srgb, var(--year-accent) 34%, transparent);
+}
+.year-art::after {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border: 1px solid color-mix(in srgb, var(--year-accent) 13%, transparent);
+  border-radius: 8px;
+  pointer-events: none;
+}
+.year-art svg {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 240px);
+  height: 100%;
+  filter: drop-shadow(0 4px 5px rgba(0,0,0,.16));
+  transition: transform .3s ease;
+}
+.year-card:hover .year-art svg { transform: translateY(-2px) scale(1.025); }
+.year-card-ingresantes .year-art { background-color: #183747; }
+.year-card-primero .year-art { background-color: #173a36; }
+.year-card-segundo .year-art { background-color: #202f4b; }
+.year-card-tercero .year-art { background-color: #382f49; }
+@media (max-width: 520px) {
+  .year-art { height: 74px; margin-bottom: 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .year-art svg { transition: none; }
+  .year-card:hover .year-art svg { transform: none; }
+}
+
+
+/* Vista móvil de Alumnos: composición más ligera debajo del hero.
+   El hero institucional queda deliberadamente sin modificaciones. */
+@media (max-width: 700px) {
+  .students-shell { padding-top: 28px; padding-bottom: 48px; }
+  .student-heading { margin-bottom: 14px; }
+  .student-heading h2 { font-size: 1.28rem; }
+  .student-search { margin-top: 10px; }
+
+  /* Banco de apuntes: carrusel horizontal, no una pila de tarjetas. */
+  .year-grid {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    padding: 2px 2px 12px;
+    margin-inline: -2px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(92, 174, 187, .55) transparent;
+  }
+  .year-card {
+    flex: 0 0 min(78vw, 285px);
+    min-height: 0;
+    scroll-snap-align: start;
+    padding: 12px;
+  }
+  .year-art { height: 66px; margin-bottom: 9px; }
+  .year-card p { min-height: 0; margin: 7px 0 9px; }
+  .year-bottom { flex-direction: row; align-items: center; }
+
+  /* Materiales: grupos limpios y archivos en filas compactas. */
+  .materials-browser {
+    margin-top: 20px;
+    padding: 14px 0;
+    border: 0;
+    border-top: 1px solid rgba(62, 139, 155, .42);
+    border-bottom: 1px solid rgba(62, 139, 155, .42);
+    border-radius: 0;
+    background: transparent;
+  }
+  .materials-header { margin-bottom: 12px; }
+  .materials-header p { font-size: .74rem; }
+  .materials-groups { display: grid; grid-template-columns: 1fr; gap: 8px; }
+  .materials-group {
+    padding: 10px 0;
+    border: 0;
+    border-bottom: 1px solid rgba(62, 139, 155, .28);
+    border-radius: 0;
+    background: transparent;
+  }
+  .materials-group-title { margin-bottom: 5px; }
+  .materials-group li { gap: 8px; padding: 9px 0; }
+  .materials-group li small { display: none; }
+  .materials-group li a { margin-left: auto; }
+
+  /* Proyectos: tarjetas deslizables con una vista parcial de la siguiente. */
+  .pj-grid {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    padding: 2px 2px 12px;
+    margin-inline: -2px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(92, 174, 187, .55) transparent;
+  }
+  .pj-card {
+    flex: 0 0 min(84vw, 310px);
+    min-width: 0;
+    scroll-snap-align: start;
+  }
+  .pj-img { height: 124px; }
+  .pj-body { padding: 12px; gap: 7px; }
+  .pj-body p { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+  /* Recursos: accesos con iconografía, no más tarjetas grandes. */
+  .students-columns { display: grid; grid-template-columns: 1fr; gap: 24px; }
+  .resource-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+  .resource-card {
+    min-width: 0;
+    min-height: 82px;
+    padding: 9px 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    text-align: center;
+    border: 1px solid rgba(62, 139, 155, .28);
+    border-radius: 11px;
+    background: rgba(8, 43, 59, .48);
+  }
+  .resource-card > span:nth-child(2) { min-width: 0; }
+  .resource-card b { display: block; font-size: .68rem; line-height: 1.25; }
+  .resource-card small, .resource-card > strong { display: none; }
+  .resource-icon { font-size: 1.35rem; line-height: 1; }
+
+  /* Carpetas recientes: listado sencillo con separadores. */
+  .recent-panel {
+    padding: 0;
+    border: 0;
+    border-top: 1px solid rgba(62, 139, 155, .42);
+    border-radius: 0;
+    background: transparent;
+  }
+  .panel-title { padding: 14px 0 9px; }
+  .notes-list { display: flex; flex-direction: column; }
+  .note-row { padding: 10px 2px; border-bottom: 1px solid rgba(62, 139, 155, .25); }
+  .students-quote { margin-top: 28px; }
+}
+@media (max-width: 380px) {
+  .resource-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .resource-card { min-height: 68px; flex-direction: row; justify-content: flex-start; text-align: left; padding: 9px; }
+  .resource-card b { font-size: .72rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .year-grid, .pj-grid { scroll-behavior: auto; }
+}
+
+
+/* La maqueta muestra los accesos rápidos en una cuadrícula compacta 2×2. */
+@media (max-width: 700px) {
+  .students-view .resource-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+  }
+  .students-view .resource-card {
+    min-height: 70px;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    text-align: left;
+    padding: 9px 10px;
+  }
+  .students-view .resource-card b { font-size: .72rem; }
+  .students-view .resource-icon { flex: 0 0 30px; width: 30px; height: 30px; font-size: 1.2rem; }
+}
