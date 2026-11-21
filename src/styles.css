@@ -1422,3 +1422,26 @@ footer .soc a{display:grid;place-items:center;transition:transform .2s ease,back
 :root[data-theme="dark"] .privacy-details a{color:#8bd8d2}
 :root[data-theme="dark"] .privacy-reject,:root[data-theme="dark"] .privacy-more,:root[data-theme="dark"] .privacy-settings{color:#e4eef2;background:#263943;border-color:#526773}
 @media(max-width:600px){.privacy-backdrop{padding:10px}.privacy-banner{padding:17px 16px 13px;border-radius:15px}.privacy-actions{display:grid;grid-template-columns:1fr 1fr}.privacy-accept{grid-column:1/-1;grid-row:1}.privacy-reject{grid-column:1;grid-row:2}.privacy-more{grid-column:2;grid-row:2}}
+
+
+/* Aviso de privacidad compacto */
+.privacy-backdrop{padding:10px 14px}
+.privacy-banner{width:min(620px,100%);max-height:min(68vh,560px);padding:15px 18px 11px;border-radius:14px;font-size:.84rem;line-height:1.42}
+.privacy-heading{gap:9px;margin-bottom:7px}
+.privacy-symbol{width:34px;height:34px;flex-basis:34px;border-radius:10px;font-size:1.2rem}
+.privacy-eyebrow{font-size:.59rem}
+.privacy-heading h2{font-size:1.05rem}
+.privacy-banner>p{margin:6px 0}
+.privacy-details{margin:8px 0;padding:9px 11px}
+.privacy-details p{margin:4px 0}
+.privacy-actions{gap:7px;margin-top:10px}
+.privacy-actions button{min-height:35px;padding:7px 11px;font-size:.79rem}
+.privacy-footnote{margin-top:8px!important;font-size:.72rem}
+@media(max-width:600px){
+ .privacy-backdrop{padding:8px}
+ .privacy-banner{padding:13px 13px 10px;max-height:72vh}
+ .privacy-actions{display:grid;grid-template-columns:1fr 1fr}
+ .privacy-accept{grid-column:1/-1;grid-row:1}
+ .privacy-reject{grid-column:1;grid-row:2}
+ .privacy-more{grid-column:2;grid-row:2}
+}
