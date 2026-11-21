@@ -67,8 +67,16 @@ const yearIllustrations = {
   </svg>,
 }
 
-function ToolMark({ mark, color }) {
-  return <span className="resource-icon" style={{ '--tool-color': color }} aria-hidden="true"><span>{mark}</span></span>
+function ToolMark({ title, color }) {
+  const drawings = {
+    Python: <><path d="M20 5c-8 0-9 3-9 7v4h11v3H10c-4 0-6-2-6-6V9c0-4 3-6 8-6h8Z" fill="#3776ab"/><path d="M12 27c8 0 9-3 9-7v-4H10v-3h12c4 0 6 2 6 6v4c0 4-3 6-8 6h-8Z" fill="#ffd343"/><circle cx="15" cy="8" r="1.4" fill="white"/><circle cx="19" cy="24" r="1.4" fill="white"/></>,
+    Jupyter: <><circle cx="18" cy="17" r="9" fill="none" stroke="#e87524" strokeWidth="2.5"/><ellipse cx="18" cy="17" rx="14" ry="5" fill="none" stroke="#e87524" strokeWidth="1.8" transform="rotate(-32 18 17)"/><circle cx="29" cy="7" r="2.5" fill="#777"/><circle cx="7" cy="27" r="2" fill="#777"/><circle cx="18" cy="17" r="2.5" fill="#e87524"/></>,
+    Colab: <><path d="M10 9c4-5 10-5 14 0l4 5-4 5-4-5c-2-2-4-2-6 0l-4 5-4-5Z" fill="#f9ab00"/><path d="m10 19 4-5 4 5-4 5c-4 4-10 4-14 0l4-5c2 2 4 2 6 0Z" fill="#e8710a" transform="translate(5 -1)"/><path d="m22 19-4-5 4-5c4-4 10-4 14 0l-4 5c-2-2-4-2-6 0Z" fill="#f9ab00" transform="translate(-4 6)"/></>,
+    Docker: <><path d="M5 18h25c0 7-5 11-13 11-6 0-10-4-12-11Z" fill="#2496ed"/><g fill="#2496ed"><rect x="7" y="12" width="5" height="5" rx="1"/><rect x="13" y="12" width="5" height="5" rx="1"/><rect x="19" y="12" width="5" height="5" rx="1"/><rect x="13" y="6" width="5" height="5" rx="1"/><rect x="19" y="6" width="5" height="5" rx="1"/></g><path d="M29 15c4-1 5 1 5 3-2 2-4 2-7 1" fill="none" stroke="#2496ed" strokeWidth="2" strokeLinecap="round"/></>,
+    GitHub: <><path d="M18 4a14 14 0 0 0-4.4 27.3c.7.1 1-.3 1-.7v-2.7c-4.1.9-5-1.7-5-1.7-.7-1.7-1.7-2.1-1.7-2.1-1.4-1 .1-1 .1-1 1.5.1 2.3 1.5 2.3 1.5 1.3 2.2 3.4 1.6 4.3 1.2.1-1 .5-1.6.9-2-3.3-.4-6.8-1.7-6.8-7.5 0-1.7.6-3 1.5-4.1-.2-.4-.7-2 .1-4.1 0 0 1.2-.4 4.2 1.6a14.5 14.5 0 0 1 7.6 0c2.9-2 4.2-1.6 4.2-1.6.8 2.1.3 3.7.1 4.1.9 1 1.5 2.4 1.5 4.1 0 5.8-3.5 7.1-6.8 7.5.5.4 1 1.2 1 2.4v3.6c0 .4.3.8 1 .7A14 14 0 0 0 18 4Z" fill="#29364a"/></>,
+    'VS Code': <><path d="m5 13 7-6 16-4v30l-16-4-7-6-3 2-2-2 6-7-6-7 2-2Z" fill="#167ac6"/><path d="m12 7 11 11-11 11 16 4V3Z" fill="#29b6f6"/><path d="m5 13 7 5-7 5-3-2 4-3-4-3Z" fill="#fff" opacity=".9"/></>
+  }
+  return <span className="resource-icon" style={{ '--tool-color': color }} aria-hidden="true"><svg viewBox="0 0 36 36" role="img">{drawings[title]}</svg></span>
 }
 
 function Status({ value, tone }) {
@@ -208,7 +216,7 @@ export default function StudentsView({ standalone = false }) {
         <NotesBank query={query} />
         <section className="student-tools" aria-labelledby="student-tools-title">
           <div className="student-section-heading"><span aria-hidden="true">⚒</span><div><h2 id="student-tools-title">Herramientas y recursos</h2><p>Recursos útiles para tu estudio y desarrollo.</p></div></div>
-          <div className="resource-grid">{studentToolLinks.map((resource) => <a className="resource-card" href={resource.href} target="_blank" rel="noopener noreferrer" key={resource.title}><ToolMark mark={resource.mark} color={resource.color} /><span><b>{resource.title}</b></span></a>)}</div>
+          <div className="resource-grid">{studentToolLinks.map((resource) => <a className="resource-card" href={resource.href} target="_blank" rel="noopener noreferrer" key={resource.title}><ToolMark title={resource.title} color={resource.color} /><span><b>{resource.title}</b></span></a>)}</div>
         </section>
         <ProjectsSection />
         <aside className="recent-panel" id="ultimos-apuntes">
