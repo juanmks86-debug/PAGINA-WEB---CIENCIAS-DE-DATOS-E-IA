@@ -2206,3 +2206,61 @@ footer .soc a{display:grid;place-items:center;transition:transform .2s ease,back
   .students-view .year-card { padding:8px; }
   .students-view .quick-link { padding:8px; }
 }
+
+
+/* Pulido de la cinta de herramientas y del banner final ilustrado */
+.students-view .resource-grid { gap:11px; }
+.students-view .resource-card {
+  position:relative; min-height:88px; overflow:hidden;
+  border:1px solid #dce6f5; border-radius:15px;
+  background:linear-gradient(145deg,#fff 0%,#f4f7ff 100%);
+  box-shadow:0 4px 13px rgba(37,66,112,.07);
+  transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.students-view .resource-card::before {
+  content:""; position:absolute; inset:0 auto 0 0; width:3px;
+  background:var(--tool-color,#6c91d9); opacity:.8;
+}
+.students-view .resource-card:hover {
+  transform:translateY(-3px); border-color:#b9cbed;
+  box-shadow:0 9px 20px rgba(37,66,112,.12);
+}
+.students-view .resource-icon {
+  width:42px; height:42px; display:grid; place-items:center;
+  border-radius:13px; color:var(--tool-color,#527ac1);
+  background:color-mix(in srgb,var(--tool-color,#527ac1) 12%,white);
+  font-size:1rem; font-weight:850; letter-spacing:-.06em;
+}
+.students-view .resource-icon span {
+  display:grid; place-items:center; width:100%; height:100%;
+  border-radius:inherit; text-shadow:0 1px 0 rgba(255,255,255,.6);
+}
+.students-view .resource-card b { font-size:.76rem; letter-spacing:.01em; }
+.students-view .students-quote {
+  position:relative; min-height:112px; overflow:hidden;
+  padding:19px 190px 18px 22px;
+  background:linear-gradient(105deg,#e9f1ff 0%,#dce9ff 60%,#cddfff 100%);
+  border:1px solid #d2e1fa;
+}
+.students-view .students-quote .quote-illustration {
+  position:absolute; right:0; bottom:0; width:205px; height:100%;
+  object-fit:contain; object-position:right bottom;
+}
+@media (max-width:700px) {
+  .students-view .resource-grid { gap:10px; padding:4px 2px 12px; }
+  .students-view .resource-card {
+    flex:0 0 78px; min-height:82px; gap:7px;
+    padding:9px 5px; border-radius:14px;
+  }
+  .students-view .resource-icon { width:39px; height:39px; font-size:.95rem; border-radius:12px; }
+  .students-view .resource-card b { font-size:.65rem; white-space:nowrap; }
+  .students-view .students-quote {
+    min-height:104px; padding:14px 105px 14px 14px;
+  }
+  .students-view .students-quote .quote-illustration { width:126px; opacity:.96; }
+  .students-view .students-quote .quote-mark { font-size:1.55rem; }
+}
+@media (max-width:370px) {
+  .students-view .students-quote { padding-right:92px; }
+  .students-view .students-quote .quote-illustration { width:112px; }
+}
