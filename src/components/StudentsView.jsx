@@ -3,12 +3,12 @@ import ProjectsSection from './ProjectsSection.jsx'
 import { studentYears, recentNotes, materialsByYear } from '../data.js'
 
 const studentToolLinks = [
-  { title: 'Python', icon: '🐍', href: 'https://www.python.org/' },
-  { title: 'Jupyter', icon: '🪐', href: 'https://jupyter.org/' },
-  { title: 'Colab', icon: '◉', href: 'https://colab.research.google.com/' },
-  { title: 'Docker', icon: '🐳', href: 'https://www.docker.com/' },
-  { title: 'GitHub', icon: '◉', href: 'https://github.com/' },
-  { title: 'VS Code', icon: '⟨⟩', href: 'https://code.visualstudio.com/' },
+  { title: 'Python', mark: 'Py', color: '#3776ab', href: 'https://www.python.org/' },
+  { title: 'Jupyter', mark: 'J', color: '#e87524', href: 'https://jupyter.org/' },
+  { title: 'Colab', mark: 'Co', color: '#e5a000', href: 'https://colab.research.google.com/' },
+  { title: 'Docker', mark: 'D', color: '#2496ed', href: 'https://www.docker.com/' },
+  { title: 'GitHub', mark: 'GH', color: '#29364a', href: 'https://github.com/' },
+  { title: 'VS Code', mark: '<>', color: '#167ac6', href: 'https://code.visualstudio.com/' },
 ]
 
 const yearIllustrations = {
@@ -65,6 +65,10 @@ const yearIllustrations = {
     <circle cx="207" cy="91" r="9" fill="#bda6d8" opacity=".8"/>
     <path d="M203 91h8m-4-4v8" stroke="#39334c" strokeWidth="2" strokeLinecap="round"/>
   </svg>,
+}
+
+function ToolMark({ mark, color }) {
+  return <span className="resource-icon" style={{ '--tool-color': color }} aria-hidden="true"><span>{mark}</span></span>
 }
 
 function Status({ value, tone }) {
@@ -204,14 +208,31 @@ export default function StudentsView({ standalone = false }) {
         <NotesBank query={query} />
         <section className="student-tools" aria-labelledby="student-tools-title">
           <div className="student-section-heading"><span aria-hidden="true">⚒</span><div><h2 id="student-tools-title">Herramientas y recursos</h2><p>Recursos útiles para tu estudio y desarrollo.</p></div></div>
-          <div className="resource-grid">{studentToolLinks.map((resource) => <a className="resource-card" href={resource.href} target="_blank" rel="noopener noreferrer" key={resource.title}><span className="resource-icon" aria-hidden="true">{resource.icon}</span><span><b>{resource.title}</b></span></a>)}</div>
+          <div className="resource-grid">{studentToolLinks.map((resource) => <a className="resource-card" href={resource.href} target="_blank" rel="noopener noreferrer" key={resource.title}><ToolMark mark={resource.mark} color={resource.color} /><span><b>{resource.title}</b></span></a>)}</div>
         </section>
         <ProjectsSection />
         <aside className="recent-panel" id="ultimos-apuntes">
           <div className="panel-title"><div><span className="student-kicker">ACCESOS A DRIVE</span><h2>Carpetas recientes</h2><p>Accedé rápidamente a los últimos materiales.</p></div><a href="#materiales-titulo">Ver todas →</a></div>
           <div className="notes-list">{filteredNotes.map((note) => <a href={note.href} target="_blank" rel="noopener noreferrer" className="note-row" key={note.title}><span className="note-file" aria-hidden="true">▰</span><span><b>{note.title}</b><small>{note.year} · {note.subject}</small></span></a>)}{!filteredNotes.length && <p className="empty-state" role="status">No encontramos apuntes con ese término.</p>}</div>
         </aside>
-        <div className="students-quote"><span className="quote-mark" aria-hidden="true">↗</span><p>Tu esfuerzo de hoy,<br /><strong>construye el profesional del mañana.</strong><small>¡Seguimos aprendiendo juntos!</small></p></div>
+        <div className="students-quote">
+          <span className="quote-mark" aria-hidden="true">↗</span>
+          <p>Tu esfuerzo de hoy,<br /><strong>construye el profesional del mañana.</strong><small>¡Seguimos aprendiendo juntos!</small></p>
+          <svg className="quote-illustration" viewBox="0 0 220 100" role="img" aria-label="Cohete que despega sobre montañas">
+            <path d="M0 91 38 52l26 28 34-48 33 44 30-30 59 45Z" fill="#b9d2f6"/>
+            <path d="m62 100 36-48 27 48m18 0 22-36 35 36" fill="#8fb4e9"/>
+            <path d="M0 91h220v9H0Z" fill="#d7e6fb"/>
+            <g transform="translate(100 9) rotate(34 25 27)">
+              <path d="M25 0C11 13 8 31 9 48h32C42 31 39 13 25 0Z" fill="#3279d7" stroke="#fff" strokeWidth="2"/>
+              <circle cx="25" cy="24" r="7" fill="#dff0ff" stroke="#1b4d91" strokeWidth="2"/>
+              <path d="m9 34-9 14 10-1m32-13 9 14-10-1" fill="#f1a34c" stroke="#fff" strokeWidth="1.5" strokeLinejoin="round"/>
+              <path d="M17 48 25 67l8-19Z" fill="#f2a64d"/>
+              <path d="M21 48 25 59l4-11Z" fill="#fff0b8"/>
+            </g>
+            <path d="m87 25-5-7m58 3 6-7m-62 42-8 2" stroke="#6e9ee0" strokeWidth="2.5" strokeLinecap="round"/>
+            <circle cx="169" cy="20" r="4" fill="#fff" opacity=".9"/><circle cx="55" cy="22" r="3" fill="#fff" opacity=".8"/>
+          </svg>
+        </div>
       </div>
     </section>
   )
