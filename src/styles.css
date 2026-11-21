@@ -2281,3 +2281,54 @@ footer .soc a{display:grid;place-items:center;transition:transform .2s ease,back
   font-size:8px; line-height:1; font-weight:800; letter-spacing:-.03em;
   box-shadow:0 1px 4px rgba(20,35,60,.18);
 }
+
+
+/* Identidad visual individual para las mini tarjetas de herramientas */
+.students-view .resource-card {
+  --resource-accent: #8aa9c8;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: 72px;
+  border: 1px solid color-mix(in srgb, var(--resource-accent) 28%, transparent);
+  background:
+    radial-gradient(ellipse at 0% 0%, color-mix(in srgb, var(--resource-accent) 16%, transparent), transparent 68%),
+    linear-gradient(135deg, rgba(16, 39, 56, .98), rgba(7, 27, 41, .98));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.035), 0 5px 16px rgba(0,0,0,.12);
+  transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+.students-view .resource-card::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: 78px;
+  height: 78px;
+  right: -28px;
+  top: -35px;
+  border-radius: 50%;
+  background: var(--resource-accent);
+  opacity: .075;
+  filter: blur(2px);
+}
+.students-view .resource-card:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--resource-accent) 58%, transparent);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.06), 0 9px 22px rgba(0,0,0,.2);
+}
+.students-view .resource-card:nth-child(1) { --resource-accent: #5b9fe0; }
+.students-view .resource-card:nth-child(2) { --resource-accent: #f18a45; }
+.students-view .resource-card:nth-child(3) { --resource-accent: #f2b83f; }
+.students-view .resource-card:nth-child(4) { --resource-accent: #d58b69; }
+.students-view .resource-card:nth-child(5) { --resource-accent: #aab7c9; }
+.students-view .resource-card:nth-child(6) { --resource-accent: #39a9e8; }
+.students-view .resource-card .resource-icon {
+  flex: 0 0 38px;
+  background: color-mix(in srgb, var(--resource-accent) 17%, #102b3b);
+  border: 1px solid color-mix(in srgb, var(--resource-accent) 32%, transparent);
+  box-shadow: inset 0 1px 4px rgba(255,255,255,.07);
+}
+.students-view .resource-card b { color: #eff8ff; }
+@media (prefers-reduced-motion: reduce) {
+  .students-view .resource-card { transition: none; }
+  .students-view .resource-card:hover { transform: none; }
+}
