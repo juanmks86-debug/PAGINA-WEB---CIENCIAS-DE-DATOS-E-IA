@@ -2,13 +2,6 @@ import React, { useState } from 'react'
 import ProjectsSection from './ProjectsSection.jsx'
 import { studentYears, resources, recentNotes, materialsByYear } from '../data.js'
 
-const icons = {
-  rocket: <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M29 5c7 1 12 6 14 14l-9 9-10-4-4-10 9-9Z" /><path d="m20 28-7 7M13 35l-5 5M20 22l-8-1-5 5 10 4M27 29l1 9-5 5-4-10" /><circle cx="32" cy="16" r="3" /></svg>,
-  book: <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M7 9c7-3 13-2 17 2v28c-4-4-10-5-17-2V9ZM41 9c-7-3-13-2-17 2v28c4-4 10-5 17-2V9Z" /></svg>,
-  database: <svg viewBox="0 0 48 48" aria-hidden="true"><ellipse cx="24" cy="10" rx="15" ry="6" /><path d="M9 10v14c0 3 7 6 15 6s15-3 15-6V10M9 24v14c0 3 7 6 15 6s15-3 15-6V24" /></svg>,
-  brain: <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M20 10a7 7 0 0 0-7 7 7 7 0 0 0-2 13 7 7 0 0 0 8 9h5V10a7 7 0 0 0-4 0ZM28 10a7 7 0 0 1 7 7 7 7 0 0 1 2 13 7 7 0 0 1-8 9h-5V10a7 7 0 0 1 4 0Z" /><path d="M16 20h8M14 28h10M32 20h-8M34 28H24" /></svg>,
-}
-
 const yearIllustrations = {
   ingresantes: <svg viewBox="0 0 220 92" role="img" aria-label="Ilustración de libros y aprendizaje inicial"><circle cx="172" cy="24" r="17" fill="currentColor" opacity=".12"/><path d="M55 63c16-7 30-7 43 1v13c-13-8-27-8-43-1V63Zm43 1c13-8 27-8 43-1v13c-16-7-30-7-43 1V64Z" fill="currentColor" opacity=".22"/><path d="M98 64v13M55 63c16-7 30-7 43 1 13-8 27-8 43-1v13c-16-7-30-7-43 1-13-8-27-8-43-1V63Z" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinejoin="round"/><path d="m163 57 5-10 5 10 10 5-10 5-5 10-5-10-10-5 10-5Z" fill="currentColor" opacity=".75"/><path d="m67 49 4-7 4 7 7 4-7 4-4 7-4-7-7-4 7-4Z" fill="currentColor" opacity=".55"/><path d="M30 76h160" stroke="currentColor" strokeWidth="2" opacity=".22" strokeLinecap="round"/></svg>,
   primero: <svg viewBox="0 0 220 92" role="img" aria-label="Ilustración de computadora y programación"><rect x="54" y="13" width="108" height="62" rx="8" fill="currentColor" opacity=".16"/><rect x="61" y="19" width="94" height="48" rx="4" fill="none" stroke="currentColor" strokeWidth="2.5"/><path d="m91 34-10 9 10 9M125 34l10 9-10 9M116 31l-10 25" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/><path d="M43 78h130l-10-8H53l-10 8Z" fill="currentColor" opacity=".45"/><circle cx="178" cy="24" r="12" fill="currentColor" opacity=".13"/><path d="M179 18v12m-6-6h12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><circle cx="35" cy="30" r="5" fill="currentColor" opacity=".55"/></svg>,
