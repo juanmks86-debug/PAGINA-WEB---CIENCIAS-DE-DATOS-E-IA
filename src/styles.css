@@ -2271,3 +2271,13 @@ footer .soc a{display:grid;place-items:center;transition:transform .2s ease,back
 @media (max-width:700px) {
   .students-view .resource-icon svg { width:32px; height:32px; }
 }
+
+/* Siglas superpuestas a los símbolos de las mini tarjetas */
+.students-view .resource-icon { position:relative; }
+.students-view .resource-icon .resource-monogram {
+  display:grid; place-items:center; position:absolute; right:-5px; bottom:-5px;
+  min-width:17px; height:17px; padding:0 3px; border:1.5px solid #fff;
+  border-radius:6px; background:var(--tool-color); color:#fff;
+  font-size:8px; line-height:1; font-weight:800; letter-spacing:-.03em;
+  box-shadow:0 1px 4px rgba(20,35,60,.18);
+}
