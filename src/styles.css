@@ -1455,3 +1455,31 @@ footer .soc a{display:grid;place-items:center;transition:transform .2s ease,back
 .privacy-detail-links{display:flex;flex-wrap:wrap;gap:14px;margin-top:10px}
 .privacy-detail-links a{font-size:.78rem}
 :root[data-theme="dark"] .privacy-detail-section strong{color:#c4e9e8}
+
+
+/* PREVIEW: reveal progresivo seguro. Los elementos solo se ocultan después de que JS los registra. */
+@media (prefers-reduced-motion: no-preference) {
+  .scroll-reveal {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0);
+    transition: opacity .65s cubic-bezier(.2,.7,.25,1), transform .65s cubic-bezier(.2,.7,.25,1);
+  }
+  .scroll-reveal.scroll-visible {
+    opacity: 1;
+    transform: translate3d(0,0,0);
+  }
+  .scroll-reveal:nth-child(2) { transition-delay: .05s; }
+  .scroll-reveal:nth-child(3) { transition-delay: .1s; }
+  .scroll-reveal:nth-child(4) { transition-delay: .15s; }
+  @media (hover:hover) and (pointer:fine) {
+    .year-card,.resource-card,.pj-card,.evc,.alb {
+      transition-property: opacity, transform, box-shadow;
+    }
+    .year-card:hover,.resource-card:hover,.pj-card:hover,.evc:hover,.alb:hover {
+      transform: translate3d(0,-4px,0);
+    }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scroll-reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+}

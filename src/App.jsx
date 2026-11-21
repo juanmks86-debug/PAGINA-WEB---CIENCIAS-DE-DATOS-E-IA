@@ -147,6 +147,76 @@ function useReveal() {
   }, [])
 }
 
+
+function useScrollReveal() {
+  useEffect(() => {
+    const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+    if (reduce || !('IntersectionObserver' in window)) return undefined
+
+    const selector = [
+      '#contenido-principal > .hero',
+      '#contenido-principal > .wrap > .tabs',
+      '#contenido-principal .card',
+      '#contenido-principal .pdf',
+      '#contenido-principal .ev',
+      '#contenido-principal .cc',
+      '#contenido-principal .nw-card',
+      '.students-hero',
+      '.students-shell > .student-heading',
+      '.year-card',
+      '.resource-card',
+      '.recent-panel',
+      '.note-row',
+      '.materials-browser',
+      '.materials-group',
+      '.ev-page-head',
+      '.evc',
+      '.album-view',
+      '.alb-open-head',
+      '.ev-page .alb',
+      '.ev-page .gal figure',
+      '.pj-card'
+    ].join(',')
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return
+        entry.target.classList.add('scroll-visible')
+        observer.unobserve(entry.target)
+      })
+    }, { threshold: 0.08, rootMargin: '0px 0px -24px 0px' })
+
+    const observed = new WeakSet()
+    const observe = (scope) => {
+      if (scope.matches?.(selector) && !observed.has(scope)) {
+        observed.add(scope)
+        scope.classList.add('scroll-reveal')
+        observer.observe(scope)
+      }
+      scope.querySelectorAll?.(selector).forEach((element) => {
+        if (observed.has(element)) return
+        observed.add(element)
+        element.classList.add('scroll-reveal')
+        observer.observe(element)
+      })
+    }
+
+    observe(document)
+    const root = document.getElementById('contenido-principal') || document.body
+    const mutations = new MutationObserver((records) => {
+      records.forEach((record) => record.addedNodes.forEach((node) => {
+        if (node.nodeType === 1) observe(node)
+      }))
+    })
+    mutations.observe(root, { childList: true, subtree: true })
+
+    return () => {
+      observer.disconnect()
+      mutations.disconnect()
+    }
+  }, [])
+}
+
 function Counter({ to, suffix = '' }) {
   const ref = useRef(null)
   const [n, setN] = useState(0)
@@ -833,6 +903,7 @@ export default function App() {
     try { localStorage.setItem('tema', theme) } catch (e) { /* sin almacenamiento */ }
   }, [theme])
   useReveal()
+  useScrollReveal()
 
   const act = useActive()
   useHeroFx()
