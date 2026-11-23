@@ -9,9 +9,42 @@ export const tabs = [
 ]
 
 export const internships = [
-  ['Análisis de datos en empresas', 'Practica con bases de datos reales y tableros de seguimiento.', '#2b3c4a', 'chart'],
-  ['Laboratorios de investigación', 'Colabora en proyectos con equipos científicos y docentes.', '#3a4f5f', 'flask'],
-  ['Proyectos de inteligencia artificial', 'Entrena y evalúa modelos en proyectos de aplicación.', '#51697c', 'net'],
+  {
+    title: 'Oportunidades de pasantías',
+    description: 'Convocatorias, requisitos y orientación para postularte.',
+    color: '#2b3c4a',
+    icon: 'chart',
+    eyebrow: 'POSTULACIONES',
+    intro: 'Encontrá oportunidades para dar tus primeros pasos en el ámbito laboral.',
+    sections: [
+      { title: 'Información de cada convocatoria', items: ['Organización y área de trabajo', 'Requisitos y documentación necesaria', 'Modalidad, duración y carga horaria', 'Fecha límite y medio de postulación'] },
+      { title: 'Estado actual', items: ['En este momento no hay convocatorias publicadas en esta sección. Cuando el instituto comparta nuevas oportunidades, se agregarán aquí con sus fechas y enlaces oficiales.'] },
+    ],
+  },
+  {
+    title: 'Prácticas y proyectos',
+    description: 'Experiencias de investigación, proyectos institucionales y prácticas profesionalizantes.',
+    color: '#3a4f5f',
+    icon: 'flask',
+    eyebrow: 'EXPERIENCIAS',
+    intro: 'Conocé cómo llevar los conocimientos de la carrera a experiencias concretas.',
+    sections: [
+      { title: 'Qué vas a encontrar', items: ['Proyectos institucionales de datos e inteligencia artificial', 'Experiencias de investigación con docentes', 'Prácticas profesionalizantes y trabajo en equipo', 'Resultados, herramientas utilizadas y aprendizajes'] },
+      { title: 'Cómo participar', items: ['Consultá con docentes o referentes de la carrera qué proyectos tienen espacios disponibles y cuáles son sus requisitos de participación.'] },
+    ],
+  },
+  {
+    title: 'Prepará tu perfil profesional',
+    description: 'Orientación para armar el CV, portfolio, GitHub y prepararte para una entrevista.',
+    color: '#51697c',
+    icon: 'net',
+    eyebrow: 'DESARROLLO PROFESIONAL',
+    intro: 'Organizá tus conocimientos y proyectos para presentarte con confianza ante una oportunidad laboral.',
+    sections: [
+      { title: 'Tu presentación profesional', items: ['CV claro y actualizado, adaptado al puesto', 'Portfolio con proyectos, objetivos y resultados', 'Perfil de GitHub ordenado y con README', 'LinkedIn y canales de contacto profesional'] },
+      { title: 'Preparación para entrevistas', items: ['Practicá cómo explicar tus proyectos y decisiones técnicas', 'Prepará ejemplos de trabajo en equipo y resolución de problemas', 'Revisá los requisitos de la búsqueda y prepará preguntas'] },
+    ],
+  },
 ]
 
 export const events = {

@@ -154,6 +154,93 @@ function Tabs() {
   )
 }
 
+function Internships() {
+  const [selected, setSelected] = useState(null)
+  const triggerRef = useRef(null)
+  const dialogRef = useRef(null)
+
+  const closeDetails = () => {
+    setSelected(null)
+    requestAnimationFrame(() => triggerRef.current?.focus())
+  }
+
+  useEffect(() => {
+    if (selected === null) return undefined
+    const previousOverflow = document.body.style.overflow
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') closeDetails()
+    }
+    document.body.style.overflow = 'hidden'
+    window.addEventListener('keydown', onKeyDown)
+    requestAnimationFrame(() => dialogRef.current?.querySelector('button')?.focus())
+    return () => {
+      document.body.style.overflow = previousOverflow
+      window.removeEventListener('keydown', onKeyDown)
+    }
+  }, [selected])
+
+  const current = selected === null ? null : internships[selected]
+
+  return (
+    <>
+      <section id="pasantias" className="reveal" aria-labelledby="internships-title">
+        <h3 id="internships-title">Pasantías y desarrollo profesional</h3>
+        <div className="internships-track">
+          {internships.map((item, index) => (
+            <button
+              type="button"
+              className="card internship-card internship-trigger"
+              key={item.title}
+              onClick={(event) => {
+                triggerRef.current = event.currentTarget
+                setSelected(index)
+              }}
+              aria-haspopup="dialog"
+              aria-expanded={selected === index}
+            >
+              <span className="art" style={{ background: item.color }}>{icons[item.icon]}</span>
+              <span className="t">
+                <strong>{item.title}</strong>
+                <span>{item.description}</span>
+                <span className="internship-more">Explorar contenido <span aria-hidden="true">→</span></span>
+              </span>
+            </button>
+          ))}
+        </div>
+      </section>
+
+      {current && (
+        <div className="career-modal-bg internship-modal-bg" onClick={closeDetails}>
+          <div
+            ref={dialogRef}
+            className={`career-modal internship-modal internship-modal-${selected + 1}`}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="internship-modal-title"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <button type="button" className="career-modal-close" aria-label="Cerrar" onClick={closeDetails}>×</button>
+            <span className="internship-eyebrow">{current.eyebrow}</span>
+            <div className="career-modal-heading">
+              <span className="internship-modal-icon" style={{ background: current.color }}>{icons[current.icon]}</span>
+              <h4 id="internship-modal-title">{current.title}</h4>
+            </div>
+            <p className="internship-modal-intro">{current.intro}</p>
+            <div className="internship-modal-sections">
+              {current.sections.map((section) => (
+                <section className="internship-modal-section" key={section.title}>
+                  <h5>{section.title}</h5>
+                  <ul>{section.items.map((item) => <li key={item}>{item}</li>)}</ul>
+                </section>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  )
+}
+
 function Linkify({ text }) {
   return text.split(/(https?:\/\/[^\s]+)/g).map((part, i) =>
     i % 2 ? <a key={i} href={part} target="_blank" rel="noopener noreferrer">{part}</a> : part
@@ -1083,17 +1170,7 @@ export default function App() {
           <Stats />
         </section>
 
-        <section id="pasantias" className="reveal">
-          <h3>Pasantías</h3>
-          <div className="internships-track">
-            {internships.map(([title, text, bg, icon]) => (
-              <article className="card internship-card" key={title}>
-                <div className="art" style={{ background: bg }}>{icons[icon]}</div>
-                <div className="t"><h4>{title}</h4><p>{text}</p></div>
-              </article>
-            ))}
-          </div>
-        </section>
+        <Internships />
 
         <Noticias />
 
