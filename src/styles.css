@@ -2963,3 +2963,40 @@ html { font-size: calc(100% * var(--a11y-font-scale, 1)); }
     transition: none !important;
   }
 }
+
+
+/* Modales de equipos: ancho ajustado a la cantidad real de tarjetas */
+.tm-infra,
+.tm-press,
+.tm-data {
+  width: min(100%, 430px);
+  max-width: 430px;
+}
+.tm-dev {
+  width: min(100%, 620px);
+  max-width: 620px;
+}
+.tm-infra .tm-grid,
+.tm-press .tm-grid,
+.tm-data .tm-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.tm-dev .tm-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+@media (max-width: 560px) {
+  .tm-infra,
+  .tm-press,
+  .tm-data,
+  .tm-dev {
+    width: 100%;
+    max-width: 430px;
+    max-height: 88vh;
+  }
+  .tm-infra .tm-grid,
+  .tm-press .tm-grid,
+  .tm-data .tm-grid,
+  .tm-dev .tm-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
