@@ -2448,3 +2448,30 @@ footer .soc a{display:grid;place-items:center;transition:transform .2s ease,back
   .students-view .resource-card .resource-icon,
   .students-view .resource-card .resource-icon svg { transition: none; animation: none; }
 }
+
+
+/* Alumnos: botones del hero más compactos en pantallas móviles */
+@media (max-width: 700px) {
+  .students-view .students-hero .student-actions {
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .students-view .students-hero .student-actions a.btn,
+  .students-view .students-hero .student-actions a.ghost-btn {
+    width: auto;
+    max-width: 100%;
+    min-height: 42px;
+    padding: 10px 16px;
+    font-size: .88rem;
+    line-height: 1.2;
+    box-sizing: border-box;
+  }
+}
+@media (max-width: 380px) {
+  .students-view .students-hero .student-actions a.btn,
+  .students-view .students-hero .student-actions a.ghost-btn {
+    min-height: 40px;
+    padding: 9px 13px;
+    font-size: .82rem;
+  }
+}
