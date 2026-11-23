@@ -2475,3 +2475,79 @@ footer .soc a{display:grid;place-items:center;transition:transform .2s ease,back
     font-size: .82rem;
   }
 }
+
+
+/* Corrección definitiva del hero fotográfico de Alumnos */
+.students-view .students-hero {
+  isolation: isolate;
+  overflow: hidden;
+  background: #061e2b;
+}
+.students-view .students-hero-photo {
+  z-index: 0;
+  opacity: 1;
+}
+.students-view .students-hero-photo img {
+  opacity: .94;
+  object-position: center 48%;
+  filter: saturate(1.04) contrast(1.04);
+}
+.students-view .students-hero-photo::after {
+  background:
+    linear-gradient(90deg,
+      rgba(4, 25, 35, .76) 0%,
+      rgba(4, 25, 35, .62) 27%,
+      rgba(4, 25, 35, .24) 62%,
+      rgba(4, 25, 35, .16) 100%),
+    linear-gradient(0deg, rgba(4, 25, 35, .16), transparent 55%);
+}
+.students-view .students-network {
+  z-index: 1;
+  opacity: .2;
+  pointer-events: none;
+}
+.students-view .students-hero-inner,
+.students-view .hero-slogan {
+  z-index: 2;
+}
+.students-view .hero-slogan {
+  text-shadow: 0 2px 14px rgba(0, 0, 0, .72);
+}
+:root[data-theme="light"] .students-view .students-hero {
+  background: #dcebf0;
+}
+:root[data-theme="light"] .students-view .students-hero-photo img {
+  opacity: .9;
+}
+:root[data-theme="light"] .students-view .students-hero-photo::after {
+  background:
+    linear-gradient(90deg,
+      rgba(239, 248, 250, .88) 0%,
+      rgba(239, 248, 250, .76) 31%,
+      rgba(239, 248, 250, .28) 68%,
+      rgba(239, 248, 250, .12) 100%),
+    linear-gradient(0deg, rgba(222, 240, 245, .18), transparent 58%);
+}
+@media (max-width: 700px) {
+  .students-view .students-hero {
+    min-height: 390px;
+  }
+  .students-view .students-hero-photo img {
+    object-position: center 48%;
+  }
+  .students-view .students-hero-photo::after {
+    background:
+      linear-gradient(90deg, rgba(4, 25, 35, .72), rgba(4, 25, 35, .38)),
+      linear-gradient(0deg, rgba(4, 25, 35, .28), transparent 62%);
+  }
+  :root[data-theme="light"] .students-view .students-hero-photo::after {
+    background:
+      linear-gradient(90deg, rgba(239, 248, 250, .86), rgba(239, 248, 250, .58)),
+      linear-gradient(0deg, rgba(222, 240, 245, .2), transparent 62%);
+  }
+}
+@media (max-width: 380px) {
+  .students-view .students-hero-photo img {
+    object-position: 52% 48%;
+  }
+}
