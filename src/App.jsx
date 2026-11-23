@@ -895,7 +895,7 @@ const indice = [
   { t: 'Calendario académico', w: 'Eventos', href: '/eventos#calendario' },
   { t: 'Galería institucional', w: 'Eventos', href: '/eventos#galeria', x: 'fotos álbumes' },
   ...tabs.map(([t, , items]) => ({ t, w: 'Perfil', href: '#perfil', x: items.join(' ') })),
-  ...internships.map(([t, d]) => ({ t, w: 'Prácticas', href: '#pasantias', x: d })),
+  ...internships.map((item) => ({ t: item.title, w: 'Prácticas', href: '#pasantias', x: item.description })),
   ...noticias.map((n) => ({ t: n.titulo, w: 'Noticias IA', href: '#noticias', x: n.fuente })),
   ...faqs.map(([q, a]) => ({ t: q, w: 'Preguntas frecuentes', href: '#faq', x: a })),
   ...materias.flatMap(([anio, lista]) => lista.map((m) => ({ t: m, w: `Plan de estudio · ${anio}.º año`, href: '#plan' }))),
