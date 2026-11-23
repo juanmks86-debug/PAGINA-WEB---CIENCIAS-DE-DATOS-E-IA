@@ -789,9 +789,9 @@ function Faq() {
   )
 }
 
-const links = [['Inicio', '#concepto'], ['Perfil', '#perfil'], ['Prácticas', '#pasantias'], ['Plan de estudio', '#plan'], ['Eventos', '/eventos'], ['Noticias IA', '#noticias'], ['Preguntas', '#faq'], ['Alumnos', '/alumnos'], ['Contacto', '#contacto']]
+const links = [['Inicio', '#concepto'], ['Perfil', '#perfil'], ['Prácticas', '#pasantias'], ['Plan de estudio', '#plan'], ['Eventos', '/eventos'], ['Noticias IA', '#noticias'], ['Preguntas', '#faq'], ['Alumnos', '/alumnos'], ['NEX', '#nex'], ['Contacto', '#contacto']]
 // Orden real de aparición en la página (no el orden visual del menú).
-const ids = ['concepto', 'perfil', 'pasantias', 'noticias', 'plan', 'faq', 'contacto']
+const ids = ['concepto', 'perfil', 'pasantias', 'noticias', 'plan', 'faq', 'nex', 'contacto']
 
 // Materias del plan de estudio (Res. 3098-E), para el buscador
 const materias = [
@@ -1131,6 +1131,37 @@ export default function App() {
           </section>
           <section id="faq" className="reveal"><h3>Preguntas frecuentes</h3><Faq /></section>
         </div>
+
+        <section id="nex" className="nex-section reveal" aria-labelledby="nex-title">
+          <div className="nex-card">
+            <div className="nex-copy">
+              <span className="nex-kicker"><span className="nex-status-dot" /> PROYECTO INSTITUCIONAL · EN DESARROLLO</span>
+              <h3 id="nex-title">NEX <span>Nexo Educativo</span></h3>
+              <h4>La gestión académica, más cerca.</h4>
+              <p>Una propuesta para centralizar progresivamente la información académica del IES N.º 6 y facilitar los trámites de estudiantes, docentes y Secretaría Académica.</p>
+              <div className="nex-tags"><span>Estudiantes</span><span>Materias</span><span>Trámites</span><span>Gestión académica</span></div>
+              <a className="nex-cta" href="#nex" aria-label="NEX, proyecto institucional en desarrollo">Conocé el proyecto <span aria-hidden="true">→</span></a>
+              <small className="nex-disclaimer">Propuesta en etapa de presentación. No recibe inscripciones ni administra calificaciones oficiales.</small>
+            </div>
+            <div className="nex-visual" aria-hidden="true">
+              <div className="nex-orbit nex-orbit-one" />
+              <div className="nex-orbit nex-orbit-two" />
+              <div className="nex-window">
+                <div className="nex-window-top"><i /><i /><i /><span>IES N.º 6 / NEX</span></div>
+                <div className="nex-window-body">
+                  <div className="nex-mini-sidebar"><b>N</b><i /><i /><i /><i /></div>
+                  <div className="nex-mini-content">
+                    <span>PORTAL ACADÉMICO</span><b>Hola, estudiante</b>
+                    <div className="nex-mini-stats"><i /><i /><i /></div>
+                    <div className="nex-mini-lines"><i /><i /><i /></div>
+                  </div>
+                </div>
+              </div>
+              <div className="nex-float nex-float-student">♙ <span>Estudiantes</span></div>
+              <div className="nex-float nex-float-book">▤ <span>Materias</span></div>
+            </div>
+          </div>
+        </section>
 
         <section id="contacto" className="reveal">
           <h3>Contacto</h3>
