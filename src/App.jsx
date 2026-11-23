@@ -179,12 +179,27 @@ function Internships() {
     }
   }, [selected])
 
+  const trapFocus = (event) => {
+    if (event.key !== 'Tab') return
+    const focusable = Array.from(dialogRef.current?.querySelectorAll('button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])') || [])
+    if (!focusable.length) return
+    const first = focusable[0]
+    const last = focusable[focusable.length - 1]
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault()
+      last.focus()
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault()
+      first.focus()
+    }
+  }
+
   const current = selected === null ? null : internships[selected]
 
   return (
     <>
       <section id="pasantias" className="reveal" aria-labelledby="internships-title">
-        <h3 id="internships-title">Pasantías y desarrollo profesional</h3>
+        <h3 id="internships-title">Experiencias y desarrollo profesional</h3>
         <div className="internships-track">
           {internships.map((item, index) => (
             <button
@@ -218,6 +233,7 @@ function Internships() {
             aria-modal="true"
             aria-labelledby="internship-modal-title"
             onClick={(event) => event.stopPropagation()}
+            onKeyDown={trapFocus}
           >
             <button type="button" className="career-modal-close" aria-label="Cerrar" onClick={closeDetails}>×</button>
             <span className="internship-eyebrow">{current.eyebrow}</span>
@@ -226,13 +242,24 @@ function Internships() {
               <h4 id="internship-modal-title">{current.title}</h4>
             </div>
             <p className="internship-modal-intro">{current.intro}</p>
-            <div className="internship-modal-sections">
-              {current.sections.map((section) => (
-                <section className="internship-modal-section" key={section.title}>
-                  <h5>{section.title}</h5>
-                  <ul>{section.items.map((item) => <li key={item}>{item}</li>)}</ul>
-                </section>
+            <div className="internship-modal-visual" aria-hidden="true">
+              <span className="internship-modal-visual-mark">{icons[current.icon]}</span>
+              <span className="internship-modal-visual-caption">IES N.º 6 · Ciencia de Datos e IA</span>
+            </div>
+            <div className="internship-modal-points">
+              {current.sections.map((section, index) => (
+                <div className="internship-modal-point" key={section.title}>
+                  <span className="internship-modal-point-icon"><TabIcon name={section.icon} size={22} /></span>
+                  <span className="internship-modal-point-copy">
+                    <strong>{section.title}</strong>
+                    <span>{section.description}</span>
+                  </span>
+                </div>
               ))}
+            </div>
+            <div className="internship-modal-footer">
+              <strong>{current.footerTitle}</strong>
+              <p>{current.footerText}</p>
             </div>
           </div>
         </div>

@@ -2637,3 +2637,85 @@ html { font-size: calc(100% * var(--a11y-font-scale, 1)); }
 @media (prefers-reduced-motion: reduce) {
   #pasantias .internship-trigger { transition: none; }
 }
+
+
+/* Modales de experiencias y desarrollo profesional: diseño compacto y diferenciado */
+.internship-modal {
+  width: min(100%, 590px);
+  max-height: min(88vh, 790px);
+  overflow-y: auto;
+}
+.internship-eyebrow {
+  display: inline-block;
+  margin-bottom: 10px;
+  color: var(--teal);
+  font-size: .68rem;
+  font-weight: 850;
+  letter-spacing: .12em;
+}
+.internship-modal-icon {
+  display: grid;
+  flex: 0 0 52px;
+  width: 52px;
+  height: 48px;
+  place-items: center;
+  border-radius: 13px;
+}
+.internship-modal-icon svg { width: 43px; height: 36px; }
+.internship-modal-intro {
+  margin: 14px 0 16px;
+  color: var(--muted);
+  line-height: 1.55;
+}
+.internship-modal-visual {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 104px;
+  margin: 0 0 17px;
+  padding: 14px 20px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--teal) 22%, var(--line));
+  border-radius: 15px;
+  background:
+    radial-gradient(circle at 78% 25%, color-mix(in srgb, var(--teal) 24%, transparent), transparent 36%),
+    linear-gradient(120deg, color-mix(in srgb, var(--teal) 11%, var(--surface)), var(--surface));
+}
+.internship-modal-visual::after {
+  content: "";
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  right: 12%;
+  top: -95px;
+  border: 1px solid color-mix(in srgb, var(--teal) 25%, transparent);
+  border-radius: 50%;
+  box-shadow: 0 0 0 18px color-mix(in srgb, var(--teal) 5%, transparent), 0 0 0 38px color-mix(in srgb, var(--teal) 4%, transparent);
+}
+.internship-modal-visual-mark { position: relative; z-index: 1; display: grid; place-items: center; width: 76px; height: 68px; border-radius: 15px; background: #19364a; }
+.internship-modal-visual-mark svg { width: 68px; height: 56px; }
+.internship-modal-visual-caption { position: relative; z-index: 1; color: var(--muted); font-size: .7rem; font-weight: 750; letter-spacing: .06em; }
+.internship-modal-points { display: grid; gap: 0; }
+.internship-modal-point { display: flex; align-items: center; gap: 13px; padding: 12px 2px; border-bottom: 1px solid var(--line); }
+.internship-modal-point:last-child { border-bottom: 0; }
+.internship-modal-point-icon { display: grid; flex: 0 0 40px; width: 40px; height: 40px; place-items: center; border-radius: 12px; color: var(--teal); background: color-mix(in srgb, var(--teal) 11%, var(--surface)); }
+.internship-modal-point-copy { display: grid; gap: 3px; }
+.internship-modal-point-copy strong { color: var(--ink); font-size: .9rem; }
+.internship-modal-point-copy > span { color: var(--muted); font-size: .82rem; line-height: 1.45; }
+.internship-modal-footer { margin-top: 13px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 13px; background: color-mix(in srgb, var(--bg) 72%, var(--surface)); }
+.internship-modal-footer strong { color: var(--ink); font-size: .9rem; }
+.internship-modal-footer p { margin: 5px 0 0; color: var(--muted); font-size: .82rem; line-height: 1.5; }
+#pasantias .internship-trigger:focus-visible { outline: 3px solid var(--teal); outline-offset: 4px; }
+@media (max-width: 700px) {
+  .internship-modal { padding: 23px 17px; max-height: 90vh; }
+  .internship-modal-visual { min-height: 88px; padding: 12px 14px; }
+  .internship-modal-visual-mark { width: 64px; height: 58px; }
+  .internship-modal-visual-mark svg { width: 57px; height: 48px; }
+  .internship-modal-visual-caption { max-width: 125px; text-align: right; font-size: .62rem; }
+  .internship-modal-point { gap: 10px; padding: 11px 0; }
+  .internship-modal-point-icon { flex-basis: 36px; width: 36px; height: 36px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #pasantias .internship-trigger { transition: none; }
+}
