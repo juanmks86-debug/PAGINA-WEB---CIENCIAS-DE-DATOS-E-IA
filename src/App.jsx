@@ -41,6 +41,10 @@ const tabIcons = {
   chart: <><path d="M4 19V5M4 19h17M8 15l4-4 3 2 5-7" /></>,
   code: <><path d="m8 8-4 4 4 4M16 8l4 4-4 4M14 5l-4 14" /></>,
   messages: <><path d="M21 11.5a7.5 7.5 0 0 1-8 7.5 8.5 8.5 0 0 1-4-.9L3 20l1.9-4A7.1 7.1 0 0 1 3 11.5 7.5 7.5 0 0 1 11 4h2a7.5 7.5 0 0 1 8 7.5Z" /><path d="M8 11h8M8 14h5" /></>,
+  calendar: <><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M16 3v4M8 3v4M3 10h18M8 14h3M8 17h7" /></>,
+  book: <><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 0 4 22z" /><path d="M4 5.5v14A2.5 2.5 0 0 1 6.5 17H20M9 7h7M9 11h7" /></>,
+  clock: <><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3.5 2" /></>,
+  users: <><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M10 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM20 8a3 3 0 0 1-2 2.83M18 15a4 4 0 0 1 3 3.87V21" /></>,
 }
 
 function TabIcon({ name, size = 40 }) {
@@ -413,15 +417,79 @@ function Counter({ to, suffix = '' }) {
   return <><b ref={ref} aria-hidden="true">{n.toLocaleString('es-AR')}{suffix}</b><span className="sr">{to.toLocaleString('es-AR')}{suffix}</span></>
 }
 
+const statDetails = [
+  {
+    icon: 'calendar',
+    eyebrow: 'RECORRIDO ACADÉMICO',
+    detail: 'La duración prevista de la Tecnicatura Superior es de tres años.',
+    note: 'Duración de la formación.'
+  },
+  {
+    icon: 'book',
+    eyebrow: 'PLAN DE ESTUDIOS',
+    detail: 'El plan de estudios está organizado en espacios curriculares distribuidos a lo largo de la carrera.',
+    note: 'Materias anuales informadas en el perfil.'
+  },
+  {
+    icon: 'clock',
+    eyebrow: 'DEDICACIÓN ACADÉMICA',
+    detail: 'La carga horaria total informada para la carrera es de 2.912 horas cátedra.',
+    note: 'Carga horaria total.'
+  },
+  {
+    icon: 'users',
+    eyebrow: 'CURSADO',
+    detail: 'La modalidad de cursado de la carrera es presencial.',
+    note: 'Modalidad de cursado.'
+  },
+]
+
 function Stats() {
+  const [selected, setSelected] = useState(null)
+
   return (
-    <div className="stats reveal">
-      {stats.map(([n, suf, label]) => (
-        <div className="stat" key={label}>
-          <Counter to={n} suffix={suf} />
-          <span className="l">{label}</span>
+    <div className="career-stats-experience">
+      <div className="career-stats-grid">
+        {stats.map(([n, suf, label], index) => {
+          const detail = statDetails[index]
+          const active = selected === index
+          return (
+            <button
+              type="button"
+              className={`career-stat-card career-stat-card-${index + 1}${active ? ' is-selected' : ''}`}
+              key={label}
+              onClick={() => setSelected(active ? null : index)}
+              aria-expanded={active}
+              aria-controls="career-stat-detail"
+            >
+              <span className="career-stat-art" aria-hidden="true">
+                <TabIcon name={detail.icon} size={34} />
+                <span className="career-stat-orbit" />
+              </span>
+              <span className="career-stat-number">
+                {n.toLocaleString('es-AR')}{suf}
+              </span>
+              <span className="career-stat-label">{label}</span>
+              <span className="career-stat-action">
+                {active ? 'Ocultar información' : 'Ver información'}
+                <span aria-hidden="true">{active ? '−' : '↗'}</span>
+              </span>
+            </button>
+          )
+        })}
+      </div>
+      {selected !== null && (
+        <div className={`career-stat-detail career-stat-detail-${selected + 1}`} id="career-stat-detail" role="region" aria-live="polite" aria-labelledby="career-stat-detail-title">
+          <span className="career-stat-detail-icon" aria-hidden="true"><TabIcon name={statDetails[selected].icon} size={25} /></span>
+          <div className="career-stat-detail-copy">
+            <span className="career-stat-eyebrow">{statDetails[selected].eyebrow}</span>
+            <h4 id="career-stat-detail-title">{stats[selected][2]}</h4>
+            <p>{statDetails[selected].detail}</p>
+            <small>{statDetails[selected].note}</small>
+          </div>
+          <button type="button" className="career-stat-detail-close" onClick={() => setSelected(null)} aria-label="Cerrar información">×</button>
         </div>
-      ))}
+      )}
     </div>
   )
 }
