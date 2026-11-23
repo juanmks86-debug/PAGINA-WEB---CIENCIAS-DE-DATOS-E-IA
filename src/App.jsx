@@ -1164,7 +1164,7 @@ function HeroBadge() {
           )
         })}
       </svg>
-      <img className="hb-img" src="/logo-carrera.png" alt="Logo oficial de la Tecnicatura Superior en Ciencia de Datos e Inteligencia Artificial, IES 6 sede Perico" width="248" height="248" />
+      <img className="hb-img" src="/logo-carrera-hero.png" alt="Logo oficial de la Tecnicatura Superior en Ciencia de Datos e Inteligencia Artificial, IES 6 sede Perico" width="248" height="248" />
     </div>
 
   )
