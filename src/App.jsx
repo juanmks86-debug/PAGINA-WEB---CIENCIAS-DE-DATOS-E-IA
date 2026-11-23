@@ -419,26 +419,26 @@ function Counter({ to, suffix = '' }) {
 
 const statDetails = [
   {
-    icon: 'calendar',
     eyebrow: 'RECORRIDO ACADÉMICO',
+    art: <svg viewBox="0 0 120 84" role="img" aria-label="Ilustración de calendario"><rect x="19" y="17" width="72" height="57" rx="9" fill="#DCEAFF" stroke="#3975bd" strokeWidth="2.5"/><path d="M19 31h72" stroke="#3975bd" strokeWidth="3"/><path d="M36 11v13M74 11v13" stroke="#3975bd" strokeWidth="5" strokeLinecap="round"/><path d="M34 43h9m8 0h9m8 0h9M34 56h9m8 0h9" stroke="#3975bd" strokeWidth="4" strokeLinecap="round"/><circle cx="91" cy="61" r="17" fill="#A9D0FF" stroke="#3975bd" strokeWidth="2.5"/><path d="m83 61 6 6 11-13" fill="none" stroke="#245D9D" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"/></svg>,
     detail: 'La duración prevista de la Tecnicatura Superior es de tres años.',
     note: 'Duración de la formación.'
   },
   {
-    icon: 'book',
     eyebrow: 'PLAN DE ESTUDIOS',
+    art: <svg viewBox="0 0 120 84" role="img" aria-label="Ilustración de libros"><path d="M17 58 73 43l9 17-56 16z" fill="#B9E5CE" stroke="#25845b" strokeWidth="2.5"/><path d="m25 42 54-18 8 18-54 19z" fill="#E5F7EC" stroke="#25845b" strokeWidth="2.5"/><path d="m33 28 44-17 8 16-44 18z" fill="#8ED2AD" stroke="#25845b" strokeWidth="2.5"/><path d="m39 28 31-12" stroke="#25845b" strokeWidth="2"/><path d="M83 55h20v21H83z" fill="#D0EBDD" stroke="#25845b" strokeWidth="2.5"/><path d="M88 62h10M88 68h7" stroke="#25845b" strokeWidth="2" strokeLinecap="round"/></svg>,
     detail: 'El plan de estudios está organizado en espacios curriculares distribuidos a lo largo de la carrera.',
     note: 'Materias anuales informadas en el perfil.'
   },
   {
-    icon: 'clock',
     eyebrow: 'DEDICACIÓN ACADÉMICA',
+    art: <svg viewBox="0 0 120 84" role="img" aria-label="Ilustración de reloj"><circle cx="58" cy="43" r="31" fill="#FFE6C8" stroke="#BD762B" strokeWidth="3"/><circle cx="58" cy="43" r="23" fill="#FFF7EC" stroke="#E2A45F" strokeWidth="2"/><path d="M58 27v17l13 8" fill="none" stroke="#BD762B" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/><path d="M58 7v6M94 43h-6M58 79v-6M22 43h6" stroke="#BD762B" strokeWidth="3" strokeLinecap="round"/><path d="m88 15 7 1-1 7" fill="none" stroke="#BD762B" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>,
     detail: 'La carga horaria total informada para la carrera es de 2.912 horas cátedra.',
     note: 'Carga horaria total.'
   },
   {
-    icon: 'users',
     eyebrow: 'CURSADO',
+    art: <svg viewBox="0 0 120 84" role="img" aria-label="Ilustración de aula"><rect x="12" y="9" width="96" height="48" rx="5" fill="#EEE5FC" stroke="#8054bd" strokeWidth="2.5"/><path d="M20 17h80v31H20z" fill="#FAF7FF"/><path d="M35 30h19m-19 8h31" stroke="#A98AD7" strokeWidth="3" strokeLinecap="round"/><circle cx="78" cy="31" r="7" fill="#D6C4F3"/><path d="M58 57v9M43 67h31" stroke="#8054bd" strokeWidth="3" strokeLinecap="round"/><circle cx="30" cy="69" r="7" fill="#B99CE5"/><circle cx="59" cy="69" r="7" fill="#D6C4F3"/><circle cx="88" cy="69" r="7" fill="#B99CE5"/></svg>,
     detail: 'La modalidad de cursado de la carrera es presencial.',
     note: 'Modalidad de cursado.'
   },
@@ -463,8 +463,7 @@ function Stats() {
               aria-controls="career-stat-detail"
             >
               <span className="career-stat-art" aria-hidden="true">
-                <TabIcon name={detail.icon} size={34} />
-                <span className="career-stat-orbit" />
+                {detail.art}
               </span>
               <span className="career-stat-number">
                 {n.toLocaleString('es-AR')}{suf}
@@ -480,7 +479,7 @@ function Stats() {
       </div>
       {selected !== null && (
         <div className={`career-stat-detail career-stat-detail-${selected + 1}`} id="career-stat-detail" role="region" aria-live="polite" aria-labelledby="career-stat-detail-title">
-          <span className="career-stat-detail-icon" aria-hidden="true"><TabIcon name={statDetails[selected].icon} size={25} /></span>
+          <span className="career-stat-detail-icon" aria-hidden="true">{statDetails[selected].art}</span>
           <div className="career-stat-detail-copy">
             <span className="career-stat-eyebrow">{statDetails[selected].eyebrow}</span>
             <h4 id="career-stat-detail-title">{stats[selected][2]}</h4>
