@@ -444,6 +444,32 @@ const statDetails = [
   },
 ]
 
+function AnimatedStatNumber({ value, suffix = '' }) {
+  const [display, setDisplay] = useState(0)
+
+  useEffect(() => {
+    const target = Number(value) || 0
+    const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+    if (reduceMotion) {
+      setDisplay(target)
+      return undefined
+    }
+    let frame
+    const start = performance.now()
+    const duration = 1050
+    const tick = (now) => {
+      const progress = Math.min((now - start) / duration, 1)
+      const eased = 1 - Math.pow(1 - progress, 3)
+      setDisplay(Math.round(target * eased))
+      if (progress < 1) frame = requestAnimationFrame(tick)
+    }
+    frame = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(frame)
+  }, [value])
+
+  return <>{display.toLocaleString('es-AR')}{suffix}</>
+}
+
 function Stats() {
   const [selected, setSelected] = useState(null)
 
@@ -464,7 +490,7 @@ function Stats() {
             >
               <span className="career-stat-art" aria-hidden="true">{detail.art}</span>
               <span className="career-stat-content">
-                <span className="career-stat-number">{n.toLocaleString('es-AR')}{suf}</span>
+                <span className="career-stat-number"><AnimatedStatNumber value={n} suffix={suf} /></span>
                 <span className="career-stat-label">{label}</span>
               </span>
               <span className="career-stat-action" aria-hidden="true">{active ? '−' : '+'}</span>
