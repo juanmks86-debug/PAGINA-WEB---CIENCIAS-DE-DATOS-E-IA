@@ -462,17 +462,12 @@ function Stats() {
               aria-expanded={active}
               aria-controls="career-stat-detail"
             >
-              <span className="career-stat-art" aria-hidden="true">
-                {detail.art}
+              <span className="career-stat-art" aria-hidden="true">{detail.art}</span>
+              <span className="career-stat-content">
+                <span className="career-stat-number">{n.toLocaleString('es-AR')}{suf}</span>
+                <span className="career-stat-label">{label}</span>
               </span>
-              <span className="career-stat-number">
-                {n.toLocaleString('es-AR')}{suf}
-              </span>
-              <span className="career-stat-label">{label}</span>
-              <span className="career-stat-action">
-                {active ? 'Ocultar información' : 'Ver información'}
-                <span aria-hidden="true">{active ? '−' : '↗'}</span>
-              </span>
+              <span className="career-stat-action" aria-hidden="true">{active ? '−' : '+'}</span>
             </button>
           )
         })}
