@@ -4,6 +4,7 @@ import StudentsViewExternal from './components/StudentsView.jsx'
 import EventosView, { EventosTeaser } from './components/EventosView.jsx'
 import { esNavidad } from './navidad.js'
 import CookieConsent from './components/CookieConsent.jsx'
+import AccessibilityWidget from './components/AccessibilityWidget.jsx'
 
 const icons = {
   chart: (
@@ -1182,6 +1183,7 @@ export default function App() {
           </div>
         </div>
       </footer>
+      <AccessibilityWidget />
       <CookieConsent />
     </>
   )
