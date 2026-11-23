@@ -647,6 +647,7 @@ function TeamModal({ equipo, onClose }) {
 function Creadores() {
   const [open, setOpen] = useState(false)
   const [person, setPerson] = useState(null)
+  const [activeGroup, setActiveGroup] = useState(0)
   const dialogRef = useRef(null)
   const leader = equipos.find((equipo) => equipo.id === 'dev')?.miembros.find((miembro) => miembro.nombre === 'Juan Israel Flores')
   const allMembers = equipos.map((equipo) => ({
@@ -721,31 +722,39 @@ function Creadores() {
             )}
 
             <div className="creators-groups">
-              {allMembers.map((equipo) => (
-                <section className={'creators-group creators-group-' + equipo.id} key={equipo.id}>
-                  <div className="creators-group-heading">
-                    <TeamIcon id={equipo.id} />
-                    <div><h5>{equipo.nombre}</h5><p>{equipo.lema}</p></div>
-                    <span>{equipo.miembros.length} {equipo.miembros.length === 1 ? 'integrante' : 'integrantes'}</span>
-                  </div>
-                  <div className="creators-member-grid">
-                    {equipo.miembros.map((miembro, index) => (
-                      <article className={'creators-member' + (miembro.foto ? ' creators-member-click' : '')} key={equipo.id + '-' + index}
-                        {...(miembro.foto ? { role: 'button', tabIndex: 0, 'aria-label': 'Ver foto de ' + miembro.nombre, onClick: () => setPerson(miembro), onKeyDown: (event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setPerson(miembro) } } } : {})}>
-                        <div className="creators-member-photo">
-                          {miembro.foto ? <img src={miembro.foto} alt={miembro.nombre} loading="lazy" style={miembro.pos ? { objectPosition: miembro.pos } : undefined} /> : <span>{iniciales(miembro.nombre)}</span>}
-                        </div>
-                        <div className="creators-member-copy">
-                          <h6>{miembro.nombre}</h6>
-                          <strong>{miembro.rol}</strong>
-                          <p>{miembro.desc}</p>
-                        </div>
-                      </article>
-                    ))}
-                  </div>
-                </section>
-              ))}
+              {allMembers[activeGroup] && (() => {
+                const equipo = allMembers[activeGroup]
+                return (
+                  <section className={'creators-group creators-group-' + equipo.id} key={equipo.id}>
+                    <div className="creators-group-heading">
+                      <TeamIcon id={equipo.id} />
+                      <div><h5>{equipo.nombre}</h5><p>{equipo.lema}</p></div>
+                      <span>{equipo.miembros.length} {equipo.miembros.length === 1 ? 'integrante' : 'integrantes'}</span>
+                    </div>
+                    <div className="creators-member-grid">
+                      {equipo.miembros.map((miembro, index) => (
+                        <article className={'creators-member' + (miembro.foto ? ' creators-member-click' : '')} key={equipo.id + '-' + index}
+                          {...(miembro.foto ? { role: 'button', tabIndex: 0, 'aria-label': 'Ver foto de ' + miembro.nombre, onClick: () => setPerson(miembro), onKeyDown: (event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setPerson(miembro) } } } : {})}>
+                          <div className="creators-member-photo">
+                            {miembro.foto ? <img src={miembro.foto} alt={miembro.nombre} loading="lazy" style={miembro.pos ? { objectPosition: miembro.pos } : undefined} /> : <span>{iniciales(miembro.nombre)}</span>}
+                          </div>
+                          <div className="creators-member-copy">
+                            <h6>{miembro.nombre}</h6>
+                            <strong>{miembro.rol}</strong>
+                            <p>{miembro.desc}</p>
+                          </div>
+                        </article>
+                      ))}
+                    </div>
+                  </section>
+                )
+              })()}
             </div>
+            <nav className="creators-carousel-nav" aria-label="Navegación entre áreas del equipo">
+              <button type="button" onClick={() => setActiveGroup((current) => (current - 1 + allMembers.length) % allMembers.length)} aria-label="Área anterior">←</button>
+              <span>{activeGroup + 1} <i>/</i> {allMembers.length}</span>
+              <button type="button" onClick={() => setActiveGroup((current) => (current + 1) % allMembers.length)} aria-label="Área siguiente">→</button>
+            </nav>
             <footer className="creators-thanks">♡ <span>Gracias a todo el equipo por su compromiso y dedicación en este proyecto.</span></footer>
           </section>
         </div>
