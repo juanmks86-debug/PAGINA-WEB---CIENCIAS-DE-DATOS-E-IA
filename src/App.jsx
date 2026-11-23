@@ -645,19 +645,120 @@ function TeamModal({ equipo, onClose }) {
 }
 
 function Creadores() {
-  const [sel, setSel] = useState(null)
-  const cur = equipos.find((e) => e.id === sel)
+  const [open, setOpen] = useState(false)
+  const [person, setPerson] = useState(null)
+  const dialogRef = useRef(null)
+  const leader = equipos.find((equipo) => equipo.id === 'dev')?.miembros.find((miembro) => miembro.nombre === 'Juan Israel Flores')
+  const allMembers = equipos.map((equipo) => ({
+    ...equipo,
+    miembros: equipo.miembros.filter((miembro) => !(equipo.id === 'dev' && miembro.nombre === 'Juan Israel Flores'))
+  }))
+
+  useEffect(() => {
+    if (!open) return undefined
+    const previousOverflow = document.body.style.overflow
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        if (person) setPerson(null)
+        else setOpen(false)
+      }
+    }
+    document.body.style.overflow = 'hidden'
+    window.addEventListener('keydown', onKeyDown)
+    requestAnimationFrame(() => dialogRef.current?.querySelector('.creators-close')?.focus())
+    return () => {
+      document.body.style.overflow = previousOverflow
+      window.removeEventListener('keydown', onKeyDown)
+    }
+  }, [open, person])
+
+  const trapFocus = (event) => {
+    if (event.key !== 'Tab') return
+    const items = Array.from(dialogRef.current?.querySelectorAll('button:not([disabled]),[tabindex]:not([tabindex="-1"])') || [])
+    if (!items.length) return
+    const first = items[0], last = items[items.length - 1]
+    if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus() }
+    else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus() }
+  }
+
+  const totalMembers = equipos.reduce((total, equipo) => total + equipo.miembros.length, 0)
+
   return (
     <>
       <div className="teams">
-        {equipos.map((e) => (
-          <button type="button" key={e.id} className="team-btn" style={{ '--c': teamColors[e.id] }} onClick={() => setSel(e.id)} aria-haspopup="dialog" aria-expanded={sel === e.id} aria-controls={'equipo-dialog-' + e.id}>
-            <TeamIcon id={e.id} />
-            <span>{e.corto}</span>
-          </button>
-        ))}
+        <button type="button" className="team-btn creators-trigger" onClick={() => setOpen(true)} aria-haspopup="dialog" aria-expanded={open}>
+          <TeamIcon id="dev" />
+          <span>Conocé al equipo del proyecto</span>
+          <small>{totalMembers} integrantes · 4 áreas</small>
+        </button>
       </div>
-      {cur && <TeamModal equipo={cur} onClose={() => setSel(null)} />}
+      {open && (
+        <div className="creators-modal-bg" onClick={() => setOpen(false)}>
+          <section ref={dialogRef} className="creators-modal" role="dialog" aria-modal="true" aria-labelledby="creators-modal-title" onClick={(event) => event.stopPropagation()} onKeyDown={trapFocus}>
+            <button type="button" className="creators-close" aria-label="Cerrar" onClick={() => setOpen(false)}>×</button>
+            <header className="creators-heading">
+              <span className="creators-heading-icon"><TeamIcon id="dev" /></span>
+              <div>
+                <span className="creators-eyebrow">IES N.º 6 · CIENCIA DE DATOS E IA</span>
+                <h4 id="creators-modal-title">Creadores</h4>
+                <p>Conocé al equipo que hizo posible este proyecto.</p>
+              </div>
+            </header>
+
+            {leader && (
+              <section className="creators-leader" aria-label="Liderazgo del proyecto">
+                <div className="creators-leader-photo">
+                  {leader.foto ? <img src={leader.foto} alt={leader.nombre} /> : <span>{iniciales(leader.nombre)}</span>}
+                </div>
+                <div className="creators-leader-copy">
+                  <span className="creators-leader-badge">♛ Liderazgo del proyecto</span>
+                  <h5>{leader.nombre}</h5>
+                  <strong>Líder del proyecto</strong>
+                  <p>Coordinación, planificación y dirección del desarrollo.</p>
+                  <span className="creators-leader-role">También participa en: {leader.rol}</span>
+                </div>
+              </section>
+            )}
+
+            <div className="creators-groups">
+              {allMembers.map((equipo) => (
+                <section className={'creators-group creators-group-' + equipo.id} key={equipo.id}>
+                  <div className="creators-group-heading">
+                    <TeamIcon id={equipo.id} />
+                    <div><h5>{equipo.nombre}</h5><p>{equipo.lema}</p></div>
+                    <span>{equipo.miembros.length} {equipo.miembros.length === 1 ? 'integrante' : 'integrantes'}</span>
+                  </div>
+                  <div className="creators-member-grid">
+                    {equipo.miembros.map((miembro, index) => (
+                      <article className={'creators-member' + (miembro.foto ? ' creators-member-click' : '')} key={equipo.id + '-' + index}
+                        {...(miembro.foto ? { role: 'button', tabIndex: 0, 'aria-label': 'Ver foto de ' + miembro.nombre, onClick: () => setPerson(miembro), onKeyDown: (event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setPerson(miembro) } } } : {})}>
+                        <div className="creators-member-photo">
+                          {miembro.foto ? <img src={miembro.foto} alt={miembro.nombre} loading="lazy" style={miembro.pos ? { objectPosition: miembro.pos } : undefined} /> : <span>{iniciales(miembro.nombre)}</span>}
+                        </div>
+                        <div className="creators-member-copy">
+                          <h6>{miembro.nombre}</h6>
+                          <strong>{miembro.rol}</strong>
+                          <p>{miembro.desc}</p>
+                        </div>
+                      </article>
+                    ))}
+                  </div>
+                </section>
+              ))}
+            </div>
+            <footer className="creators-thanks">♡ <span>Gracias a todo el equipo por su compromiso y dedicación en este proyecto.</span></footer>
+          </section>
+        </div>
+      )}
+      {person && (
+        <div className="pm-bg" onClick={() => setPerson(null)}>
+          <figure className="pm" role="dialog" aria-modal="true" aria-label={person.nombre} style={{ '--c': '#8b7cff' }} onClick={(event) => event.stopPropagation()}>
+            <button type="button" className="pm-x" aria-label="Cerrar" onClick={() => setPerson(null)}>×</button>
+            <img src={person.foto} alt={person.nombre} />
+            <figcaption>{person.nombre}</figcaption>
+          </figure>
+        </div>
+      )}
     </>
   )
 }
