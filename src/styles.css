@@ -2719,3 +2719,158 @@ html { font-size: calc(100% * var(--a11y-font-scale, 1)); }
 @media (prefers-reduced-motion: reduce) {
   #pasantias .internship-trigger { transition: none; }
 }
+
+
+/* Datos de la carrera: tarjetas ilustradas e información desplegable */
+.career-stats-experience { margin-top: 0; }
+.career-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+.career-stat-card {
+  --stat-accent: #3975bd;
+  --stat-tint: #eaf2ff;
+  appearance: none;
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  min-height: 205px;
+  padding: 17px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--stat-accent) 18%, var(--line));
+  border-radius: 19px;
+  background: linear-gradient(145deg, var(--surface), var(--stat-tint));
+  color: var(--ink);
+  box-shadow: 0 5px 18px rgba(24, 48, 72, .07);
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+  transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+}
+.career-stat-card-2 { --stat-accent: #25845b; --stat-tint: #e9f6ef; }
+.career-stat-card-3 { --stat-accent: #bd762b; --stat-tint: #fff1e3; }
+.career-stat-card-4 { --stat-accent: #8054bd; --stat-tint: #f1ebfc; }
+.career-stat-card::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: 125px;
+  height: 125px;
+  right: -55px;
+  top: -55px;
+  border: 1px solid color-mix(in srgb, var(--stat-accent) 22%, transparent);
+  border-radius: 50%;
+  box-shadow: 0 0 0 13px color-mix(in srgb, var(--stat-accent) 5%, transparent), 0 0 0 27px color-mix(in srgb, var(--stat-accent) 4%, transparent);
+}
+.career-stat-card:hover, .career-stat-card:focus-visible, .career-stat-card.is-selected {
+  transform: translateY(-3px);
+  border-color: var(--stat-accent);
+  box-shadow: 0 12px 26px rgba(24, 48, 72, .12);
+  outline: none;
+}
+.career-stat-art {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  margin-bottom: 13px;
+  border-radius: 17px;
+  background: color-mix(in srgb, var(--stat-accent) 12%, var(--surface));
+  color: var(--stat-accent);
+}
+.career-stat-orbit {
+  position: absolute;
+  inset: -5px;
+  border: 1px dashed color-mix(in srgb, var(--stat-accent) 36%, transparent);
+  border-radius: 21px;
+  transform: rotate(-9deg);
+}
+.career-stat-number {
+  color: var(--stat-accent);
+  font-size: clamp(1.8rem, 2.8vw, 2.35rem);
+  font-weight: 850;
+  line-height: 1.05;
+  letter-spacing: -.045em;
+  font-variant-numeric: tabular-nums;
+}
+.career-stat-label { margin-top: 6px; color: var(--ink); font-size: .86rem; font-weight: 700; }
+.career-stat-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  margin-top: auto;
+  padding-top: 13px;
+  color: var(--stat-accent);
+  font-size: .72rem;
+  font-weight: 750;
+}
+.career-stat-action span { font-size: 1rem; }
+.career-stat-detail {
+  --stat-accent: #3975bd;
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  position: relative;
+  margin-top: 13px;
+  padding: 18px 52px 18px 18px;
+  border: 1px solid color-mix(in srgb, var(--stat-accent) 24%, var(--line));
+  border-left: 4px solid var(--stat-accent);
+  border-radius: 15px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  animation: career-stat-enter .24s ease both;
+}
+.career-stat-detail-2 { --stat-accent: #25845b; }
+.career-stat-detail-3 { --stat-accent: #bd762b; }
+.career-stat-detail-4 { --stat-accent: #8054bd; }
+.career-stat-detail-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 46px;
+  height: 46px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--stat-accent) 12%, var(--bg));
+  color: var(--stat-accent);
+}
+.career-stat-detail-copy { min-width: 0; }
+.career-stat-eyebrow { color: var(--stat-accent); font-size: .65rem; font-weight: 800; letter-spacing: .1em; }
+.career-stat-detail h4 { margin: 2px 0 4px; color: var(--ink); font-size: 1rem; }
+.career-stat-detail p { margin: 0; color: var(--muted); font-size: .88rem; }
+.career-stat-detail small { display: block; margin-top: 7px; color: var(--muted); font-size: .72rem; }
+.career-stat-detail-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--bg);
+  color: var(--muted);
+  font-size: 1.35rem;
+  cursor: pointer;
+}
+@keyframes career-stat-enter { from { opacity: 0; transform: translateY(-7px); } to { opacity: 1; transform: translateY(0); } }
+@media (max-width: 760px) {
+  .career-stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .career-stat-card { min-height: 183px; padding: 14px; border-radius: 16px; }
+  .career-stat-art { width: 50px; height: 50px; margin-bottom: 11px; }
+  .career-stat-number { font-size: clamp(1.7rem, 7vw, 2.15rem); }
+  .career-stat-label { font-size: .8rem; }
+  .career-stat-action { font-size: .68rem; }
+  .career-stat-detail { padding: 15px 43px 15px 13px; gap: 11px; }
+}
+@media (max-width: 360px) {
+  .career-stat-card { min-height: 174px; padding: 12px; }
+  .career-stat-art { width: 44px; height: 44px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .career-stat-card, .career-stat-detail { transition: none; animation: none; }
+}
