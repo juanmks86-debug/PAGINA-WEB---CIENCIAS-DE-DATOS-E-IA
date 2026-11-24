@@ -5,6 +5,7 @@ import EventosView, { EventosTeaser } from './components/EventosView.jsx'
 import { esNavidad } from './navidad.js'
 import CookieConsent from './components/CookieConsent.jsx'
 import AccessibilityWidget from './components/AccessibilityWidget.jsx'
+import ThemeToggle from './components/ThemeToggle.jsx'
 
 const icons = {
   chart: (
@@ -1364,15 +1365,7 @@ export default function App() {
             })}
             <SearchBox />
           </nav>
-          <button className="theme" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-label={theme === 'dark' ? 'Activar modo claro' : 'Activar modo oscuro'} title={theme === 'dark' ? 'Modo claro' : 'Modo oscuro'}>
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <g stroke="#E9A72C" strokeWidth="1.7" strokeLinecap="round">
-                <circle cx="6.8" cy="12" r="3.1" fill="#F8C65B" />
-                <path d="M6.8 2.8v2M6.8 19.2v2M1 12h2M10.6 12h2M2.7 5.9l1.4 1.4M9.5 16.7l1.4 1.4" />
-              </g>
-              <path d="M17.2 4.4a7.5 7.5 0 1 0 3.1 14.2 7.1 7.1 0 0 1-3.1-14.2Z" fill="#8BA7FF" stroke="#5879D8" strokeWidth="1.2" strokeLinejoin="round" />
-            </svg>
-          </button>
+          <ThemeToggle theme={theme} onChange={setTheme} />
         </div>
       </div>
 
