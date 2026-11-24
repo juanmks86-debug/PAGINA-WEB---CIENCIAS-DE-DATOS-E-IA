@@ -50,9 +50,8 @@ export default function AccessibilityWidget() {
           <button type="button" className="a11y-reset" onClick={reset}>Restablecer ajustes</button>
         </section>
       )}
-      <button type="button" className="a11y-trigger" aria-label={open ? 'Cerrar menú de accesibilidad' : 'Abrir menú de accesibilidad'} aria-expanded={open} aria-controls="a11y-panel" onClick={() => setOpen(value => !value)}>
+      <button type="button" className="a11y-trigger" aria-label={open ? 'Cerrar menú de accesibilidad' : 'Abrir menú de accesibilidad'} aria-expanded={open} aria-controls="a11y-panel" title="Accesibilidad" onClick={() => setOpen(value => !value)}>
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4.5" r="2.1"/><path d="M4 8.5h16M12 8.5v5m0 0-4 7m4-7 4 7M7 8.5l2 5h6l2-5"/></svg>
-        <span>Accesibilidad</span>
       </button>
     </div>
   )
