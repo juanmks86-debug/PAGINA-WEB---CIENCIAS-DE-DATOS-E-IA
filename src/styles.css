@@ -3748,3 +3748,11 @@ html { font-size: calc(100% * var(--a11y-font-scale, 1)); }
     bottom: 64px;
   }
 }
+
+/* Creadores: altura uniforme de las tarjetas de áreas en escritorio */
+@media (min-width: 701px) {
+  .creators-group {
+    min-height: 320px;
+    height: 100%;
+  }
+}
