@@ -714,7 +714,6 @@ function Creadores() {
                 <div className="creators-leader-copy">
                   <span className="creators-leader-badge">♛ Liderazgo del proyecto</span>
                   <h5>{leader.nombre}</h5>
-                  <strong>Líder del proyecto</strong>
                   <p>Coordinación, planificación y dirección del desarrollo.</p>
                   <span className="creators-leader-role">También participa en: {leader.rol}</span>
                 </div>
