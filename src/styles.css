@@ -3689,3 +3689,35 @@ html { font-size: calc(100% * var(--a11y-font-scale, 1)); }
     height: 68px;
   }
 }
+
+
+/* Accesibilidad: botón flotante compacto solo con icono */
+.a11y-trigger {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  min-width: 52px;
+  height: 52px;
+  min-height: 52px;
+  padding: 0;
+  border-radius: 50%;
+}
+.a11y-trigger svg {
+  width: 28px;
+  height: 28px;
+}
+.a11y-panel {
+  bottom: 64px;
+}
+@media (max-width: 600px) {
+  .a11y-trigger {
+    width: 52px;
+    min-width: 52px;
+    height: 52px;
+    min-height: 52px;
+    padding: 0;
+  }
+  .a11y-panel {
+    bottom: 64px;
+  }
+}
