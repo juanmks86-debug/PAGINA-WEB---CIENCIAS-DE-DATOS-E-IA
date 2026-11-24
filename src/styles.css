@@ -3795,3 +3795,46 @@ html { font-size: calc(100% * var(--a11y-font-scale, 1)); }
     border-color: #55d9d2;
   }
 }
+
+
+/* Equilibrio del modal: liderazgo contenido y tarjetas de áreas con aire */
+@media (min-width: 701px) {
+  .creators-modal {
+    width: min(780px, calc(100vw - 48px));
+    max-width: 780px;
+  }
+  .creators-leader {
+    width: min(540px, 100%);
+    margin-left: auto;
+    margin-right: auto;
+    grid-template-columns: 76px minmax(0, 1fr);
+    gap: 15px;
+    padding: 14px 18px;
+  }
+  .creators-leader-photo {
+    width: 72px;
+    height: 72px;
+  }
+  .creators-group {
+    padding: 15px;
+  }
+  .creators-member-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .creators-member {
+    grid-template-columns: 76px minmax(0, 1fr);
+    min-height: 100px;
+  }
+  .creators-member-photo,
+  .creators-member-photo img {
+    min-height: 100px;
+  }
+  .creators-member-copy {
+    padding: 10px 12px;
+    gap: 5px;
+  }
+  .creators-member-copy h6 { font-size: .82rem; }
+  .creators-member-copy strong,
+  .creators-member-copy p { font-size: .68rem; }
+}
