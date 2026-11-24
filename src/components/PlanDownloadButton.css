@@ -1,0 +1,82 @@
+/* From Uiverse.io by nazar-gavrylyk - https://uiverse.io/nazar-gavrylyk/evil-dragon-24
+ * MIT License, Copyright (c) nazar-gavrylyk (Nazar)
+ * Adapted for the IES N.º 6; styles are scoped to this control.
+ */
+.plan-download-control {
+  --plan-download-blue: #2878e5;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 11px;
+  min-width: 154px;
+  min-height: 44px;
+  padding: 5px 17px 5px 5px;
+  overflow: hidden;
+  border: 1.5px solid var(--plan-download-blue);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: .88rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  isolation: isolate;
+  transition: border-color .3s ease, color .3s ease, background .3s ease;
+}
+.plan-download-control:hover,
+.plan-download-control:focus-visible {
+  border-color: var(--plan-download-blue);
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--plan-download-blue) 18%, transparent);
+}
+.plan-download-control:disabled { cursor: progress; }
+.plan-download-control__circle {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  flex: 0 0 32px;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--plan-download-blue);
+  color: #fff;
+  transition: transform .45s ease, background .3s ease;
+}
+.plan-download-control__icon { width: 18px; height: 18px; }
+.plan-download-control__text { position: relative; z-index: 1; white-space: nowrap; }
+.plan-download-control__progress {
+  position: absolute;
+  z-index: 0;
+  inset: 0 auto 0 0;
+  width: 0;
+  border-radius: inherit;
+  background: color-mix(in srgb, var(--plan-download-blue) 17%, var(--surface));
+}
+.plan-download-control.is-downloading .plan-download-control__progress {
+  width: 100%;
+  transition: width 1.6s cubic-bezier(.2,.7,.2,1);
+}
+.plan-download-control.is-downloading .plan-download-control__circle {
+  transform: rotate(360deg);
+}
+.plan-download-control.is-done {
+  border-color: #2878e5;
+  color: #fff;
+  background: #2878e5;
+}
+.plan-download-control.is-done .plan-download-control__circle {
+  background: #fff;
+  color: #2878e5;
+}
+.plan-download-control.is-done .plan-download-control__text { color: #fff; }
+@media (max-width: 480px) {
+  .plan-download-control { justify-content: center; width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .plan-download-control,
+  .plan-download-control__circle,
+  .plan-download-control__progress { transition-duration: .01ms !important; }
+}
