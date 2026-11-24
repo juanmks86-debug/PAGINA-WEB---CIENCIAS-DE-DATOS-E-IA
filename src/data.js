@@ -74,7 +74,7 @@ export const faqs = [
   ['¿Hay un grupo para ingresantes?', 'Sí, el profesor armó un grupo de WhatsApp para ingresantes: ' + WHATSAPP_GRUPO],
 ]
 
-export const social = { facebook: '#', tiktok: 'https://www.tiktok.com/@tec.sup.cs.de.datos.e.ia?is_from_webapp=1&sender_device=pc', instagram: 'https://www.instagram.com/tec.sup.cienciadedatoseia' }
+export const social = { facebook: 'https://www.facebook.com/share/19rFAVCd45/', tiktok: 'https://www.tiktok.com/@tec.sup.cs.de.datos.e.ia?is_from_webapp=1&sender_device=pc', instagram: 'https://www.instagram.com/tec.sup.cienciadedatoseia' }
 export const MAPS_LINK = 'https://maps.app.goo.gl/TuMw32iQ9HTFHhQK'
 export const MAP_EMBED = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3634.0543314193674!2d-65.12723242567779!3d-24.379413292153174!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x941bad1aff2b443d%3A0xcd6d3e5c35073d23!2sInstituto%20de%20Educaci%C3%B3n%20Superior%20N%C2%B06!5e0!3m2!1ses!2sar!4v1792150190175!5m2!1ses!2sar'
 export const coordinador = { nombre: 'Federico Torres', iniciales: 'FT', foto: '/equipo/coordinador.jpg' }
