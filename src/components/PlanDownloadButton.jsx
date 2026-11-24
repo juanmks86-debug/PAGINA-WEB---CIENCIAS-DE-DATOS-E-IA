@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './PlanDownloadButton.css'
 
 // From Uiverse.io by nazar-gavrylyk - https://uiverse.io/nazar-gavrylyk/evil-dragon-24
@@ -10,27 +10,40 @@ const FILE_NAME = 'plan-de-estudio.pdf'
 
 export default function PlanDownloadButton() {
   const [status, setStatus] = useState('idle')
-  const timerRef = useRef(null)
+  const [fileUrl, setFileUrl] = useState('')
 
-  useEffect(() => () => window.clearTimeout(timerRef.current), [])
+  useEffect(() => () => {
+    if (fileUrl) URL.revokeObjectURL(fileUrl)
+  }, [fileUrl])
 
-  const handleDownload = () => {
-    if (status !== 'idle') return
-
-    const link = document.createElement('a')
-    link.href = FILE_URL
-    link.download = FILE_NAME
-    document.body.appendChild(link)
-    link.click()
-    link.remove()
-
+  const handleDownload = async () => {
+    if (status === 'downloading') return
     setStatus('downloading')
-    timerRef.current = window.setTimeout(() => setStatus('done'), 1600)
+
+    try {
+      const response = await fetch(FILE_URL)
+      if (!response.ok) throw new Error('No se pudo obtener el PDF')
+
+      const blob = await response.blob()
+      const objectUrl = URL.createObjectURL(blob)
+      setFileUrl(objectUrl)
+
+      const link = document.createElement('a')
+      link.href = objectUrl
+      link.download = FILE_NAME
+      document.body.appendChild(link)
+      link.click()
+      link.remove()
+
+      setStatus('done')
+    } catch {
+      setStatus('error')
+    }
   }
 
   if (status === 'done') {
     return (
-      <a className="plan-download-control is-done" href={FILE_URL} target="_blank" rel="noopener noreferrer">
+      <a className="plan-download-control is-done" href={fileUrl} target="_blank" rel="noopener noreferrer">
         <span className="plan-download-control__circle" aria-hidden="true">
           <svg className="plan-download-control__icon" viewBox="0 0 24 24" fill="none">
             <path d="m5 12 4.5 4.5L19 7" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -55,7 +68,7 @@ export default function PlanDownloadButton() {
           <path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M5 20h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </span>
-      <span className="plan-download-control__text">{status === 'downloading' ? 'Downloading' : 'Download'}</span>
+      <span className="plan-download-control__text">{status === 'downloading' ? 'Downloading' : status === 'error' ? 'Retry' : 'Download'}</span>
       <span className="plan-download-control__progress" aria-hidden="true" />
     </button>
   )
