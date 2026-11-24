@@ -3658,3 +3658,34 @@ html { font-size: calc(100% * var(--a11y-font-scale, 1)); }
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
+
+/* Modal de Creadores: evitar que el bloque de liderazgo fuerce el ancho */
+@media (min-width: 701px) {
+  .creators-modal {
+    width: min(620px, calc(100vw - 40px));
+    max-width: 620px;
+  }
+  .creators-leader {
+    grid-template-columns: 72px minmax(0, 1fr);
+    gap: 12px;
+    padding: 12px 14px;
+    min-width: 0;
+  }
+  .creators-leader-copy { min-width: 0; }
+  .creators-leader-badge {
+    display: inline-block;
+    max-width: 100%;
+    white-space: normal;
+    line-height: 1.3;
+  }
+  .creators-leader-role {
+    display: block;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+  .creators-leader-photo {
+    width: 68px;
+    height: 68px;
+  }
+}
