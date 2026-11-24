@@ -3635,3 +3635,26 @@ html { font-size: calc(100% * var(--a11y-font-scale, 1)); }
   .creators-group { animation: none; }
   .creators-carousel-nav button { transition: none; }
 }
+
+
+/* Ajuste de ancho: modal de Creadores más compacto en escritorio */
+@media (min-width: 701px) {
+  .creators-modal {
+    width: min(760px, calc(100vw - 40px));
+    max-width: 760px;
+    padding-left: 22px;
+    padding-right: 22px;
+  }
+  .creators-leader {
+    grid-template-columns: 88px minmax(0, 1fr);
+    gap: 15px;
+    padding: 13px 16px;
+  }
+  .creators-leader-photo {
+    width: 82px;
+    height: 82px;
+  }
+  .creators-member-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
