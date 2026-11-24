@@ -1365,10 +1365,12 @@ export default function App() {
             <SearchBox />
           </nav>
           <button className="theme" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-label={theme === 'dark' ? 'Activar modo claro' : 'Activar modo oscuro'} title={theme === 'dark' ? 'Modo claro' : 'Modo oscuro'}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <circle cx="8.5" cy="8.5" r="4.5" />
-              <path d="M8.5 1.5v1.2M8.5 14.3v1.2M1.5 8.5h1.2M14.3 8.5h1.2M3.55 3.55l.85.85M12.6 12.6l.85.85" />
-              <path d="M16.2 4.1a7.3 7.3 0 1 0 3.7 13.6 7.8 7.8 0 0 1-3.7-13.6Z" />
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <g stroke="#E9A72C" strokeWidth="1.7" strokeLinecap="round">
+                <circle cx="6.8" cy="12" r="3.1" fill="#F8C65B" />
+                <path d="M6.8 2.8v2M6.8 19.2v2M1 12h2M10.6 12h2M2.7 5.9l1.4 1.4M9.5 16.7l1.4 1.4" />
+              </g>
+              <path d="M17.2 4.4a7.5 7.5 0 1 0 3.1 14.2 7.1 7.1 0 0 1-3.1-14.2Z" fill="#8BA7FF" stroke="#5879D8" strokeWidth="1.2" strokeLinejoin="round" />
             </svg>
           </button>
         </div>
