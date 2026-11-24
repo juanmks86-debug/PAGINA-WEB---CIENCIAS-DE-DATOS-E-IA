@@ -6,6 +6,7 @@ import { esNavidad } from './navidad.js'
 import CookieConsent from './components/CookieConsent.jsx'
 import AccessibilityWidget from './components/AccessibilityWidget.jsx'
 import ThemeToggle from './components/ThemeToggle.jsx'
+import PlanDownloadButton from './components/PlanDownloadButton.jsx'
 
 const icons = {
   chart: (
@@ -1414,7 +1415,7 @@ export default function App() {
                 <p>Consultá las materias de cada año, la carga horaria y los requisitos de cursada.</p>
                 <div className="plan-actions">
                   <a className="btn" href="/plan-de-estudio.pdf" target="_blank" rel="noopener noreferrer">Ver plan de estudio <span aria-hidden="true">↗</span></a>
-                  <a className="plan-download" href="/plan-de-estudio.pdf" download>Descargar PDF <span aria-hidden="true">↓</span></a>
+                  <PlanDownloadButton />
                 </div>
               </div>
             </div>
