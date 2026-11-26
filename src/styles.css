@@ -3795,3 +3795,20 @@ html { font-size: calc(100% * var(--a11y-font-scale, 1)); }
     border-color: #55d9d2;
   }
 }
+
+/* Ambientación navideña temporal: respeta el tema claro/oscuro y la lectura. */
+html.navidad .hd-top{border-bottom-color:rgba(180,45,55,.38);box-shadow:inset 0 3px 0 #b52f3b}
+html.navidad .hd-bar{border-bottom-color:rgba(35,112,70,.45)}
+html.navidad .hero{background:linear-gradient(112deg,#173d35 0%,#245846 58%,#6d2938 100%)}
+html.navidad .hero h2 span{color:#f2d58b}
+html.navidad h3{color:#286b49}
+:root[data-theme="dark"].navidad h3{color:#d9e9df}
+html.navidad .btn{background:#b73543;color:#fff;box-shadow:0 3px 10px rgba(105,20,34,.18)}
+html.navidad .btn:hover{background:#982b38}
+html.navidad .tabs .tab:hover,html.navidad #pasantias .card:hover{border-color:rgba(183,53,67,.55)}
+html.navidad footer{border-top-color:#c49a45;background:linear-gradient(115deg,#173d35,#263e35 65%,#542a35)}
+.nv-toggle{position:fixed;left:16px;bottom:18px;z-index:41;display:inline-flex;align-items:center;gap:7px;min-height:40px;padding:8px 13px;border:1px solid rgba(255,255,255,.55);border-radius:999px;background:#1d513b;color:#fff;font:600 .78rem/1.2 inherit;box-shadow:0 4px 16px rgba(0,0,0,.2);cursor:pointer}
+.nv-toggle:hover{background:#286b49}
+.nv-toggle:focus-visible{outline:3px solid #d9b85d;outline-offset:3px}
+@media(max-width:600px){.nv-toggle{left:10px;bottom:12px;min-height:38px;padding:7px 10px;font-size:.72rem}}
+@media(prefers-reduced-motion:reduce){.nv-snow{display:none}.nv-lights::before,.nv-lights::after{animation:none}}
