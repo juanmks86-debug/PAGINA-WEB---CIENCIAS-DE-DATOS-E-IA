@@ -3812,3 +3812,143 @@ html.navidad footer{border-top-color:#c49a45;background:linear-gradient(115deg,#
 .nv-toggle:focus-visible{outline:3px solid #d9b85d;outline-offset:3px}
 @media(max-width:600px){.nv-toggle{left:10px;bottom:12px;min-height:38px;padding:7px 10px;font-size:.72rem}}
 @media(prefers-reduced-motion:reduce){.nv-snow{display:none}.nv-lights::before,.nv-lights::after{animation:none}}
+
+
+/* Edición navideña institucional: detalles cálidos, discretos y accesibles */
+html.navidad .hd-top {
+  box-shadow: inset 0 3px 0 #b78b42, 0 3px 18px rgba(20, 45, 34, .06);
+}
+html.navidad .hd-bar {
+  box-shadow: 0 5px 18px rgba(24, 53, 39, .08);
+}
+html.navidad .hd-brand::after {
+  content: "✦";
+  margin-left: 2px;
+  color: #b78b42;
+  font-size: .85rem;
+}
+html.navidad .hero {
+  background:
+    radial-gradient(ellipse at 88% 12%, rgba(222, 190, 119, .2), transparent 28%),
+    linear-gradient(112deg, #173d35 0%, #245846 58%, #6d2938 100%);
+}
+html.navidad .hero::after {
+  content: "✧";
+  position: absolute;
+  top: 22px;
+  right: max(24px, calc((100vw - 1120px) / 2));
+  color: rgba(246, 220, 160, .8);
+  font-size: 2.2rem;
+  line-height: 1;
+  pointer-events: none;
+  animation: nv-star 4s ease-in-out infinite;
+}
+html.navidad .hero h2 span { color: #f2d58b; }
+html.navidad h3 { color: #286b49; }
+:root[data-theme="dark"].navidad h3 { color: #e2d5b1; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]).navidad h3 { color: #e2d5b1; }
+}
+html.navidad .btn {
+  background: linear-gradient(135deg, #c64b55, #a72f3c);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(105, 20, 34, .2);
+}
+html.navidad .btn:hover { background: #982b38; }
+html.navidad .tabs .tab,
+html.navidad .card,
+html.navidad .pdf,
+html.navidad .cal,
+html.navidad .cc,
+html.navidad .nw-card {
+  border: 1px solid color-mix(in srgb, #b78b42 22%, var(--line));
+}
+html.navidad .tabs .tab:hover,
+html.navidad #pasantias .card:hover {
+  border-color: rgba(183, 53, 67, .55);
+  box-shadow: 0 8px 22px rgba(92, 39, 36, .12);
+}
+html.navidad footer {
+  border-top: 4px solid #c49a45;
+  background: linear-gradient(115deg, #173d35, #263e35 65%, #542a35);
+}
+.nv-lights {
+  height: 24px;
+  border: 0;
+  z-index: 42;
+  background:
+    radial-gradient(ellipse at 8px 0, transparent 0 7px, rgba(20,30,40,.28) 7.5px 8px, transparent 8.5px) 0 0/48px 24px repeat-x;
+}
+.nv-lights::before,
+.nv-lights::after {
+  inset: 7px 0 auto;
+  height: 13px;
+  background-size: 64px 13px;
+}
+.nv-lights::before {
+  background-image:
+    radial-gradient(circle at 8px 6px, #e85b59 0 3px, rgba(232,91,89,.25) 3.5px, transparent 6px),
+    radial-gradient(circle at 40px 6px, #e6c16c 0 3px, rgba(230,193,108,.25) 3.5px, transparent 6px);
+  animation: nv-a 2.8s ease-in-out infinite alternate;
+}
+.nv-lights::after {
+  background-image:
+    radial-gradient(circle at 24px 6px, #4d9b70 0 3px, rgba(77,155,112,.25) 3.5px, transparent 6px),
+    radial-gradient(circle at 56px 6px, #d7e8ed 0 2.5px, rgba(215,232,237,.25) 3px, transparent 6px);
+  animation: nv-b 3.2s ease-in-out infinite alternate;
+}
+.nv-snow { z-index: 8; }
+.nv-snow i {
+  opacity: var(--o, .7);
+  filter: drop-shadow(0 1px 2px rgba(70, 90, 110, .24));
+  will-change: transform;
+}
+.nv-toggle {
+  left: auto;
+  right: 18px;
+  bottom: 18px;
+  width: 44px;
+  min-height: 44px;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid rgba(226, 193, 108, .8);
+  background: linear-gradient(145deg, #245640, #173d35);
+  color: #fff;
+  font: inherit;
+  font-size: 1.2rem;
+  box-shadow: 0 5px 18px rgba(13, 35, 25, .25);
+}
+.nv-toggle:hover { background: linear-gradient(145deg, #326e50, #245640); transform: translateY(-2px); }
+.nv-toggle:focus-visible { outline: 3px solid #e6c16c; outline-offset: 3px; }
+.nv-toggle span { line-height: 1; }
+.nv-hero-tree {
+  position: fixed;
+  right: 22px;
+  bottom: 76px;
+  z-index: 7;
+  font-size: 1.25rem;
+  opacity: .72;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,.2));
+  animation: nv-tree 4s ease-in-out infinite;
+}
+@keyframes nv-star { 0%,100% { opacity:.55; transform:scale(.92) rotate(-8deg); } 50% { opacity:1; transform:scale(1.08) rotate(8deg); } }
+@keyframes nv-tree { 0%,100% { transform:translateY(0) rotate(-2deg); } 50% { transform:translateY(-5px) rotate(2deg); } }
+@media (max-width: 600px) {
+  .nv-lights { height: 19px; }
+  .nv-hero-tree { right: 14px; bottom: 68px; font-size: 1rem; }
+  .nv-toggle { right: 10px; bottom: 12px; width: 40px; min-height: 40px; }
+  html.navidad .hero::after { top: 14px; right: 18px; font-size: 1.6rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nv-snow { display: none; }
+  .nv-lights::before, .nv-lights::after, .nv-hero-tree,
+  html.navidad .hero::after { animation: none; }
+  .nv-toggle:hover { transform: none; }
+}
+
+/* Mantener separados el control navideño y el acceso a accesibilidad */
+.nv-toggle { left: 16px; right: auto; }
+@media (max-width: 600px) {
+  .nv-toggle { left: 10px; right: auto; }
+}
