@@ -3946,3 +3946,9 @@ html.navidad footer {
   html.navidad .hero::after { animation: none; }
   .nv-toggle:hover { transform: none; }
 }
+
+/* Mantener separados el control navideño y el acceso a accesibilidad */
+.nv-toggle { left: 16px; right: auto; }
+@media (max-width: 600px) {
+  .nv-toggle { left: 10px; right: auto; }
+}
