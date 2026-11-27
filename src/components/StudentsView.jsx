@@ -223,24 +223,24 @@ export default function StudentsView({ standalone = false }) {
           <div className="panel-title"><div><span className="student-kicker">ACCESOS A DRIVE</span><h2>Carpetas recientes</h2><p>Accedé rápidamente a los últimos materiales.</p></div><a href="#materiales-titulo">Ver todas →</a></div>
           <div className="notes-list">{filteredNotes.map((note) => <a href={note.href} target="_blank" rel="noopener noreferrer" className="note-row" key={note.title}><span className="note-file" aria-hidden="true">▰</span><span><b>{note.title}</b><small>{note.year} · {note.subject}</small></span></a>)}{!filteredNotes.length && <p className="empty-state" role="status">No encontramos apuntes con ese término.</p>}</div>
         </aside>
-        <div className="students-quote">
-          <span className="quote-mark" aria-hidden="true">↗</span>
-          <p>Tu esfuerzo de hoy,<br /><strong>construye el profesional del mañana.</strong><small>¡Seguimos aprendiendo juntos!</small></p>
-          <svg className="quote-illustration" viewBox="0 0 220 100" role="img" aria-label="Cohete que despega sobre montañas">
-            <path d="M0 91 38 52l26 28 34-48 33 44 30-30 59 45Z" fill="#b9d2f6"/>
-            <path d="m62 100 36-48 27 48m18 0 22-36 35 36" fill="#8fb4e9"/>
-            <path d="M0 91h220v9H0Z" fill="#d7e6fb"/>
-            <g transform="translate(100 9) rotate(34 25 27)">
-              <path d="M25 0C11 13 8 31 9 48h32C42 31 39 13 25 0Z" fill="#3279d7" stroke="#fff" strokeWidth="2"/>
-              <circle cx="25" cy="24" r="7" fill="#dff0ff" stroke="#1b4d91" strokeWidth="2"/>
-              <path d="m9 34-9 14 10-1m32-13 9 14-10-1" fill="#f1a34c" stroke="#fff" strokeWidth="1.5" strokeLinejoin="round"/>
-              <path d="M17 48 25 67l8-19Z" fill="#f2a64d"/>
-              <path d="M21 48 25 59l4-11Z" fill="#fff0b8"/>
-            </g>
-            <path d="m87 25-5-7m58 3 6-7m-62 42-8 2" stroke="#6e9ee0" strokeWidth="2.5" strokeLinecap="round"/>
-            <circle cx="169" cy="20" r="4" fill="#fff" opacity=".9"/><circle cx="55" cy="22" r="3" fill="#fff" opacity=".8"/>
-          </svg>
-        </div>
+        <section className="siga-access" aria-labelledby="siga-access-title">
+          <div className="siga-access-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none">
+              <path d="M5 12.5c7-3.5 13.3-2.6 19 2.2 5.7-4.8 12-5.7 19-2.2v25c-7-3.5-13.3-2.6-19 2.2-5.7-4.8-12-5.7-19-2.2v-25Z" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round"/>
+              <path d="M24 15v24M12 19h7m-7 6h7m10-6h7m-7 6h7" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+              <path d="m36 4 1.8 4.2L42 10l-4.2 1.8L36 16l-1.8-4.2L30 10l4.2-1.8L36 4Z" fill="#65e4d0"/>
+            </svg>
+          </div>
+          <div className="siga-access-copy">
+            <span className="siga-access-kicker">AUTOGESTIÓN ACADÉMICA · IES N.º 6</span>
+            <h2 id="siga-access-title">Tu vida académica, en un solo lugar.</h2>
+            <p>Ingresá a SIGA para consultar tus materias, inscripciones, historia académica y realizar tus trámites.</p>
+            <a className="siga-access-button" href="https://sistemasiga-ashy.vercel.app/" target="_blank" rel="noopener noreferrer">
+              Ingresar a SIGA <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+          <span className="siga-access-watermark" aria-hidden="true">SIGA</span>
+        </section>
       </div>
     </section>
   )
